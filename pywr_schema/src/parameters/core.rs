@@ -1,9 +1,7 @@
-use crate::parameters::{
-    NodeReference, ParameterMeta, ParameterValue, ParameterValueType, TableDataRef,
-};
+use crate::parameters::{ParameterMeta, ParameterValue, ParameterValueType, TableDataRef};
 use std::collections::HashMap;
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct ConstantParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -14,8 +12,8 @@ pub struct ConstantParameter {
 }
 
 impl ConstantParameter {
-    pub fn node_references(&self) -> Vec<NodeReference> {
-        Vec::new()
+    pub fn node_references(&self) -> HashMap<&str, &str> {
+        HashMap::new()
     }
 
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
@@ -23,7 +21,7 @@ impl ConstantParameter {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct MaxParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -32,8 +30,8 @@ pub struct MaxParameter {
 }
 
 impl MaxParameter {
-    pub fn node_references(&self) -> Vec<NodeReference> {
-        Vec::new()
+    pub fn node_references(&self) -> HashMap<&str, &str> {
+        HashMap::new()
     }
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         let mut attributes = HashMap::new();
@@ -42,7 +40,7 @@ impl MaxParameter {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct NegativeParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -50,8 +48,8 @@ pub struct NegativeParameter {
 }
 
 impl NegativeParameter {
-    pub fn node_references(&self) -> Vec<NodeReference> {
-        Vec::new()
+    pub fn node_references(&self) -> HashMap<&str, &str> {
+        HashMap::new()
     }
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         let mut attributes = HashMap::new();

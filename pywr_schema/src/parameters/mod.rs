@@ -25,13 +25,13 @@ use std::fmt;
 use std::marker::PhantomData;
 use std::ops::{Deref, DerefMut};
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct ParameterMeta {
     pub name: Option<String>,
     pub comment: Option<String>,
 }
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct CustomParameter {
     #[serde(rename = "type")]
     pub ty: String,
@@ -41,28 +41,93 @@ pub struct CustomParameter {
     pub attributes: HashMap<String, Value>,
 }
 
-#[derive(serde::Deserialize, serde::Serialize)]
-#[serde(tag = "type", rename_all = "lowercase")]
+// A lot of alias here until serde supports case-insensitive deserialization of tags
+// Issues:
+//   - https://github.com/serde-rs/serde/pull/1902
+//   - https://github.com/serde-rs/serde/pull/2161
+#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[serde(tag = "type")]
 pub enum CoreParameter {
+    #[serde(
+        alias = "aggregated",
+        alias = "aggregatedparameter",
+        alias = "AggregatedParameter"
+    )]
     Aggregated(AggregatedParameter),
+    #[serde(
+        alias = "aggregatedindex",
+        alias = "aggregatedindexparameter",
+        alias = "AggregatedIndexParameter"
+    )]
     AggregatedIndex(AggregatedIndexParameter),
+    #[serde(
+        alias = "constant",
+        alias = "constantparameter",
+        alias = "ConstantParameter"
+    )]
     Constant(ConstantParameter),
+    #[serde(
+        alias = "controlcurvepiecewiseinterpolated",
+        alias = "controlcurvepiecewiseinterpolatedparameter",
+        alias = "ControlCurvePiecewiseInterpolatedParameter"
+    )]
     ControlCurvePiecewiseInterpolated(ControlCurvePiecewiseInterpolatedParameter),
+    #[serde(
+        alias = "controlcurveinterpolated",
+        alias = "controlcurveinterpolatedparameter",
+        alias = "ControlCurveInterpolatedParameter"
+    )]
     ControlCurveInterpolated(ControlCurveInterpolatedParameter),
+    #[serde(
+        alias = "controlcurveindex",
+        alias = "controlcurveindexparameter",
+        alias = "ControlCurveIndexParameter"
+    )]
     ControlCurveIndex(ControlCurveIndexParameter),
+    #[serde(
+        alias = "controlcurve",
+        alias = "controlcurveparameter",
+        alias = "ControlCurveParameter"
+    )]
     ControlCurve(ControlCurveParameter),
+    #[serde(
+        alias = "dailyprofile",
+        alias = "dailyprofileparameter",
+        alias = "DailyProfileParameter"
+    )]
     DailyProfile(DailyProfileParameter),
+    #[serde(
+        alias = "indexedarray",
+        alias = "indexedarrayparameter",
+        alias = "IndexedArrayParameter"
+    )]
     IndexedArray(IndexedArrayParameter),
+    #[serde(
+        alias = "monthlyprofile",
+        alias = "monthlyprofileparameter",
+        alias = "MonthlyProfileParameter"
+    )]
     MonthlyProfile(MonthlyProfileParameter),
+    #[serde(alias = "max", alias = "maxparameter", alias = "MaxParameter")]
     Max(MaxParameter),
+    #[serde(
+        alias = "negative",
+        alias = "negativeparameter",
+        alias = "NegativeParameter"
+    )]
     Negative(NegativeParameter),
+    #[serde(
+        alias = "polynomial1d",
+        alias = "polynomial1dparameter",
+        alias = "Polynomial1DParameter"
+    )]
     Polynomial1D(Polynomial1DParameter),
+    #[serde(
+        alias = "tablesarray",
+        alias = "tablesarrayparameter",
+        alias = "TablesArrayParameter"
+    )]
     TablesArray(TablesArrayParameter),
-}
-
-pub struct NodeReference {
-    pub attribute: String,
-    pub node: String,
 }
 
 impl CoreParameter {
@@ -87,7 +152,7 @@ impl CoreParameter {
         }
     }
 
-    fn node_references(&self) -> Vec<NodeReference> {
+    fn node_references(&self) -> HashMap<&str, &str> {
         match self {
             Self::Constant(p) => p.node_references(),
             Self::ControlCurveInterpolated(p) => p.node_references(),
@@ -126,7 +191,7 @@ impl CoreParameter {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Debug)]
 #[serde(untagged)]
 pub enum Parameter {
     Core(CoreParameter),
@@ -141,10 +206,10 @@ impl Parameter {
         }
     }
 
-    pub fn node_references(&self) -> Vec<NodeReference> {
+    pub fn node_references(&self) -> HashMap<&str, &str> {
         match self {
             Self::Core(p) => p.node_references(),
-            Self::Custom(_) => vec![],
+            Self::Custom(_) => HashMap::new(),
         }
     }
 
@@ -265,7 +330,7 @@ impl<'de> Deserialize<'de> for ParameterVec {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Debug)]
 #[serde(untagged)]
 pub enum ParameterValue {
     Constant(f64),
@@ -293,14 +358,14 @@ impl<'a> From<&'a ParameterValues> for ParameterValueType<'a> {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct ExternalDataRef {
     url: String,
     column: Option<String>,
     index: Option<String>,
 }
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct TableDataRef {
     table: String,
     column: Option<String>,

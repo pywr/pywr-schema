@@ -1,7 +1,7 @@
-use crate::parameters::{NodeReference, ParameterMeta, ParameterValue, ParameterValueType};
+use crate::parameters::{ParameterMeta, ParameterValue, ParameterValueType};
 use std::collections::HashMap;
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct IndexedArrayParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -11,8 +11,8 @@ pub struct IndexedArrayParameter {
 }
 
 impl IndexedArrayParameter {
-    pub fn node_references(&self) -> Vec<NodeReference> {
-        Vec::new()
+    pub fn node_references(&self) -> HashMap<&str, &str> {
+        HashMap::new()
     }
 
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {

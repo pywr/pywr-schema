@@ -1,7 +1,7 @@
-use crate::parameters::{NodeReference, ParameterMeta, ParameterValueType};
+use crate::parameters::{ParameterMeta, ParameterValueType};
 use std::collections::HashMap;
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct TablesArrayParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -13,8 +13,8 @@ pub struct TablesArrayParameter {
 }
 
 impl TablesArrayParameter {
-    pub fn node_references(&self) -> Vec<NodeReference> {
-        vec![]
+    pub fn node_references(&self) -> HashMap<&str, &str> {
+        HashMap::new()
     }
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         HashMap::new()

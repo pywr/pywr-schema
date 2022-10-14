@@ -1,7 +1,7 @@
-use crate::parameters::{NodeReference, ParameterMeta, ParameterValueType};
+use crate::parameters::{ParameterMeta, ParameterValueType};
 use std::collections::HashMap;
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Polynomial1DParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -11,11 +11,10 @@ pub struct Polynomial1DParameter {
 }
 
 impl Polynomial1DParameter {
-    pub fn node_references(&self) -> Vec<NodeReference> {
-        vec![NodeReference {
-            attribute: "storage_node".to_string(),
-            node: self.storage_node.clone(),
-        }]
+    pub fn node_references(&self) -> HashMap<&str, &str> {
+        vec![("storage_node", self.storage_node.as_str())]
+            .into_iter()
+            .collect()
     }
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         HashMap::new()
