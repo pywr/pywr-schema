@@ -334,17 +334,14 @@ impl<'de> Visitor<'de> for PywrParameterMapVisitor {
                 match CoreParameter::deserialize(MapDeserializer::new(py_attributes.into_iter())) {
                     Ok(p) => Parameter::Core(p),
                     // Deserializing a core parameter failed; deserialize as a custom parameter
-                    Err(e) => {
-                        println!("Failed to deserialize {:#?} with error: {}", value, e);
-                        Parameter::Custom(CustomParameter {
-                            meta: ParameterMeta {
-                                name: Some(name),
-                                comment: value.comment,
-                            },
-                            ty: value.ty,
-                            attributes: value.attributes,
-                        })
-                    }
+                    Err(_) => Parameter::Custom(CustomParameter {
+                        meta: ParameterMeta {
+                            name: Some(name),
+                            comment: value.comment,
+                        },
+                        ty: value.ty,
+                        attributes: value.attributes,
+                    }),
                 };
 
             map.push(p);
