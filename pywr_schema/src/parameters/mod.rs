@@ -189,6 +189,25 @@ impl CoreParameter {
             Self::TablesArray(p) => p.parameters(),
         }
     }
+
+    pub fn ty(&self) -> &str {
+        match self {
+            Self::Constant(_) => "Constant",
+            Self::ControlCurveInterpolated(_) => "ControlCurveInterpolated",
+            Self::Aggregated(_) => "Aggregated",
+            Self::AggregatedIndex(_) => "AggregatedIndex",
+            Self::ControlCurvePiecewiseInterpolated(_) => "ControlCurvePiecewiseInterpolated",
+            Self::ControlCurveIndex(_) => "ControlCurveIndex",
+            Self::ControlCurve(_) => "ControlCurve",
+            Self::DailyProfile(_) => "DailyProfile",
+            Self::IndexedArray(_) => "IndexedArray",
+            Self::MonthlyProfile(_) => "MonthlyProfile",
+            Self::Max(_) => "Max",
+            Self::Negative(_) => "Negative",
+            Self::Polynomial1D(_) => "Polynomial1D",
+            Self::TablesArray(_) => "TablesArray",
+        }
+    }
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
@@ -199,6 +218,10 @@ pub enum Parameter {
 }
 
 impl Parameter {
+    /// Return the parameter's name if it has one.
+    ///
+    /// Not all parameters are required to have a name in Pywr. Inline parameters
+    /// may be defined without a name.
     pub fn name(&self) -> Option<&str> {
         match self {
             Self::Core(p) => p.name(),
@@ -206,6 +229,7 @@ impl Parameter {
         }
     }
 
+    /// Return a map of attribute to node references.
     pub fn node_references(&self) -> HashMap<&str, &str> {
         match self {
             Self::Core(p) => p.node_references(),
@@ -213,10 +237,19 @@ impl Parameter {
         }
     }
 
+    /// Return a map of attribute to parameter values.
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         match self {
-            Self::Core(n) => n.parameters(),
+            Self::Core(p) => p.parameters(),
             Self::Custom(_) => HashMap::new(),
+        }
+    }
+
+    /// Return the type of the parameter
+    pub fn ty(&self) -> &str {
+        match self {
+            Self::Core(p) => p.ty(),
+            Self::Custom(p) => p.ty.as_str(),
         }
     }
 }

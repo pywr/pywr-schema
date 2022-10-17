@@ -143,3 +143,17 @@ pub struct CatchmentNode {
     pub flow: Option<ParameterValue>,
     pub cost: Option<ParameterValue>,
 }
+
+impl CatchmentNode {
+    pub fn parameters(&self) -> HashMap<&str, &ParameterValue> {
+        let mut attributes = HashMap::new();
+        if let Some(p) = &self.flow {
+            attributes.insert("flow", p);
+        }
+        if let Some(p) = &self.cost {
+            attributes.insert("cost", p);
+        }
+
+        attributes
+    }
+}

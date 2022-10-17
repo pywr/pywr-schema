@@ -1,6 +1,6 @@
 mod core;
 
-use crate::nodes::core::{
+pub use crate::nodes::core::{
     CatchmentNode, InputNode, LinkNode, OutputNode, ReservoirNode, StorageNode,
 };
 use crate::parameters::ParameterValue;
@@ -31,13 +31,19 @@ pub struct CustomNode {
 }
 
 #[derive(serde::Deserialize, serde::Serialize)]
-#[serde(tag = "type", rename_all = "lowercase")]
+#[serde(tag = "type")]
 pub enum CoreNode {
+    #[serde(alias = "input")]
     Input(InputNode),
+    #[serde(alias = "link")]
     Link(LinkNode),
+    #[serde(alias = "output")]
     Output(OutputNode),
+    #[serde(alias = "storage")]
     Storage(StorageNode),
+    #[serde(alias = "reservoir")]
     Reservoir(ReservoirNode),
+    #[serde(alias = "catchment")]
     Catchment(CatchmentNode),
 }
 
@@ -79,7 +85,7 @@ impl CoreNode {
             CoreNode::Output(n) => n.parameters(),
             CoreNode::Storage(n) => n.parameters(),
             CoreNode::Reservoir(n) => n.parameters(),
-            _ => HashMap::new(),
+            CoreNode::Catchment(n) => n.parameters(),
         }
     }
 }
@@ -87,7 +93,7 @@ impl CoreNode {
 #[derive(serde::Deserialize, serde::Serialize)]
 #[serde(untagged)]
 pub enum Node {
-    Core(CoreNode),
+    Core(Box<CoreNode>),
     Custom(CustomNode),
 }
 
