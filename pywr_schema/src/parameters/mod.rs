@@ -396,8 +396,15 @@ pub struct ExternalDataRef {
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[serde(untagged)]
+pub enum TableIndex {
+    Single(String),
+    Multi(Vec<String>),
+}
+
+#[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct TableDataRef {
     table: String,
-    column: Option<String>,
-    index: Option<String>,
+    column: Option<TableIndex>,
+    index: Option<TableIndex>,
 }
