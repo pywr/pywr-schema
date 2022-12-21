@@ -5,7 +5,7 @@ use std::collections::HashMap;
 pub struct ControlCurveInterpolatedParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
-    pub control_curve: Option<Box<ParameterValue>>,
+    pub control_curve: Option<ParameterValue>,
     pub control_curves: Option<ParameterValues>,
     pub storage_node: String,
     pub values: Vec<f64>,
@@ -21,7 +21,7 @@ impl ControlCurveInterpolatedParameter {
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         let mut attributes = HashMap::new();
         if let Some(p) = &self.control_curve {
-            attributes.insert("control_curve", p.as_ref().into());
+            attributes.insert("control_curve", p.into());
         }
         if let Some(parameters) = &self.control_curves {
             attributes.insert("control_curves", parameters.into());
@@ -60,7 +60,7 @@ impl ControlCurveIndexParameter {
 pub struct ControlCurveParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
-    pub control_curve: Option<Box<ParameterValue>>,
+    pub control_curve: Option<ParameterValue>,
     pub control_curves: Option<Vec<ParameterValue>>,
 
     pub storage_node: String,
@@ -78,7 +78,7 @@ impl ControlCurveParameter {
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         let mut attributes = HashMap::new();
         if let Some(p) = &self.control_curve {
-            attributes.insert("control_curve", p.as_ref().into());
+            attributes.insert("control_curve", p.into());
         }
         if let Some(parameters) = &self.control_curves {
             attributes.insert("control_curves", parameters.into());
@@ -94,7 +94,8 @@ impl ControlCurveParameter {
 pub struct ControlCurvePiecewiseInterpolatedParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
-    pub control_curves: Vec<ParameterValue>,
+    pub control_curve: Option<ParameterValue>,
+    pub control_curves: Option<Vec<ParameterValue>>,
     pub storage_node: String,
     pub values: Option<Vec<[f64; 2]>>,
     pub minimum: f64,
@@ -110,8 +111,12 @@ impl ControlCurvePiecewiseInterpolatedParameter {
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         let mut attributes = HashMap::new();
 
-        let cc = &self.control_curves;
-        attributes.insert("control_curves", cc.into());
+        if let Some(p) = &self.control_curve {
+            attributes.insert("control_curve", p.into());
+        }
+        if let Some(parameters) = &self.control_curves {
+            attributes.insert("control_curves", parameters.into());
+        }
 
         attributes
     }

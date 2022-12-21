@@ -1,21 +1,29 @@
 mod aggregated;
+mod asymmetric_switch;
 mod control_curves;
 mod core;
 mod indexed_array;
 mod polynomial;
 mod profiles;
 mod tables;
+mod thresholds;
 
-use crate::parameters::aggregated::{AggregatedIndexParameter, AggregatedParameter};
-use crate::parameters::control_curves::{
+pub use crate::parameters::aggregated::{
+    AggFunc, AggregatedIndexParameter, AggregatedParameter, IndexAggFunc,
+};
+pub use crate::parameters::asymmetric_switch::AsymmetricSwitchIndexParameter;
+pub use crate::parameters::control_curves::{
     ControlCurveIndexParameter, ControlCurveInterpolatedParameter, ControlCurveParameter,
     ControlCurvePiecewiseInterpolatedParameter,
 };
-use crate::parameters::core::{ConstantParameter, MaxParameter, NegativeParameter};
-use crate::parameters::indexed_array::IndexedArrayParameter;
-use crate::parameters::polynomial::Polynomial1DParameter;
-use crate::parameters::profiles::{DailyProfileParameter, MonthlyProfileParameter};
-use crate::parameters::tables::TablesArrayParameter;
+pub use crate::parameters::core::{ConstantParameter, MaxParameter, NegativeParameter};
+pub use crate::parameters::indexed_array::IndexedArrayParameter;
+pub use crate::parameters::polynomial::Polynomial1DParameter;
+pub use crate::parameters::profiles::{
+    DailyProfileParameter, MonthlyProfileParameter, UniformDrawdownProfileParameter,
+};
+pub use crate::parameters::tables::TablesArrayParameter;
+pub use crate::parameters::thresholds::{ParameterThresholdParameter, Predicate};
 use serde::de::value::MapDeserializer;
 use serde::de::{MapAccess, Visitor};
 use serde::{Deserialize, Deserializer};
@@ -24,6 +32,7 @@ use std::collections::HashMap;
 use std::fmt;
 use std::marker::PhantomData;
 use std::ops::{Deref, DerefMut};
+use std::vec::IntoIter;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct ParameterMeta {
@@ -60,6 +69,12 @@ pub enum CoreParameter {
         alias = "AggregatedIndexParameter"
     )]
     AggregatedIndex(AggregatedIndexParameter),
+    #[serde(
+        alias = "asymmetricswitchindex",
+        alias = "asymmetricswitchindexparameter",
+        alias = "AsymmetricSwitchIndexParameter"
+    )]
+    AsymmetricSwitchIndex(AsymmetricSwitchIndexParameter),
     #[serde(
         alias = "constant",
         alias = "constantparameter",
@@ -108,6 +123,12 @@ pub enum CoreParameter {
         alias = "MonthlyProfileParameter"
     )]
     MonthlyProfile(MonthlyProfileParameter),
+    #[serde(
+        alias = "uniformdrawdownprofile",
+        alias = "uniformdrawdownprofileparameter",
+        alias = "UniformDrawdownProfileParameter"
+    )]
+    UniformDrawdownProfile(UniformDrawdownProfileParameter),
     #[serde(alias = "max", alias = "maxparameter", alias = "MaxParameter")]
     Max(MaxParameter),
     #[serde(
@@ -123,6 +144,12 @@ pub enum CoreParameter {
     )]
     Polynomial1D(Polynomial1DParameter),
     #[serde(
+        alias = "parameterthreshold",
+        alias = "parameterthresholdparameter",
+        alias = "ParameterThresholdParameter"
+    )]
+    ParameterThreshold(ParameterThresholdParameter),
+    #[serde(
         alias = "tablesarray",
         alias = "tablesarrayparameter",
         alias = "TablesArrayParameter"
@@ -137,6 +164,7 @@ impl CoreParameter {
             Self::ControlCurveInterpolated(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::Aggregated(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::AggregatedIndex(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::AsymmetricSwitchIndex(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::ControlCurvePiecewiseInterpolated(p) => {
                 p.meta.as_ref().and_then(|m| m.name.as_deref())
             }
@@ -145,9 +173,11 @@ impl CoreParameter {
             Self::DailyProfile(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::IndexedArray(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::MonthlyProfile(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::UniformDrawdownProfile(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::Max(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::Negative(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::Polynomial1D(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::ParameterThreshold(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::TablesArray(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
         }
     }
@@ -158,15 +188,18 @@ impl CoreParameter {
             Self::ControlCurveInterpolated(p) => p.node_references(),
             Self::Aggregated(p) => p.node_references(),
             Self::AggregatedIndex(p) => p.node_references(),
+            Self::AsymmetricSwitchIndex(p) => p.node_references(),
             Self::ControlCurvePiecewiseInterpolated(p) => p.node_references(),
             Self::ControlCurveIndex(p) => p.node_references(),
             Self::ControlCurve(p) => p.node_references(),
             Self::DailyProfile(p) => p.node_references(),
             Self::IndexedArray(p) => p.node_references(),
             Self::MonthlyProfile(p) => p.node_references(),
+            Self::UniformDrawdownProfile(p) => p.node_references(),
             Self::Max(p) => p.node_references(),
             Self::Negative(p) => p.node_references(),
             Self::Polynomial1D(p) => p.node_references(),
+            Self::ParameterThreshold(p) => p.node_references(),
             Self::TablesArray(p) => p.node_references(),
         }
     }
@@ -177,34 +210,40 @@ impl CoreParameter {
             Self::ControlCurveInterpolated(p) => p.parameters(),
             Self::Aggregated(p) => p.parameters(),
             Self::AggregatedIndex(p) => p.parameters(),
+            Self::AsymmetricSwitchIndex(p) => p.parameters(),
             Self::ControlCurvePiecewiseInterpolated(p) => p.parameters(),
             Self::ControlCurveIndex(p) => p.parameters(),
             Self::ControlCurve(p) => p.parameters(),
             Self::DailyProfile(p) => p.parameters(),
             Self::IndexedArray(p) => p.parameters(),
             Self::MonthlyProfile(p) => p.parameters(),
+            Self::UniformDrawdownProfile(p) => p.parameters(),
             Self::Max(p) => p.parameters(),
             Self::Negative(p) => p.parameters(),
             Self::Polynomial1D(p) => p.parameters(),
+            Self::ParameterThreshold(p) => p.parameters(),
             Self::TablesArray(p) => p.parameters(),
         }
     }
 
-    pub fn ty(&self) -> &str {
+    pub fn ty(&self) -> &'static str {
         match self {
             Self::Constant(_) => "Constant",
             Self::ControlCurveInterpolated(_) => "ControlCurveInterpolated",
             Self::Aggregated(_) => "Aggregated",
             Self::AggregatedIndex(_) => "AggregatedIndex",
+            Self::AsymmetricSwitchIndex(_) => "AsymmetricSwitch",
             Self::ControlCurvePiecewiseInterpolated(_) => "ControlCurvePiecewiseInterpolated",
             Self::ControlCurveIndex(_) => "ControlCurveIndex",
             Self::ControlCurve(_) => "ControlCurve",
             Self::DailyProfile(_) => "DailyProfile",
             Self::IndexedArray(_) => "IndexedArray",
             Self::MonthlyProfile(_) => "MonthlyProfile",
+            Self::UniformDrawdownProfile(_) => "UniformDrawdownProfile",
             Self::Max(_) => "Max",
             Self::Negative(_) => "Negative",
             Self::Polynomial1D(_) => "Polynomial1D",
+            Self::ParameterThreshold(_) => "ParameterThreshold",
             Self::TablesArray(_) => "TablesArray",
         }
     }
@@ -257,8 +296,12 @@ impl Parameter {
 pub struct ParameterVec(Vec<Parameter>);
 
 impl ParameterVec {
-    fn with_capacity(capacity: usize) -> Self {
+    pub fn with_capacity(capacity: usize) -> Self {
         Self(Vec::with_capacity(capacity))
+    }
+
+    pub fn into_iter(self) -> IntoIter<Parameter> {
+        self.0.into_iter()
     }
 }
 
@@ -390,9 +433,11 @@ impl<'a> From<&'a ParameterValues> for ParameterValueType<'a> {
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct ExternalDataRef {
-    url: String,
-    column: Option<String>,
-    index: Option<String>,
+    pub url: String,
+    pub column: Option<TableIndex>,
+    pub index: Option<TableIndex>,
+    #[serde(flatten)]
+    pub attributes: HashMap<String, Value>,
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
@@ -404,7 +449,7 @@ pub enum TableIndex {
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct TableDataRef {
-    table: String,
-    column: Option<TableIndex>,
-    index: Option<TableIndex>,
+    pub table: String,
+    pub column: Option<TableIndex>,
+    pub index: Option<TableIndex>,
 }

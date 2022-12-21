@@ -1,6 +1,7 @@
 use crate::edge::Edge;
 use crate::nodes::Node;
 use crate::parameters::{Parameter, ParameterVec};
+use crate::tables::TableVec;
 use time::Date;
 
 #[derive(serde::Deserialize)]
@@ -39,6 +40,7 @@ pub struct PywrModel {
     pub nodes: Vec<Node>,
     pub edges: Vec<Edge>,
     pub parameters: Option<ParameterVec>,
+    pub tables: Option<TableVec>,
     pub recorders: Option<serde_json::Value>,
 }
 

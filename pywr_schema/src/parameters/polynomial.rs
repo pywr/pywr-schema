@@ -8,6 +8,8 @@ pub struct Polynomial1DParameter {
     pub storage_node: String,
     pub coefficients: Vec<f64>,
     pub use_proportional_volume: Option<bool>,
+    pub scale: Option<f64>,
+    pub offset: Option<f64>,
 }
 
 impl Polynomial1DParameter {

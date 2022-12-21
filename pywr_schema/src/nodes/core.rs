@@ -157,3 +157,32 @@ impl CatchmentNode {
         attributes
     }
 }
+
+#[derive(serde::Deserialize, serde::Serialize)]
+pub struct AggregatedNode {
+    #[serde(flatten)]
+    pub meta: NodeMeta,
+    pub nodes: Vec<String>,
+    pub max_flow: Option<ParameterValue>,
+    pub min_flow: Option<ParameterValue>,
+    pub factors: Option<Vec<ParameterValue>>,
+}
+
+impl AggregatedNode {
+    pub fn parameters(&self) -> HashMap<&str, &ParameterValue> {
+        HashMap::new()
+    }
+}
+
+#[derive(serde::Deserialize, serde::Serialize)]
+pub struct AggregatedStorageNode {
+    #[serde(flatten)]
+    pub meta: NodeMeta,
+    pub storage_nodes: Vec<String>,
+}
+
+impl AggregatedStorageNode {
+    pub fn parameters(&self) -> HashMap<&str, &ParameterValue> {
+        HashMap::new()
+    }
+}

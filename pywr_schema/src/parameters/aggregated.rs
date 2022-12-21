@@ -35,10 +35,21 @@ impl AggregatedParameter {
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[serde(rename_all = "lowercase")]
+pub enum IndexAggFunc {
+    Sum,
+    Product,
+    Max,
+    Min,
+    Any,
+    All,
+}
+
+#[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct AggregatedIndexParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
-    pub agg_func: AggFunc,
+    pub agg_func: IndexAggFunc,
     pub parameters: Vec<ParameterValue>,
 }
 

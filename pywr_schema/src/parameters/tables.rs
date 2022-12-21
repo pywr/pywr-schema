@@ -1,15 +1,17 @@
 use crate::parameters::{ParameterMeta, ParameterValueType};
 use std::collections::HashMap;
+use std::path::PathBuf;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct TablesArrayParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
+    pub node: String,
     #[serde(rename = "where")]
-    pub wh: Option<String>,
+    pub wh: String,
     pub scenario: Option<String>,
     pub checksum: Option<HashMap<String, String>>,
-    pub url: String,
+    pub url: PathBuf,
 }
 
 impl TablesArrayParameter {

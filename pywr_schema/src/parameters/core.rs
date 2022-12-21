@@ -25,7 +25,7 @@ impl ConstantParameter {
 pub struct MaxParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
-    pub parameter: Box<ParameterValue>,
+    pub parameter: ParameterValue,
     pub threshold: Option<f64>,
 }
 
@@ -35,7 +35,7 @@ impl MaxParameter {
     }
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         let mut attributes = HashMap::new();
-        attributes.insert("parameter", self.parameter.as_ref().into());
+        attributes.insert("parameter", (&self.parameter).into());
         attributes
     }
 }
@@ -44,7 +44,7 @@ impl MaxParameter {
 pub struct NegativeParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
-    pub parameter: Box<ParameterValue>,
+    pub parameter: ParameterValue,
 }
 
 impl NegativeParameter {
@@ -53,7 +53,7 @@ impl NegativeParameter {
     }
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         let mut attributes = HashMap::new();
-        attributes.insert("parameter", self.parameter.as_ref().into());
+        attributes.insert("parameter", (&self.parameter).into());
         attributes
     }
 }
