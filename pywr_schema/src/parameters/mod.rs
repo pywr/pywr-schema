@@ -408,8 +408,8 @@ impl<'de> Deserialize<'de> for ParameterVec {
 pub enum ParameterValue {
     Constant(f64),
     Reference(String),
-    Table(TableDataRef),
     Inline(Box<Parameter>),
+    Table(TableDataRef),
 }
 
 pub type ParameterValues = Vec<ParameterValue>;
@@ -452,4 +452,61 @@ pub struct TableDataRef {
     pub table: String,
     pub column: Option<TableIndex>,
     pub index: Option<TableIndex>,
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::parameters::{CoreParameter, Parameter, ParameterValue};
+
+    /// Test loading a DailyProfile with a tables definition.
+    #[test]
+    fn test_daily_profile_from_table() {
+        let data = r#"
+        {
+            "type": "dailyprofile",
+            "table": "my-table",
+            "column": ["A", "B"]
+        }
+        "#;
+
+        let p: Parameter =
+            serde_json::from_str(data).expect("Failed to create Parameter from expected data!");
+
+        assert_eq!("DailyProfile", p.ty());
+    }
+
+    /// Test deserializing inline profiles with values from a table.
+    #[test]
+    fn test_indexed_array_with_profile_tables() {
+        let data = r#"
+        {
+            "type": "indexedarrayparameter",
+            "index_parameter": "Demand Saving - DPs Index",
+            "parameters": [
+                {"type": "dailyprofile", "table": "my-table", "column": ["A", "B"]},
+                {"type": "dailyprofile", "table": "my-table", "column": ["A", "B"]},
+                {"type": "dailyprofile", "table": "my-table", "column": ["A", "B"]}
+            ]
+        }
+        "#;
+
+        let p: Parameter =
+            serde_json::from_str(data).expect("Failed to create Parameter from expected data!");
+
+        assert_eq!("IndexedArray", p.ty());
+
+        if let Parameter::Core(p) = &p {
+            if let CoreParameter::IndexedArray(p) = p {
+                if let ParameterValue::Inline(daily_profile) = &p.parameters[0] {
+                    assert_eq!("DailyProfile", daily_profile.ty())
+                } else {
+                    panic!("Expected an inline parameter found: {:?}", &p.parameters[0]);
+                }
+            } else {
+                panic!("Expected an IndexedArray parameter.")
+            }
+        } else {
+            panic!("Expected a CoreParameter.")
+        }
+    }
 }
