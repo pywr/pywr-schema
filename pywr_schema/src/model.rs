@@ -45,24 +45,42 @@ pub struct PywrModel {
 }
 
 impl PywrModel {
+    /// Return a [`Node`] from its name. If no node  with that name exists return [`None`].
     pub fn get_node_by_name(&self, name: &str) -> Option<&Node> {
         self.nodes.iter().find(|n| n.name() == name)
     }
 
+    /// Return a node's index from its name. If no node with that name exists return [`None`].
     pub fn get_node_index_by_name(&self, name: &str) -> Option<usize> {
-        self.nodes
-            .iter()
-            .enumerate()
-            .find_map(|(idx, n)| (n.name() == name).then(|| idx))
+        self.nodes.iter().position(|n| (n.name() == name))
     }
 
+    /// Return a [`Node`] from its index. If no node  with that name exists return [`None`].
     pub fn get_node(&self, idx: usize) -> Option<&Node> {
         self.nodes.get(idx)
     }
 
+    /// Return a [`Parameter`] from its name. If no node  with that name exists return [`None`].
     pub fn get_parameter_by_name(&self, name: &str) -> Option<&Parameter> {
         match &self.parameters {
             Some(parameters) => parameters.iter().find(|p| p.name() == Some(name)),
+            None => None,
+        }
+    }
+
+    /// Return a parameter's index from its name. If no parameter with that name exists
+    /// return [`None`].
+    pub fn get_parameter_index_by_name(&self, name: &str) -> Option<usize> {
+        match &self.parameters {
+            Some(parameters) => parameters.iter().position(|n| (n.name() == Some(name))),
+            None => None,
+        }
+    }
+
+    /// Return a [`Parameter`] from its index. If no parameter with that name exists return [`None`].
+    pub fn get_parameter(&self, idx: usize) -> Option<&Parameter> {
+        match &self.parameters {
+            Some(parameters) => parameters.get(idx),
             None => None,
         }
     }
