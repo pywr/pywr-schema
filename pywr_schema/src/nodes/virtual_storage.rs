@@ -76,6 +76,130 @@ impl AnnualVirtualStorageNode {
     }
 }
 
+fn default_months() -> u8 {
+    1
+}
+
+fn default_initial_months() -> u8 {
+    1
+}
+
+#[derive(serde::Deserialize, serde::Serialize)]
+pub struct MonthlyVirtualStorageNode {
+    #[serde(flatten)]
+    pub meta: NodeMeta,
+    pub nodes: Vec<String>,
+    pub factors: Option<Vec<f64>>,
+    pub max_volume: Option<ParameterValue>,
+    pub min_volume: Option<ParameterValue>,
+    pub cost: Option<ParameterValue>,
+    pub initial_volume: Option<f64>,
+    pub initial_volume_pc: Option<f64>,
+    #[serde(default = "default_months")]
+    pub months: u8,
+    #[serde(default = "default_initial_months")]
+    pub initial_months: u8,
+    #[serde(default)]
+    pub reset_to_initial_volume: bool,
+}
+
+impl MonthlyVirtualStorageNode {
+    pub fn parameters(&self) -> HashMap<&str, &ParameterValue> {
+        let mut attributes = HashMap::new();
+        if let Some(p) = &self.max_volume {
+            attributes.insert("max_volume", p);
+        }
+        if let Some(p) = &self.min_volume {
+            attributes.insert("min_volume", p);
+        }
+        if let Some(p) = &self.cost {
+            attributes.insert("cost", p);
+        }
+
+        attributes
+    }
+}
+
+fn default_end_day() -> u8 {
+    31
+}
+
+fn default_end_month() -> time::Month {
+    time::Month::December
+}
+
+#[derive(serde::Deserialize, serde::Serialize)]
+pub struct SeasonalVirtualStorageNode {
+    #[serde(flatten)]
+    pub meta: NodeMeta,
+    pub nodes: Vec<String>,
+    pub factors: Option<Vec<f64>>,
+    pub max_volume: Option<ParameterValue>,
+    pub min_volume: Option<ParameterValue>,
+    pub cost: Option<ParameterValue>,
+    pub initial_volume: Option<f64>,
+    pub initial_volume_pc: Option<f64>,
+    #[serde(default = "default_reset_day")]
+    pub reset_day: u8,
+    #[serde(default = "default_reset_month")]
+    pub reset_month: time::Month,
+    #[serde(default = "default_end_day")]
+    pub end_day: u8,
+    #[serde(default = "default_end_month")]
+    pub end_month: time::Month,
+    #[serde(default)]
+    pub reset_to_initial_volume: bool,
+}
+
+impl SeasonalVirtualStorageNode {
+    pub fn parameters(&self) -> HashMap<&str, &ParameterValue> {
+        let mut attributes = HashMap::new();
+        if let Some(p) = &self.max_volume {
+            attributes.insert("max_volume", p);
+        }
+        if let Some(p) = &self.min_volume {
+            attributes.insert("min_volume", p);
+        }
+        if let Some(p) = &self.cost {
+            attributes.insert("cost", p);
+        }
+
+        attributes
+    }
+}
+
+#[derive(serde::Deserialize, serde::Serialize)]
+pub struct RollingVirtualStorageNode {
+    #[serde(flatten)]
+    pub meta: NodeMeta,
+    pub nodes: Vec<String>,
+    pub factors: Option<Vec<f64>>,
+    pub max_volume: Option<ParameterValue>,
+    pub min_volume: Option<ParameterValue>,
+    pub cost: Option<ParameterValue>,
+    pub initial_volume: Option<f64>,
+    pub initial_volume_pc: Option<f64>,
+    pub timesteps: Option<i64>,
+    pub days: Option<i64>,
+}
+
+impl RollingVirtualStorageNode {
+    pub fn parameters(&self) -> HashMap<&str, &ParameterValue> {
+        let mut attributes = HashMap::new();
+        if let Some(p) = &self.max_volume {
+            attributes.insert("max_volume", p);
+        }
+        if let Some(p) = &self.min_volume {
+            attributes.insert("min_volume", p);
+        }
+        if let Some(p) = &self.cost {
+            attributes.insert("cost", p);
+        }
+
+        attributes
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::AnnualVirtualStorageNode;
