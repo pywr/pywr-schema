@@ -18,6 +18,9 @@ impl IndexedArrayParameter {
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         let mut attributes = HashMap::new();
 
+        let p = &self.index_parameter;
+        attributes.insert("index_parameter", p.into());
+
         let parameters = &self.parameters;
         attributes.insert("parameters", parameters.into());
 
