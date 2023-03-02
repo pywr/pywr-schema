@@ -22,9 +22,17 @@ impl DailyProfileParameter {
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[serde(rename_all = "lowercase")]
+pub enum MonthInterpDay {
+    First,
+    Last,
+}
+
+#[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct MonthlyProfileParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
+    pub interp_day: Option<MonthInterpDay>,
     pub values: Option<[f64; 12]>,
     #[serde(flatten)]
     pub external: Option<ExternalDataRef>,

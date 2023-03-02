@@ -20,7 +20,7 @@ pub use crate::parameters::core::{ConstantParameter, MaxParameter, NegativeParam
 pub use crate::parameters::indexed_array::IndexedArrayParameter;
 pub use crate::parameters::polynomial::Polynomial1DParameter;
 pub use crate::parameters::profiles::{
-    DailyProfileParameter, MonthlyProfileParameter, UniformDrawdownProfileParameter,
+    DailyProfileParameter, MonthInterpDay, MonthlyProfileParameter, UniformDrawdownProfileParameter,
 };
 pub use crate::parameters::tables::TablesArrayParameter;
 pub use crate::parameters::thresholds::{ParameterThresholdParameter, Predicate};
