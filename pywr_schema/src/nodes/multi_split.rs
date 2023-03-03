@@ -1,5 +1,5 @@
 use crate::nodes::NodeMeta;
-use crate::parameters::{ParameterValue, ParameterValueType, ParameterValues};
+use crate::parameters::{ParameterValueType, ParameterValues};
 use std::collections::HashMap;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]

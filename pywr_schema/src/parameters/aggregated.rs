@@ -1,4 +1,4 @@
-use crate::parameters::{ParameterMeta, ParameterValue, ParameterValueType};
+use crate::parameters::{ParameterMeta, ParameterValueType};
 use std::collections::HashMap;
 
 use super::ParameterValues;
