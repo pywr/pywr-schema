@@ -1,5 +1,5 @@
 use crate::nodes::NodeMeta;
-use crate::parameters::ParameterValue;
+use crate::parameters::{ParameterValue, ParameterValueType};
 use std::collections::HashMap;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
@@ -13,19 +13,19 @@ pub struct LossLinkNode {
 }
 
 impl LossLinkNode {
-    pub fn parameters(&self) -> HashMap<&str, &ParameterValue> {
+    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         let mut attributes = HashMap::new();
         if let Some(p) = &self.max_flow {
-            attributes.insert("max_flow", p);
+            attributes.insert("max_flow", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.min_flow {
-            attributes.insert("min_flow", p);
+            attributes.insert("min_flow", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.cost {
-            attributes.insert("cost", p);
+            attributes.insert("cost", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.loss_factor {
-            attributes.insert("loss_factor", p);
+            attributes.insert("loss_factor", ParameterValueType::Single(p));
         }
 
         attributes

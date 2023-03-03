@@ -1,27 +1,27 @@
 mod break_link;
 mod core;
+mod delay_node;
 mod loss_link;
-mod piecewise_link;
 mod multi_split;
+mod piecewise_link;
 mod river_gauge;
 mod river_split;
 mod river_split_with_gauge;
 mod virtual_storage;
-mod delay_node;
 
 pub use crate::nodes::core::{
     AggregatedNode, AggregatedStorageNode, CatchmentNode, InputNode, LinkNode, OutputNode,
     ReservoirNode, StorageNode,
 };
-use crate::parameters::ParameterValue;
-pub use break_link::BreakLinkNode;
-pub use loss_link::LossLinkNode;
-pub use piecewise_link::PiecewiseLinkNode;
-pub use multi_split::MultiSplitLinkNode;
-pub use river_gauge::RiverGaugeNode;
-pub use delay_node::DelayNode;
-pub use river_split::RiverSplitNode;
 pub use crate::nodes::river_split_with_gauge::RiverSplitWithGaugeNode;
+use crate::parameters::ParameterValueType;
+pub use break_link::BreakLinkNode;
+pub use delay_node::DelayNode;
+pub use loss_link::LossLinkNode;
+pub use multi_split::MultiSplitLinkNode;
+pub use piecewise_link::PiecewiseLinkNode;
+pub use river_gauge::RiverGaugeNode;
+pub use river_split::RiverSplitNode;
 use serde_json::Value;
 use std::collections::HashMap;
 pub use virtual_storage::{
@@ -133,7 +133,7 @@ impl CoreNode {
             CoreNode::AnnualVirtualStorage(_) => "annualvirtualstorage",
             CoreNode::MonthlyVirtualStorage(_) => "monthlyvirtualstorage",
             CoreNode::SeasonalVirtualStorage(_) => "seasonalvirtualstorage",
-            CoreNode::RollingVirtualStorage(_) => "rollingvirtualstorage"
+            CoreNode::RollingVirtualStorage(_) => "rollingvirtualstorage",
         }
     }
 
@@ -164,7 +164,7 @@ impl CoreNode {
         }
     }
 
-    pub fn parameters(&self) -> HashMap<&str, &ParameterValue> {
+    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         match self {
             CoreNode::Input(n) => n.parameters(),
             CoreNode::Link(n) => n.parameters(),
@@ -221,7 +221,7 @@ impl Node {
         }
     }
 
-    pub fn parameters(&self) -> HashMap<&str, &ParameterValue> {
+    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         match self {
             Node::Core(n) => n.parameters(),
             Node::Custom(_) => HashMap::new(),

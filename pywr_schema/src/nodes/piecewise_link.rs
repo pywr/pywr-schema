@@ -1,5 +1,5 @@
 use crate::nodes::NodeMeta;
-use crate::parameters::{ParameterValue, ParameterValues};
+use crate::parameters::{ParameterValueType, ParameterValues};
 use std::collections::HashMap;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
@@ -11,7 +11,14 @@ pub struct PiecewiseLinkNode {
 }
 
 impl PiecewiseLinkNode {
-    pub fn parameters(&self) -> HashMap<&str, &ParameterValue> {
-        HashMap::new()
+    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
+        let mut attributes = HashMap::new();
+        if let Some(max_flows) = &self.max_flows {
+            attributes.insert("max_flows", max_flows.into());
+        }
+        if let Some(costs) = &self.costs {
+            attributes.insert("costs", costs.into());
+        }
+        attributes
     }
 }

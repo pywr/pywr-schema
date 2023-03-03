@@ -1,5 +1,5 @@
 use crate::nodes::NodeMeta;
-use crate::parameters::ParameterValue;
+use crate::parameters::{ParameterValue, ParameterValueType};
 use std::collections::HashMap;
 
 #[derive(serde::Deserialize, serde::Serialize)]
@@ -16,16 +16,16 @@ pub struct VirtualStorageNode {
 }
 
 impl VirtualStorageNode {
-    pub fn parameters(&self) -> HashMap<&str, &ParameterValue> {
+    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         let mut attributes = HashMap::new();
         if let Some(p) = &self.max_volume {
-            attributes.insert("max_volume", p);
+            attributes.insert("max_volume", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.min_volume {
-            attributes.insert("min_volume", p);
+            attributes.insert("min_volume", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.cost {
-            attributes.insert("cost", p);
+            attributes.insert("cost", ParameterValueType::Single(p));
         }
 
         attributes
@@ -60,16 +60,16 @@ pub struct AnnualVirtualStorageNode {
 }
 
 impl AnnualVirtualStorageNode {
-    pub fn parameters(&self) -> HashMap<&str, &ParameterValue> {
+    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         let mut attributes = HashMap::new();
         if let Some(p) = &self.max_volume {
-            attributes.insert("max_volume", p);
+            attributes.insert("max_volume", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.min_volume {
-            attributes.insert("min_volume", p);
+            attributes.insert("min_volume", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.cost {
-            attributes.insert("cost", p);
+            attributes.insert("cost", ParameterValueType::Single(p));
         }
 
         attributes
@@ -104,16 +104,16 @@ pub struct MonthlyVirtualStorageNode {
 }
 
 impl MonthlyVirtualStorageNode {
-    pub fn parameters(&self) -> HashMap<&str, &ParameterValue> {
+    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         let mut attributes = HashMap::new();
         if let Some(p) = &self.max_volume {
-            attributes.insert("max_volume", p);
+            attributes.insert("max_volume", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.min_volume {
-            attributes.insert("min_volume", p);
+            attributes.insert("min_volume", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.cost {
-            attributes.insert("cost", p);
+            attributes.insert("cost", ParameterValueType::Single(p));
         }
 
         attributes
@@ -152,16 +152,16 @@ pub struct SeasonalVirtualStorageNode {
 }
 
 impl SeasonalVirtualStorageNode {
-    pub fn parameters(&self) -> HashMap<&str, &ParameterValue> {
+    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         let mut attributes = HashMap::new();
         if let Some(p) = &self.max_volume {
-            attributes.insert("max_volume", p);
+            attributes.insert("max_volume", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.min_volume {
-            attributes.insert("min_volume", p);
+            attributes.insert("min_volume", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.cost {
-            attributes.insert("cost", p);
+            attributes.insert("cost", ParameterValueType::Single(p));
         }
 
         attributes
@@ -184,16 +184,16 @@ pub struct RollingVirtualStorageNode {
 }
 
 impl RollingVirtualStorageNode {
-    pub fn parameters(&self) -> HashMap<&str, &ParameterValue> {
+    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         let mut attributes = HashMap::new();
         if let Some(p) = &self.max_volume {
-            attributes.insert("max_volume", p);
+            attributes.insert("max_volume", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.min_volume {
-            attributes.insert("min_volume", p);
+            attributes.insert("min_volume", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.cost {
-            attributes.insert("cost", p);
+            attributes.insert("cost", ParameterValueType::Single(p));
         }
 
         attributes
