@@ -26,6 +26,10 @@ impl InputNode {
 
         attributes
     }
+
+    pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
+        HashMap::new()
+    }
 }
 
 #[derive(serde::Deserialize, serde::Serialize)]
@@ -52,6 +56,10 @@ impl LinkNode {
 
         attributes
     }
+
+    pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
+        HashMap::new()
+    }
 }
 
 #[derive(serde::Deserialize, serde::Serialize)]
@@ -77,6 +85,10 @@ impl OutputNode {
         }
 
         attributes
+    }
+
+    pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
+        HashMap::new()
     }
 }
 
@@ -106,6 +118,10 @@ impl StorageNode {
 
         attributes
     }
+
+    pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
+        HashMap::new()
+    }
 }
 
 #[derive(serde::Deserialize, serde::Serialize)]
@@ -134,6 +150,10 @@ impl ReservoirNode {
 
         attributes
     }
+
+    pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
+        HashMap::new()
+    }
 }
 
 #[derive(serde::Deserialize, serde::Serialize)]
@@ -156,6 +176,10 @@ impl CatchmentNode {
 
         attributes
     }
+
+    pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
+        HashMap::new()
+    }
 }
 
 #[derive(serde::Deserialize, serde::Serialize)]
@@ -166,6 +190,7 @@ pub struct AggregatedNode {
     pub max_flow: Option<ParameterValue>,
     pub min_flow: Option<ParameterValue>,
     pub factors: Option<ParameterValues>,
+    pub flow_weights: Option<Vec<f64>>,
 }
 
 impl AggregatedNode {
@@ -182,6 +207,15 @@ impl AggregatedNode {
         }
         attributes
     }
+
+    pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
+        vec![(
+            "nodes",
+            self.nodes.iter().map(|n| n.as_str()).collect::<Vec<&str>>(),
+        )]
+        .into_iter()
+        .collect()
+    }
 }
 
 #[derive(serde::Deserialize, serde::Serialize)]
@@ -194,5 +228,17 @@ pub struct AggregatedStorageNode {
 impl AggregatedStorageNode {
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         HashMap::new()
+    }
+
+    pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
+        vec![(
+            "storage_nodes",
+            self.storage_nodes
+                .iter()
+                .map(|n| n.as_str())
+                .collect::<Vec<&str>>(),
+        )]
+        .into_iter()
+        .collect()
     }
 }

@@ -190,6 +190,33 @@ impl CoreNode {
             CoreNode::RollingVirtualStorage(n) => n.parameters(),
         }
     }
+
+    pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
+        match self {
+            CoreNode::Input(n) => n.node_references(),
+            CoreNode::Link(n) => n.node_references(),
+            CoreNode::Output(n) => n.node_references(),
+            CoreNode::Storage(n) => n.node_references(),
+            CoreNode::Reservoir(n) => n.node_references(),
+            CoreNode::Catchment(n) => n.node_references(),
+            CoreNode::RiverGauge(n) => n.node_references(),
+            CoreNode::LossLink(n) => n.node_references(),
+            CoreNode::PiecewiseLink(n) => n.node_references(),
+            CoreNode::MultiSplitLink(n) => n.node_references(),
+            CoreNode::BreakLink(n) => n.node_references(),
+            CoreNode::Delay(n) => n.node_references(),
+            CoreNode::River(n) => n.node_references(),
+            CoreNode::RiverSplit(n) => n.node_references(),
+            CoreNode::RiverSplitWithGauge(n) => n.node_references(),
+            CoreNode::Aggregated(n) => n.node_references(),
+            CoreNode::AggregatedStorage(n) => n.node_references(),
+            CoreNode::VirtualStorage(n) => n.node_references(),
+            CoreNode::AnnualVirtualStorage(n) => n.node_references(),
+            CoreNode::MonthlyVirtualStorage(n) => n.node_references(),
+            CoreNode::SeasonalVirtualStorage(n) => n.node_references(),
+            CoreNode::RollingVirtualStorage(n) => n.node_references(),
+        }
+    }
 }
 
 #[derive(serde::Deserialize, serde::Serialize)]

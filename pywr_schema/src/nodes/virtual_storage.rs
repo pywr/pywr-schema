@@ -30,6 +30,15 @@ impl VirtualStorageNode {
 
         attributes
     }
+
+    pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
+        vec![(
+            "nodes",
+            self.nodes.iter().map(|n| n.as_str()).collect::<Vec<&str>>(),
+        )]
+        .into_iter()
+        .collect()
+    }
 }
 
 fn default_reset_day() -> u8 {
@@ -74,6 +83,15 @@ impl AnnualVirtualStorageNode {
 
         attributes
     }
+
+    pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
+        vec![(
+            "nodes",
+            self.nodes.iter().map(|n| n.as_str()).collect::<Vec<&str>>(),
+        )]
+        .into_iter()
+        .collect()
+    }
 }
 
 fn default_months() -> u8 {
@@ -117,6 +135,15 @@ impl MonthlyVirtualStorageNode {
         }
 
         attributes
+    }
+
+    pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
+        vec![(
+            "nodes",
+            self.nodes.iter().map(|n| n.as_str()).collect::<Vec<&str>>(),
+        )]
+        .into_iter()
+        .collect()
     }
 }
 
@@ -166,6 +193,15 @@ impl SeasonalVirtualStorageNode {
 
         attributes
     }
+
+    pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
+        vec![(
+            "nodes",
+            self.nodes.iter().map(|n| n.as_str()).collect::<Vec<&str>>(),
+        )]
+        .into_iter()
+        .collect()
+    }
 }
 
 #[derive(serde::Deserialize, serde::Serialize)]
@@ -197,6 +233,15 @@ impl RollingVirtualStorageNode {
         }
 
         attributes
+    }
+
+    pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
+        vec![(
+            "nodes",
+            self.nodes.iter().map(|n| n.as_str()).collect::<Vec<&str>>(),
+        )]
+        .into_iter()
+        .collect()
     }
 }
 

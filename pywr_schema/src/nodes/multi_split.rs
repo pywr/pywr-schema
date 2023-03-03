@@ -27,4 +27,8 @@ impl MultiSplitLinkNode {
         }
         attributes
     }
+
+    pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
+        HashMap::new()
+    }
 }
