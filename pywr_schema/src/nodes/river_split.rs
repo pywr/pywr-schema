@@ -9,7 +9,7 @@ pub struct RiverSplitNode {
     pub max_flows: Option<ParameterValues>,
     pub costs: Option<ParameterValues>,
     pub slot_names: Option<Vec<String>>,
-    pub factors: Option<ParameterValues>,
+    pub factors: ParameterValues,
 }
 
 impl RiverSplitNode {
@@ -21,9 +21,9 @@ impl RiverSplitNode {
         if let Some(costs) = &self.costs {
             attributes.insert("costs", costs.into());
         }
-        if let Some(factors) = &self.factors {
-            attributes.insert("factors", factors.into());
-        }
+        let factors = &self.factors;
+        attributes.insert("factors", factors.into());
+
         attributes
     }
 

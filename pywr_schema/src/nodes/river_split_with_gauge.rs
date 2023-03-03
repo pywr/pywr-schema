@@ -9,7 +9,7 @@ pub struct RiverSplitWithGaugeNode {
     pub mrf: Option<ParameterValue>,
     pub mrf_cost: Option<ParameterValue>,
     pub cost: Option<ParameterValue>,
-    pub factors: Option<ParameterValues>,
+    pub factors: ParameterValues,
     pub slot_names: Vec<String>,
 }
 
@@ -25,9 +25,8 @@ impl RiverSplitWithGaugeNode {
         if let Some(p) = &self.cost {
             attributes.insert("cost", ParameterValueType::Single(p));
         }
-        if let Some(factors) = &self.factors {
-            attributes.insert("factors", factors.into());
-        }
+        let factors = &self.factors;
+        attributes.insert("factors", factors.into());
         attributes
     }
 
