@@ -1,12 +1,14 @@
 use crate::parameters::{ParameterMeta, ParameterValue, ParameterValueType};
 use std::collections::HashMap;
 
+use super::ParameterValues;
+
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct IndexedArrayParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
     #[serde(alias = "params")]
-    pub parameters: Vec<ParameterValue>,
+    pub parameters: ParameterValues,
     pub index_parameter: ParameterValue,
 }
 

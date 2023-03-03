@@ -3,16 +3,15 @@ use crate::parameters::{ParameterValue, ParameterValueType};
 use std::collections::HashMap;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
-pub struct LossLinkNode {
+pub struct BreakLinkNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
     pub max_flow: Option<ParameterValue>,
     pub min_flow: Option<ParameterValue>,
     pub cost: Option<ParameterValue>,
-    pub loss_factor: Option<ParameterValue>,
 }
 
-impl LossLinkNode {
+impl BreakLinkNode {
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         let mut attributes = HashMap::new();
         if let Some(p) = &self.max_flow {
@@ -24,10 +23,6 @@ impl LossLinkNode {
         if let Some(p) = &self.cost {
             attributes.insert("cost", ParameterValueType::Single(p));
         }
-        if let Some(p) = &self.loss_factor {
-            attributes.insert("loss_factor", ParameterValueType::Single(p));
-        }
-
         attributes
     }
 

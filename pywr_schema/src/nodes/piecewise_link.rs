@@ -1,25 +1,24 @@
 use crate::nodes::NodeMeta;
-use crate::parameters::{ParameterValue, ParameterValueType};
+use crate::parameters::{ParameterValueType, ParameterValues};
 use std::collections::HashMap;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
-pub struct RiverGaugeNode {
+pub struct PiecewiseLinkNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
-    pub mrf: Option<ParameterValue>,
-    pub mrf_cost: Option<ParameterValue>,
+    pub max_flows: Option<ParameterValues>,
+    pub costs: Option<ParameterValues>,
 }
 
-impl RiverGaugeNode {
+impl PiecewiseLinkNode {
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         let mut attributes = HashMap::new();
-        if let Some(p) = &self.mrf {
-            attributes.insert("mrf", ParameterValueType::Single(p));
+        if let Some(max_flows) = &self.max_flows {
+            attributes.insert("max_flows", max_flows.into());
         }
-        if let Some(p) = &self.mrf_cost {
-            attributes.insert("mrf_cost", ParameterValueType::Single(p));
+        if let Some(costs) = &self.costs {
+            attributes.insert("costs", costs.into());
         }
-
         attributes
     }
 

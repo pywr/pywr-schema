@@ -35,7 +35,7 @@ pub struct ControlCurveIndexParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
     pub control_curves: ParameterValues,
-    pub parameters: Option<Vec<ParameterValue>>,
+    pub parameters: Option<ParameterValues>,
     pub storage_node: String,
 }
 
@@ -61,11 +61,10 @@ pub struct ControlCurveParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
     pub control_curve: Option<ParameterValue>,
-    pub control_curves: Option<Vec<ParameterValue>>,
-
+    pub control_curves: Option<ParameterValues>,
     pub storage_node: String,
     pub values: Option<Vec<f64>>,
-    pub parameters: Option<Vec<ParameterValue>>,
+    pub parameters: Option<ParameterValues>,
 }
 
 impl ControlCurveParameter {
@@ -95,7 +94,7 @@ pub struct ControlCurvePiecewiseInterpolatedParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
     pub control_curve: Option<ParameterValue>,
-    pub control_curves: Option<Vec<ParameterValue>>,
+    pub control_curves: Option<ParameterValues>,
     pub storage_node: String,
     pub values: Option<Vec<[f64; 2]>>,
     pub minimum: f64,

@@ -1,6 +1,8 @@
 use crate::parameters::{ParameterMeta, ParameterValue, ParameterValueType};
 use std::collections::HashMap;
 
+use super::ParameterValues;
+
 // TODO complete these
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 #[serde(rename_all = "lowercase")]
@@ -16,7 +18,7 @@ pub struct AggregatedParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
     pub agg_func: AggFunc,
-    pub parameters: Vec<ParameterValue>,
+    pub parameters: ParameterValues,
 }
 
 impl AggregatedParameter {
@@ -50,7 +52,7 @@ pub struct AggregatedIndexParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
     pub agg_func: IndexAggFunc,
-    pub parameters: Vec<ParameterValue>,
+    pub parameters: ParameterValues,
 }
 
 impl AggregatedIndexParameter {

@@ -1,5 +1,5 @@
 use crate::nodes::NodeMeta;
-use crate::parameters::ParameterValue;
+use crate::parameters::{ParameterValue, ParameterValueType, ParameterValues};
 use std::collections::HashMap;
 
 #[derive(serde::Deserialize, serde::Serialize)]
@@ -12,19 +12,23 @@ pub struct InputNode {
 }
 
 impl InputNode {
-    pub fn parameters(&self) -> HashMap<&str, &ParameterValue> {
+    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         let mut attributes = HashMap::new();
         if let Some(p) = &self.max_flow {
-            attributes.insert("max_flow", p);
+            attributes.insert("max_flow", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.min_flow {
-            attributes.insert("min_flow", p);
+            attributes.insert("min_flow", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.cost {
-            attributes.insert("cost", p);
+            attributes.insert("cost", ParameterValueType::Single(p));
         }
 
         attributes
+    }
+
+    pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
+        HashMap::new()
     }
 }
 
@@ -38,19 +42,23 @@ pub struct LinkNode {
 }
 
 impl LinkNode {
-    pub fn parameters(&self) -> HashMap<&str, &ParameterValue> {
+    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         let mut attributes = HashMap::new();
         if let Some(p) = &self.max_flow {
-            attributes.insert("max_flow", p);
+            attributes.insert("max_flow", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.min_flow {
-            attributes.insert("min_flow", p);
+            attributes.insert("min_flow", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.cost {
-            attributes.insert("cost", p);
+            attributes.insert("cost", ParameterValueType::Single(p));
         }
 
         attributes
+    }
+
+    pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
+        HashMap::new()
     }
 }
 
@@ -64,19 +72,23 @@ pub struct OutputNode {
 }
 
 impl OutputNode {
-    pub fn parameters(&self) -> HashMap<&str, &ParameterValue> {
+    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         let mut attributes = HashMap::new();
         if let Some(p) = &self.max_flow {
-            attributes.insert("max_flow", p);
+            attributes.insert("max_flow", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.min_flow {
-            attributes.insert("min_flow", p);
+            attributes.insert("min_flow", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.cost {
-            attributes.insert("cost", p);
+            attributes.insert("cost", ParameterValueType::Single(p));
         }
 
         attributes
+    }
+
+    pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
+        HashMap::new()
     }
 }
 
@@ -92,19 +104,23 @@ pub struct StorageNode {
 }
 
 impl StorageNode {
-    pub fn parameters(&self) -> HashMap<&str, &ParameterValue> {
+    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         let mut attributes = HashMap::new();
         if let Some(p) = &self.max_volume {
-            attributes.insert("max_volume", p);
+            attributes.insert("max_volume", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.min_volume {
-            attributes.insert("min_volume", p);
+            attributes.insert("min_volume", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.cost {
-            attributes.insert("cost", p);
+            attributes.insert("cost", ParameterValueType::Single(p));
         }
 
         attributes
+    }
+
+    pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
+        HashMap::new()
     }
 }
 
@@ -120,19 +136,23 @@ pub struct ReservoirNode {
 }
 
 impl ReservoirNode {
-    pub fn parameters(&self) -> HashMap<&str, &ParameterValue> {
+    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         let mut attributes = HashMap::new();
         if let Some(p) = &self.max_volume {
-            attributes.insert("max_volume", p);
+            attributes.insert("max_volume", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.min_volume {
-            attributes.insert("min_volume", p);
+            attributes.insert("min_volume", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.cost {
-            attributes.insert("cost", p);
+            attributes.insert("cost", ParameterValueType::Single(p));
         }
 
         attributes
+    }
+
+    pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
+        HashMap::new()
     }
 }
 
@@ -145,16 +165,20 @@ pub struct CatchmentNode {
 }
 
 impl CatchmentNode {
-    pub fn parameters(&self) -> HashMap<&str, &ParameterValue> {
+    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         let mut attributes = HashMap::new();
         if let Some(p) = &self.flow {
-            attributes.insert("flow", p);
+            attributes.insert("flow", ParameterValueType::Single(p));
         }
         if let Some(p) = &self.cost {
-            attributes.insert("cost", p);
+            attributes.insert("cost", ParameterValueType::Single(p));
         }
 
         attributes
+    }
+
+    pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
+        HashMap::new()
     }
 }
 
@@ -165,12 +189,32 @@ pub struct AggregatedNode {
     pub nodes: Vec<String>,
     pub max_flow: Option<ParameterValue>,
     pub min_flow: Option<ParameterValue>,
-    pub factors: Option<Vec<ParameterValue>>,
+    pub factors: Option<ParameterValues>,
+    pub flow_weights: Option<Vec<f64>>,
 }
 
 impl AggregatedNode {
-    pub fn parameters(&self) -> HashMap<&str, &ParameterValue> {
-        HashMap::new()
+    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
+        let mut attributes = HashMap::new();
+        if let Some(p) = &self.min_flow {
+            attributes.insert("min_flow", ParameterValueType::Single(p));
+        }
+        if let Some(p) = &self.max_flow {
+            attributes.insert("max_flow", ParameterValueType::Single(p));
+        }
+        if let Some(p) = &self.factors {
+            attributes.insert("factors", p.into());
+        }
+        attributes
+    }
+
+    pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
+        vec![(
+            "nodes",
+            self.nodes.iter().map(|n| n.as_str()).collect::<Vec<&str>>(),
+        )]
+        .into_iter()
+        .collect()
     }
 }
 
@@ -182,7 +226,19 @@ pub struct AggregatedStorageNode {
 }
 
 impl AggregatedStorageNode {
-    pub fn parameters(&self) -> HashMap<&str, &ParameterValue> {
+    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         HashMap::new()
+    }
+
+    pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
+        vec![(
+            "storage_nodes",
+            self.storage_nodes
+                .iter()
+                .map(|n| n.as_str())
+                .collect::<Vec<&str>>(),
+        )]
+        .into_iter()
+        .collect()
     }
 }
