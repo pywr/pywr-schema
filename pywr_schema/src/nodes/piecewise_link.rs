@@ -6,6 +6,7 @@ use std::collections::HashMap;
 pub struct PiecewiseLinkNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
+    pub nsteps: usize,
     pub max_flows: Option<ParameterValues>,
     pub costs: Option<ParameterValues>,
 }
