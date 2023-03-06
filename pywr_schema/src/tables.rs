@@ -20,8 +20,13 @@ impl TableVec {
     pub fn with_capacity(capacity: usize) -> Self {
         Self(Vec::with_capacity(capacity))
     }
+}
 
-    pub fn into_iter(self) -> IntoIter<Table> {
+impl IntoIterator for TableVec {
+    type Item = Table;
+    type IntoIter = IntoIter<Self::Item>;
+
+    fn into_iter(self) -> Self::IntoIter {
         self.0.into_iter()
     }
 }
