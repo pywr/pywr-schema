@@ -299,8 +299,13 @@ impl ParameterVec {
     pub fn with_capacity(capacity: usize) -> Self {
         Self(Vec::with_capacity(capacity))
     }
+}
 
-    pub fn into_iter(self) -> IntoIter<Parameter> {
+impl IntoIterator for ParameterVec {
+    type Item = Parameter;
+    type IntoIter = IntoIter<Self::Item>;
+
+    fn into_iter(self) -> Self::IntoIter {
         self.0.into_iter()
     }
 }
