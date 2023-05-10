@@ -4,7 +4,7 @@ use std::collections::HashMap;
 use super::ParameterValues;
 
 // TODO complete these
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(rename_all = "lowercase")]
 pub enum AggFunc {
     Sum,
@@ -13,7 +13,7 @@ pub enum AggFunc {
     Min,
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct AggregatedParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -36,7 +36,7 @@ impl AggregatedParameter {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(rename_all = "lowercase")]
 pub enum IndexAggFunc {
     Sum,
@@ -47,7 +47,7 @@ pub enum IndexAggFunc {
     All,
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct AggregatedIndexParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,

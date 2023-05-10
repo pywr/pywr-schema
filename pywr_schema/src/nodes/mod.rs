@@ -29,20 +29,20 @@ pub use virtual_storage::{
     SeasonalVirtualStorageNode, VirtualStorageNode,
 };
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct NodePosition {
     pub schematic: Option<(f32, f32)>,
     pub geographic: Option<(f32, f32)>,
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct NodeMeta {
     pub name: String,
     pub comment: Option<String>,
     pub position: Option<NodePosition>,
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct CustomNode {
     #[serde(rename = "type")]
     pub ty: String,
@@ -52,7 +52,7 @@ pub struct CustomNode {
     pub attributes: HashMap<String, Value>,
 }
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(tag = "type")]
 pub enum CoreNode {
     #[serde(alias = "input")]
@@ -219,7 +219,7 @@ impl CoreNode {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(untagged)]
 pub enum Node {
     Core(Box<CoreNode>),

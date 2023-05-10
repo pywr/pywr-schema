@@ -2,7 +2,7 @@ use crate::nodes::NodeMeta;
 use crate::parameters::{ParameterValue, ParameterValueType};
 use std::collections::HashMap;
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct LossLinkNode {
     #[serde(flatten)]
     pub meta: NodeMeta,

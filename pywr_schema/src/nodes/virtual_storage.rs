@@ -2,7 +2,7 @@ use crate::nodes::NodeMeta;
 use crate::parameters::{ParameterValue, ParameterValueType};
 use std::collections::HashMap;
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct VirtualStorageNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -49,7 +49,7 @@ fn default_reset_month() -> time::Month {
     time::Month::January
 }
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct AnnualVirtualStorageNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -102,7 +102,7 @@ fn default_initial_months() -> u8 {
     1
 }
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct MonthlyVirtualStorageNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -155,7 +155,7 @@ fn default_end_month() -> time::Month {
     time::Month::December
 }
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct SeasonalVirtualStorageNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -204,7 +204,7 @@ impl SeasonalVirtualStorageNode {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct RollingVirtualStorageNode {
     #[serde(flatten)]
     pub meta: NodeMeta,

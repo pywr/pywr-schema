@@ -1,7 +1,7 @@
 use crate::parameters::{ParameterMeta, ParameterValue, ParameterValueType};
 use std::collections::HashMap;
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, Copy)]
 pub enum Predicate {
     #[serde(alias = "<")]
     LT,
@@ -15,7 +15,7 @@ pub enum Predicate {
     GE,
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct ParameterThresholdParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,

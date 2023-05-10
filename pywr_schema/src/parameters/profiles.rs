@@ -1,7 +1,7 @@
 use crate::parameters::{ExternalDataRef, ParameterMeta, ParameterValueType, TableDataRef};
 use std::collections::HashMap;
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct DailyProfileParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -21,14 +21,14 @@ impl DailyProfileParameter {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(rename_all = "lowercase")]
 pub enum MonthInterpDay {
     First,
     Last,
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct MonthlyProfileParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -49,7 +49,7 @@ impl MonthlyProfileParameter {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct UniformDrawdownProfileParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,

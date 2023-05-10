@@ -34,13 +34,13 @@ use std::marker::PhantomData;
 use std::ops::{Deref, DerefMut};
 use std::vec::IntoIter;
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct ParameterMeta {
     pub name: Option<String>,
     pub comment: Option<String>,
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct CustomParameter {
     #[serde(rename = "type")]
     pub ty: String,
@@ -54,7 +54,7 @@ pub struct CustomParameter {
 // Issues:
 //   - https://github.com/serde-rs/serde/pull/1902
 //   - https://github.com/serde-rs/serde/pull/2161
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(tag = "type")]
 pub enum CoreParameter {
     #[serde(
@@ -249,7 +249,7 @@ impl CoreParameter {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(untagged)]
 pub enum Parameter {
     Core(CoreParameter),
@@ -293,6 +293,7 @@ impl Parameter {
     }
 }
 
+#[derive(Clone)]
 pub struct ParameterVec(Vec<Parameter>);
 
 impl ParameterVec {
@@ -408,7 +409,7 @@ impl<'de> Deserialize<'de> for ParameterVec {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(untagged)]
 pub enum ParameterValue {
     Constant(f64),
@@ -436,7 +437,7 @@ impl<'a> From<&'a ParameterValues> for ParameterValueType<'a> {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct ExternalDataRef {
     pub url: String,
     pub column: Option<TableIndex>,
@@ -445,14 +446,14 @@ pub struct ExternalDataRef {
     pub attributes: HashMap<String, Value>,
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(untagged)]
 pub enum TableIndex {
     Single(String),
     Multi(Vec<String>),
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct TableDataRef {
     pub table: String,
     pub column: Option<TableIndex>,

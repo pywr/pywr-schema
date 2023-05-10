@@ -2,7 +2,7 @@ use crate::nodes::NodeMeta;
 use crate::parameters::{ParameterValue, ParameterValueType, ParameterValues};
 use std::collections::HashMap;
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct InputNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -32,7 +32,7 @@ impl InputNode {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct LinkNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -62,7 +62,7 @@ impl LinkNode {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct OutputNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -92,7 +92,7 @@ impl OutputNode {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct StorageNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -124,7 +124,7 @@ impl StorageNode {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct ReservoirNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -156,7 +156,7 @@ impl ReservoirNode {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct CatchmentNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -182,7 +182,7 @@ impl CatchmentNode {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct AggregatedNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -218,7 +218,7 @@ impl AggregatedNode {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct AggregatedStorageNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
