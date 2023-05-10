@@ -2,7 +2,7 @@ use crate::parameters::{ParameterMeta, ParameterValueType};
 use std::collections::HashMap;
 use std::path::PathBuf;
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct TablesArrayParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,

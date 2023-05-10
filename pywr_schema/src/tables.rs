@@ -8,12 +8,13 @@ use std::marker::PhantomData;
 use std::ops::{Deref, DerefMut};
 use std::vec::IntoIter;
 
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 pub struct Table {
     pub name: String,
     pub url: String,
 }
 
+#[derive(Clone)]
 pub struct TableVec(Vec<Table>);
 
 impl TableVec {

@@ -4,35 +4,35 @@ use crate::parameters::{Parameter, ParameterVec};
 use crate::tables::TableVec;
 use time::Date;
 
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 pub struct Metadata {
     pub title: String,
     pub description: Option<String>,
     pub minimum_version: Option<String>,
 }
 
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(untagged)]
 pub enum Timestep {
     Days(u64),
     Frequency(String),
 }
 
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 pub struct Timestepper {
     pub start: Date,
     pub end: Date,
     pub timestep: Timestep,
 }
 
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 pub struct Scenario {
     pub name: String,
     pub size: usize,
     pub ensemble_names: Option<Vec<String>>,
 }
 
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 pub struct PywrModel {
     pub metadata: Metadata,
     pub timestepper: Timestepper,

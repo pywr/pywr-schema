@@ -3,7 +3,7 @@ use std::collections::HashMap;
 
 use super::ParameterValues;
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct IndexedArrayParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,

@@ -1,6 +1,7 @@
 use serde::de::{self, IgnoredAny, SeqAccess, Visitor};
 use std::fmt;
 
+#[derive(Clone)]
 pub struct Edge {
     pub from_node: String,
     pub to_node: String,

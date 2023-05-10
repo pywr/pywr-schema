@@ -1,7 +1,7 @@
 use crate::parameters::{ParameterMeta, ParameterValue, ParameterValueType};
 use std::collections::HashMap;
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct AsymmetricSwitchIndexParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,

@@ -1,7 +1,7 @@
 use crate::parameters::{ParameterMeta, ParameterValueType};
 use std::collections::HashMap;
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct Polynomial1DParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,

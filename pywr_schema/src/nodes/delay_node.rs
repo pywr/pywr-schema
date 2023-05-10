@@ -2,7 +2,7 @@ use crate::nodes::NodeMeta;
 use crate::parameters::ParameterValueType;
 use std::collections::HashMap;
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct DelayNode {
     #[serde(flatten)]
     pub meta: NodeMeta,

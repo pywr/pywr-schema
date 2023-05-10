@@ -1,7 +1,7 @@
 use crate::parameters::{ParameterMeta, ParameterValue, ParameterValueType, ParameterValues};
 use std::collections::HashMap;
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct ControlCurveInterpolatedParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -30,7 +30,7 @@ impl ControlCurveInterpolatedParameter {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct ControlCurveIndexParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -56,7 +56,7 @@ impl ControlCurveIndexParameter {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct ControlCurveParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -89,7 +89,7 @@ impl ControlCurveParameter {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct ControlCurvePiecewiseInterpolatedParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
