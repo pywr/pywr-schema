@@ -57,3 +57,24 @@ impl NegativeParameter {
         attributes
     }
 }
+
+
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
+pub struct DivisionParameter {
+    #[serde(flatten)]
+    pub meta: Option<ParameterMeta>,
+    pub numerator: ParameterValue,
+    pub denominator: ParameterValue,
+}
+
+impl DivisionParameter {
+    pub fn node_references(&self) -> HashMap<&str, &str> {
+        HashMap::new()
+    }
+    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
+        let mut attributes = HashMap::new();
+        attributes.insert("numerator", (&self.numerator).into());
+        attributes.insert("denominator", (&self.denominator).into());
+        attributes
+    }
+}
