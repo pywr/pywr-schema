@@ -17,7 +17,7 @@ pub use crate::parameters::control_curves::{
     ControlCurvePiecewiseInterpolatedParameter,
 };
 pub use crate::parameters::core::{
-    ConstantParameter, MaxParameter, MinParameter, NegativeParameter,
+    ConstantParameter, DivisionParameter, MaxParameter, MinParameter, NegativeParameter,
 };
 pub use crate::parameters::indexed_array::IndexedArrayParameter;
 pub use crate::parameters::polynomial::Polynomial1DParameter;
@@ -136,6 +136,12 @@ pub enum CoreParameter {
     #[serde(alias = "min", alias = "minparameter", alias = "MinParameter")]
     Min(MinParameter),
     #[serde(
+        alias = "division",
+        alias = "divisionparameter",
+        alias = "DivisionParameter"
+    )]
+    Division(DivisionParameter),
+    #[serde(
         alias = "negative",
         alias = "negativeparameter",
         alias = "NegativeParameter"
@@ -180,6 +186,7 @@ impl CoreParameter {
             Self::UniformDrawdownProfile(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::Max(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::Min(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::Division(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::Negative(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::Polynomial1D(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::ParameterThreshold(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
@@ -203,6 +210,7 @@ impl CoreParameter {
             Self::UniformDrawdownProfile(p) => p.node_references(),
             Self::Max(p) => p.node_references(),
             Self::Min(p) => p.node_references(),
+            Self::Division(p) => p.node_references(),
             Self::Negative(p) => p.node_references(),
             Self::Polynomial1D(p) => p.node_references(),
             Self::ParameterThreshold(p) => p.node_references(),
@@ -224,8 +232,9 @@ impl CoreParameter {
             Self::IndexedArray(p) => p.parameters(),
             Self::MonthlyProfile(p) => p.parameters(),
             Self::UniformDrawdownProfile(p) => p.parameters(),
-            Self::Max(p) => p.parameters(),
             Self::Min(p) => p.parameters(),
+            Self::Max(p) => p.parameters(),
+            Self::Division(p) => p.parameters(),
             Self::Negative(p) => p.parameters(),
             Self::Polynomial1D(p) => p.parameters(),
             Self::ParameterThreshold(p) => p.parameters(),
@@ -249,6 +258,7 @@ impl CoreParameter {
             Self::UniformDrawdownProfile(_) => "UniformDrawdownProfile",
             Self::Max(_) => "Max",
             Self::Min(_) => "Min",
+            Self::Division(_) => "Division",
             Self::Negative(_) => "Negative",
             Self::Polynomial1D(_) => "Polynomial1D",
             Self::ParameterThreshold(_) => "ParameterThreshold",
