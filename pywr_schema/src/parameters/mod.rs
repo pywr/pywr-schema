@@ -16,7 +16,9 @@ pub use crate::parameters::control_curves::{
     ControlCurveIndexParameter, ControlCurveInterpolatedParameter, ControlCurveParameter,
     ControlCurvePiecewiseInterpolatedParameter,
 };
-pub use crate::parameters::core::{ConstantParameter, MaxParameter, MinParameter, NegativeParameter, DivisionParameter};
+pub use crate::parameters::core::{
+    ConstantParameter, DivisionParameter, MaxParameter, MinParameter, NegativeParameter,
+};
 pub use crate::parameters::indexed_array::IndexedArrayParameter;
 pub use crate::parameters::polynomial::Polynomial1DParameter;
 pub use crate::parameters::profiles::{
@@ -133,7 +135,11 @@ pub enum CoreParameter {
     Max(MaxParameter),
     #[serde(alias = "min", alias = "minparameter", alias = "MinParameter")]
     Min(MinParameter),
-    #[serde(alias = "division", alias = "divisionparameter", alias = "DivisionParameter")]
+    #[serde(
+        alias = "division",
+        alias = "divisionparameter",
+        alias = "DivisionParameter"
+    )]
     Division(DivisionParameter),
     #[serde(
         alias = "negative",
