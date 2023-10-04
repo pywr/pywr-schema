@@ -2,9 +2,18 @@ mod aggregated;
 mod asymmetric_switch;
 mod control_curves;
 mod core;
+mod data_frame;
+mod deficit;
+mod discount_factor;
+mod flow;
+mod hydropower;
 mod indexed_array;
+mod interpolated;
 mod polynomial;
 mod profiles;
+mod rolling_mean_flow_node;
+mod scenario_wrapper;
+mod storage;
 mod tables;
 mod thresholds;
 
@@ -19,13 +28,22 @@ pub use crate::parameters::control_curves::{
 pub use crate::parameters::core::{
     ConstantParameter, DivisionParameter, MaxParameter, MinParameter, NegativeParameter,
 };
+pub use crate::parameters::deficit::DeficitParameter;
+pub use crate::parameters::discount_factor::DiscountFactorParameter;
+pub use crate::parameters::flow::FlowParameter;
+pub use crate::parameters::hydropower::HydropowerTargetParameter;
 pub use crate::parameters::indexed_array::IndexedArrayParameter;
+pub use crate::parameters::interpolated::{InterpolatedFlowParameter, InterpolatedVolumeParameter};
 pub use crate::parameters::polynomial::Polynomial1DParameter;
 pub use crate::parameters::profiles::{
     DailyProfileParameter, MonthInterpDay, MonthlyProfileParameter, UniformDrawdownProfileParameter,
 };
+pub use crate::parameters::rolling_mean_flow_node::RollingMeanFlowNodeParameter;
+pub use crate::parameters::scenario_wrapper::ScenarioWrapperParameter;
+pub use crate::parameters::storage::StorageParameter;
 pub use crate::parameters::tables::TablesArrayParameter;
 pub use crate::parameters::thresholds::{ParameterThresholdParameter, Predicate};
+pub use data_frame::DataFrameParameter;
 use serde::de::value::MapDeserializer;
 use serde::de::{MapAccess, Visitor};
 use serde::{Deserialize, Deserializer};
@@ -34,6 +52,7 @@ use std::collections::HashMap;
 use std::fmt;
 use std::marker::PhantomData;
 use std::ops::{Deref, DerefMut};
+use std::path::PathBuf;
 use std::vec::IntoIter;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
@@ -165,6 +184,62 @@ pub enum CoreParameter {
         alias = "TablesArrayParameter"
     )]
     TablesArray(TablesArrayParameter),
+    #[serde(
+        alias = "dataframe",
+        alias = "dataframeparameter",
+        alias = "DataFrameParameter"
+    )]
+    DataFrame(DataFrameParameter),
+    #[serde(
+        alias = "deficit",
+        alias = "deficitparameter",
+        alias = "DeficitParameter"
+    )]
+    Deficit(DeficitParameter),
+    #[serde(
+        alias = "discountfactor",
+        alias = "discountfactorparameter",
+        alias = "DiscountFactorParameter"
+    )]
+    DiscountFactor(DiscountFactorParameter),
+    #[serde(
+        alias = "interpolatedvolume",
+        alias = "interpolatedvolumeparameter",
+        alias = "InterpolatedVolumeParameter"
+    )]
+    InterpolatedVolume(InterpolatedVolumeParameter),
+    #[serde(
+        alias = "interpolatedflow",
+        alias = "interpolatedflowparameter",
+        alias = "InterpolatedFlowParameter"
+    )]
+    InterpolatedFlow(InterpolatedFlowParameter),
+    #[serde(
+        alias = "hydropowertarget",
+        alias = "hydropowertargetparameter",
+        alias = "HydropowerTargetParameter"
+    )]
+    HydropowerTarget(HydropowerTargetParameter),
+    #[serde(
+        alias = "storage",
+        alias = "storageparameter",
+        alias = "StorageParameter"
+    )]
+    Storage(StorageParameter),
+    #[serde(
+        alias = "rollingmeanflownode",
+        alias = "rollingmeanflownodeparameter",
+        alias = "RollingMeanFlowNodeParameter"
+    )]
+    RollingMeanFlowNode(RollingMeanFlowNodeParameter),
+    #[serde(
+        alias = "scenariowrapper",
+        alias = "scenariowrapperparameter",
+        alias = "ScenarioWrapperParameter"
+    )]
+    ScenarioWrapper(ScenarioWrapperParameter),
+    #[serde(alias = "flow", alias = "flowparameter", alias = "FlowParameter")]
+    Flow(FlowParameter),
 }
 
 impl CoreParameter {
@@ -191,6 +266,16 @@ impl CoreParameter {
             Self::Polynomial1D(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::ParameterThreshold(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::TablesArray(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::DataFrame(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::Deficit(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::DiscountFactor(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::InterpolatedVolume(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::InterpolatedFlow(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::HydropowerTarget(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::Storage(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::RollingMeanFlowNode(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::ScenarioWrapper(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::Flow(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
         }
     }
 
@@ -215,6 +300,16 @@ impl CoreParameter {
             Self::Polynomial1D(p) => p.node_references(),
             Self::ParameterThreshold(p) => p.node_references(),
             Self::TablesArray(p) => p.node_references(),
+            Self::DataFrame(p) => p.node_references(),
+            Self::Deficit(p) => p.node_references(),
+            Self::DiscountFactor(p) => p.node_references(),
+            Self::InterpolatedVolume(p) => p.node_references(),
+            Self::InterpolatedFlow(p) => p.node_references(),
+            Self::HydropowerTarget(p) => p.node_references(),
+            Self::Storage(p) => p.node_references(),
+            Self::RollingMeanFlowNode(p) => p.node_references(),
+            Self::ScenarioWrapper(p) => p.node_references(),
+            Self::Flow(p) => p.node_references(),
         }
     }
 
@@ -239,6 +334,16 @@ impl CoreParameter {
             Self::Polynomial1D(p) => p.parameters(),
             Self::ParameterThreshold(p) => p.parameters(),
             Self::TablesArray(p) => p.parameters(),
+            Self::DataFrame(p) => p.parameters(),
+            Self::Deficit(p) => p.parameters(),
+            Self::DiscountFactor(p) => p.parameters(),
+            Self::InterpolatedVolume(p) => p.parameters(),
+            Self::InterpolatedFlow(p) => p.parameters(),
+            Self::HydropowerTarget(p) => p.parameters(),
+            Self::Storage(p) => p.parameters(),
+            Self::RollingMeanFlowNode(p) => p.parameters(),
+            Self::ScenarioWrapper(p) => p.parameters(),
+            Self::Flow(p) => p.parameters(),
         }
     }
 
@@ -263,7 +368,71 @@ impl CoreParameter {
             Self::Polynomial1D(_) => "Polynomial1D",
             Self::ParameterThreshold(_) => "ParameterThreshold",
             Self::TablesArray(_) => "TablesArray",
+            Self::DataFrame(_) => "DataFrame",
+            Self::Deficit(_) => "Deficit",
+            Self::DiscountFactor(_) => "DiscountFactor",
+            Self::InterpolatedVolume(_) => "InterpolatedVolume",
+            Self::InterpolatedFlow(_) => "InterpolatedFlow",
+            Self::HydropowerTarget(_) => "HydropowerTarget",
+            Self::Storage(_) => "Storage",
+            Self::RollingMeanFlowNode(_) => "RollingMeanFlowNode",
+            Self::ScenarioWrapper(_) => "ScenarioWrapper",
+            Self::Flow(_) => "Flow",
         }
+    }
+
+    /// Return any external resource paths referenced by this parameter
+    pub fn resource_paths(&self) -> Vec<PathBuf> {
+        match self {
+            CoreParameter::Aggregated(_) => Vec::new(),
+            CoreParameter::AggregatedIndex(_) => Vec::new(),
+            CoreParameter::AsymmetricSwitchIndex(_) => Vec::new(),
+            CoreParameter::Constant(_) => Vec::new(),
+            CoreParameter::ControlCurvePiecewiseInterpolated(_) => Vec::new(),
+            CoreParameter::ControlCurveInterpolated(_) => Vec::new(),
+            CoreParameter::ControlCurveIndex(_) => Vec::new(),
+            CoreParameter::ControlCurve(_) => Vec::new(),
+            CoreParameter::DailyProfile(_) => Vec::new(),
+            CoreParameter::IndexedArray(_) => Vec::new(),
+            CoreParameter::MonthlyProfile(_) => Vec::new(),
+            CoreParameter::UniformDrawdownProfile(_) => Vec::new(),
+            CoreParameter::Max(_) => todo!(),
+            CoreParameter::Min(_) => todo!(),
+            CoreParameter::Division(_) => todo!(),
+            CoreParameter::Negative(_) => todo!(),
+            CoreParameter::Polynomial1D(_) => todo!(),
+            CoreParameter::ParameterThreshold(_) => todo!(),
+            CoreParameter::TablesArray(p) => p.resource_paths(),
+            CoreParameter::DataFrame(p) => p.resource_paths(),
+            CoreParameter::Deficit(_) => Vec::new(),
+            CoreParameter::DiscountFactor(_) => Vec::new(),
+            CoreParameter::InterpolatedVolume(_) => Vec::new(),
+            CoreParameter::InterpolatedFlow(_) => Vec::new(),
+            CoreParameter::HydropowerTarget(_) => Vec::new(),
+            CoreParameter::Storage(_) => Vec::new(),
+            CoreParameter::RollingMeanFlowNode(_) => Vec::new(),
+            CoreParameter::ScenarioWrapper(_) => Vec::new(),
+            CoreParameter::Flow(_) => Vec::new(),
+        }
+    }
+
+    pub fn resource_paths_recursive(&self) -> Vec<PathBuf> {
+        // This parameter's resources
+        let mut resource_paths = self.resource_paths();
+
+        for (_, value_type) in self.parameters() {
+            match value_type {
+                ParameterValueType::Single(value) => match value {
+                    ParameterValue::Constant(_) => {}
+                    ParameterValue::Reference(_) => {}
+                    ParameterValue::Inline(_) => {}
+                    ParameterValue::Table(_) => {}
+                },
+                ParameterValueType::List(_) => {}
+            }
+        }
+
+        resource_paths
     }
 }
 
@@ -307,6 +476,23 @@ impl Parameter {
         match self {
             Self::Core(p) => p.ty(),
             Self::Custom(p) => p.ty.as_str(),
+        }
+    }
+
+    /// Return any external resource paths referenced by this parameter
+    pub fn resource_paths(&self) -> Vec<PathBuf> {
+        match self {
+            Self::Core(p) => p.resource_paths(),
+            // It is not possible to determine external resources for custom parameters
+            Self::Custom(_) => Vec::new(),
+        }
+    }
+
+    /// Return true if this is a customer parameter.
+    pub fn is_custom(&self) -> bool {
+        match self {
+            Self::Core(_) => false,
+            Self::Custom(_) => true,
         }
     }
 }
@@ -452,6 +638,17 @@ impl<'a> From<&'a ParameterValue> for ParameterValueType<'a> {
 impl<'a> From<&'a ParameterValues> for ParameterValueType<'a> {
     fn from(v: &'a ParameterValues) -> Self {
         Self::List(v)
+    }
+}
+
+impl ParameterValue {
+    fn resource_paths(&self) -> Vec<PathBuf> {
+        match self {
+            ParameterValue::Constant(_) => Vec::new(),
+            ParameterValue::Reference(_) => Vec::new(),
+            ParameterValue::Inline(p) => p.resource_paths(),
+            ParameterValue::Table(t) => Vec::new(),
+        }
     }
 }
 
