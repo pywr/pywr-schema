@@ -8,7 +8,8 @@ pub struct ControlCurveInterpolatedParameter {
     pub control_curve: Option<ParameterValue>,
     pub control_curves: Option<ParameterValues>,
     pub storage_node: String,
-    pub values: Vec<f64>,
+    pub values: Option<Vec<f64>>,
+    pub parameters: Option<ParameterValues>,
 }
 
 impl ControlCurveInterpolatedParameter {
@@ -25,6 +26,9 @@ impl ControlCurveInterpolatedParameter {
         }
         if let Some(parameters) = &self.control_curves {
             attributes.insert("control_curves", parameters.into());
+        }
+        if let Some(parameters) = &self.parameters {
+            attributes.insert("parameters", parameters.into());
         }
         attributes
     }
@@ -97,7 +101,8 @@ pub struct ControlCurvePiecewiseInterpolatedParameter {
     pub control_curves: Option<ParameterValues>,
     pub storage_node: String,
     pub values: Option<Vec<[f64; 2]>>,
-    pub minimum: f64,
+    pub parameters: Option<ParameterValues>,
+    pub minimum: Option<f64>,
 }
 
 impl ControlCurvePiecewiseInterpolatedParameter {
@@ -116,7 +121,9 @@ impl ControlCurvePiecewiseInterpolatedParameter {
         if let Some(parameters) = &self.control_curves {
             attributes.insert("control_curves", parameters.into());
         }
-
+        if let Some(parameters) = &self.parameters {
+            attributes.insert("parameters", parameters.into());
+        }
         attributes
     }
 }
