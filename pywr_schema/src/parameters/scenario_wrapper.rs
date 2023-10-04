@@ -15,13 +15,9 @@ impl ScenarioWrapperParameter {
     }
 
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let attributes: HashMap<&str, ParameterValueType> = HashMap::new();
+        let mut attributes: HashMap<&str, ParameterValueType> = HashMap::new();
 
-        for (_, _) in self.parameters.iter().enumerate() {
-            // TODO this doesn't work because the temporary String; needs an API change
-            // let key = format!("parameters[{}]", i);
-            // attributes.insert(&key, p.into());
-        }
+        attributes.insert("parameters", (&self.parameters).into());
 
         attributes
     }

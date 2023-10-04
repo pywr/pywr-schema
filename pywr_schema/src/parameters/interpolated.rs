@@ -1,4 +1,4 @@
-use crate::parameters::{ParameterMeta, ParameterValues, ParameterValueType};
+use crate::parameters::{ParameterMeta, ParameterValueType, ParameterValues};
 use std::collections::HashMap;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
@@ -6,8 +6,8 @@ pub struct InterpolatedVolumeParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
     pub node: String,
-    pub volumes: ParameterValues, 
-    pub values: ParameterValues,  
+    pub volumes: ParameterValues,
+    pub values: ParameterValues,
     pub interp_kwargs: Option<HashMap<String, serde_json::Value>>,
 }
 
@@ -16,7 +16,12 @@ impl InterpolatedVolumeParameter {
         vec![("node", self.node.as_str())].into_iter().collect()
     }
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        HashMap::new()
+        let mut attributes: HashMap<&str, ParameterValueType> = HashMap::new();
+
+        attributes.insert("volumes", (&self.volumes).into());
+        attributes.insert("values", (&self.values).into());
+
+        attributes
     }
 }
 
@@ -25,8 +30,8 @@ pub struct InterpolatedFlowParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
     pub node: String,
-    pub flows: Vec<f64>, // TODO this also supports loading data from tables, etc.
-    pub values: Vec<f64>, // TODO this also supports loading data from tables, etc.
+    pub flows: ParameterValues,
+    pub values: ParameterValues,
     pub interp_kwargs: Option<HashMap<String, serde_json::Value>>,
 }
 
@@ -35,6 +40,11 @@ impl InterpolatedFlowParameter {
         vec![("node", self.node.as_str())].into_iter().collect()
     }
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        HashMap::new()
+        let mut attributes: HashMap<&str, ParameterValueType> = HashMap::new();
+
+        attributes.insert("flows", (&self.flows).into());
+        attributes.insert("values", (&self.values).into());
+
+        attributes
     }
 }

@@ -114,6 +114,31 @@ impl PywrModel {
         }
     }
 
+    /// Return all of the model's resource paths
+    pub fn resource_paths(&self) -> HashSet<PathBuf> {
+        let mut resource_paths = HashSet::new();
+
+        resource_paths.extend(self.node_resource_paths());
+        resource_paths.extend(self.parameter_resource_paths());
+        resource_paths.extend(self.table_resource_paths());
+
+        resource_paths
+    }
+
+    /// Return the model's node resource paths
+    ///
+    /// Note that this will include resource paths for any parameters defined inline within the nodes.
+    pub fn node_resource_paths(&self) -> HashSet<PathBuf> {
+        let mut resource_paths = HashSet::new();
+
+        for node in &self.nodes {
+            let paths = node.resource_paths();
+            resource_paths.extend(paths);
+        }
+
+        resource_paths
+    }
+
     /// Return the model's parameter resource paths
     pub fn parameter_resource_paths(&self) -> HashSet<PathBuf> {
         let mut resource_paths = HashSet::new();
@@ -146,7 +171,8 @@ impl PywrModel {
 #[cfg(test)]
 mod tests {
     use crate::model::PywrModel;
-    use std::ffi::OsStr;
+    use std::collections::{HashMap, HashSet};
+    use std::ffi::{OsStr, OsString};
     use std::fs::read_dir;
     use std::path::PathBuf;
 
@@ -217,6 +243,102 @@ mod tests {
             OsStr::new("reservoir_evaporation_areafromfile.json"),
         ];
 
+        // Create a map of models that have external resources
+        let mut expected_resources_bv_model: HashMap<OsString, Vec<PathBuf>> = HashMap::new();
+        expected_resources_bv_model.insert(
+            OsString::from("demand_saving_hdf.json"),
+            vec![PathBuf::from("demand_saving_level.h5")],
+        );
+        expected_resources_bv_model.insert(
+            OsString::from("multiindex_df.json"),
+            vec![PathBuf::from("multiindex_data.csv")],
+        );
+
+        expected_resources_bv_model.insert(
+            OsString::from("reservoir_initial_vol_from_table.json"),
+            vec![PathBuf::from("initial_volumes.csv")],
+        );
+        expected_resources_bv_model.insert(
+            OsString::from("reservoir_with_cc.json"),
+            vec![PathBuf::from("control_curve.csv")],
+        );
+        expected_resources_bv_model.insert(
+            OsString::from("reservoir_with_cc_param_values.json"),
+            vec![PathBuf::from("control_curve.csv")],
+        );
+        expected_resources_bv_model.insert(
+            OsString::from("reservoir_with_circular_cc.json"),
+            vec![PathBuf::from("control_curve.csv")],
+        );
+        expected_resources_bv_model.insert(
+            OsString::from("scenario_monthly_profile.json"),
+            vec![
+                PathBuf::from("timeseries1.csv"),
+                // TODO implement ScenarioMonthlyProfileParameter
+                // PathBuf::from("monthly_profiles.csv"),
+            ],
+        );
+        expected_resources_bv_model.insert(
+            OsString::from("simple_df.json"),
+            vec![PathBuf::from("simple_data.csv")],
+        );
+        expected_resources_bv_model.insert(
+            OsString::from("simple_df_shared.json"),
+            vec![PathBuf::from("simple_data.csv")],
+        );
+        expected_resources_bv_model.insert(
+            OsString::from("timeseries1.json"),
+            vec![PathBuf::from("timeseries1.csv")],
+        );
+        expected_resources_bv_model.insert(
+            OsString::from("timeseries1_weekly.json"),
+            vec![PathBuf::from("timeseries1_weekly.csv")],
+        );
+        expected_resources_bv_model.insert(
+            OsString::from("timeseries1_weekly_hdf.json"),
+            vec![PathBuf::from("timeseries1_weekly.h5")],
+        );
+        expected_resources_bv_model.insert(
+            OsString::from("timeseries1_xlsx.json"),
+            vec![PathBuf::from("test_data1.xlsx")],
+        );
+        expected_resources_bv_model.insert(
+            OsString::from("timeseries2.json"),
+            vec![PathBuf::from("timeseries2.csv")],
+        );
+        expected_resources_bv_model.insert(
+            OsString::from("timeseries2_hdf_wrong_hash.json"),
+            vec![PathBuf::from("timeseries2.h5")],
+        );
+        expected_resources_bv_model.insert(
+            OsString::from("timeseries2_hdf.json"),
+            vec![PathBuf::from("timeseries2.h5")],
+        );
+        expected_resources_bv_model.insert(
+            OsString::from("timeseries2_with_fdc.json"),
+            vec![PathBuf::from("timeseries2.csv")],
+        );
+        expected_resources_bv_model.insert(
+            OsString::from("timeseries3.json"),
+            vec![PathBuf::from("timeseries2.csv")],
+        );
+        expected_resources_bv_model.insert(
+            OsString::from("timeseries3_subsample.json"),
+            vec![PathBuf::from("timeseries2.csv")],
+        );
+        expected_resources_bv_model.insert(
+            OsString::from("timeseries4.json"),
+            vec![PathBuf::from("timeseries3.csv")],
+        );
+        expected_resources_bv_model.insert(
+            OsString::from("two_reservoir.json"),
+            vec![PathBuf::from("data/thames_stochastic_flow.gz")],
+        );
+        expected_resources_bv_model.insert(
+            OsString::from("two_reservoir_constrained.json"),
+            vec![PathBuf::from("data/thames_stochastic_flow.gz")],
+        );
+
         for path in read_dir(&test_models_dir).unwrap() {
             let model_fn = path.unwrap().path();
             if exclude_models.contains(&model_fn.file_name().unwrap()) {
@@ -237,6 +359,29 @@ mod tests {
                         "Deserialised model ({:?}) contains unexpected custom parameters!",
                         model_fn
                     )
+                }
+            }
+
+            let found_resources = model.resource_paths();
+
+            // If external resources are expected, check they are found
+            match expected_resources_bv_model.get(model_fn.file_name().unwrap()) {
+                Some(expected_resources) => {
+                    let expected_resources: HashSet<PathBuf> =
+                        expected_resources.iter().cloned().collect();
+                    assert_eq!(
+                        found_resources, expected_resources,
+                        "Expected resources did not match those found in model ({:?})",
+                        model_fn
+                    );
+                }
+                None => {
+                    if !found_resources.is_empty() {
+                        panic!(
+                            "Found unexpected resources in model ({:?}): {:?}",
+                            model_fn, found_resources
+                        );
+                    }
                 }
             }
         }

@@ -1,5 +1,6 @@
 use crate::parameters::{ExternalDataRef, ParameterMeta, ParameterValueType, TableDataRef};
 use std::collections::HashMap;
+use std::path::PathBuf;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct DailyProfileParameter {
@@ -18,6 +19,13 @@ impl DailyProfileParameter {
     }
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         HashMap::new()
+    }
+    pub fn resource_paths(&self) -> Vec<PathBuf> {
+        let mut resource_paths = Vec::new();
+        if let Some(external) = &self.external {
+            resource_paths.push(external.url.clone());
+        }
+        resource_paths
     }
 }
 
@@ -46,6 +54,13 @@ impl MonthlyProfileParameter {
     }
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         HashMap::new()
+    }
+    pub fn resource_paths(&self) -> Vec<PathBuf> {
+        let mut resource_paths = Vec::new();
+        if let Some(external) = &self.external {
+            resource_paths.push(external.url.clone());
+        }
+        resource_paths
     }
 }
 

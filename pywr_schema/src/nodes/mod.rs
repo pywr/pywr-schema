@@ -24,6 +24,7 @@ pub use river_gauge::RiverGaugeNode;
 pub use river_split::RiverSplitNode;
 use serde_json::Value;
 use std::collections::HashMap;
+use std::path::PathBuf;
 pub use virtual_storage::{
     AnnualVirtualStorageNode, MonthlyVirtualStorageNode, RollingVirtualStorageNode,
     SeasonalVirtualStorageNode, VirtualStorageNode,
@@ -253,5 +254,20 @@ impl Node {
             Node::Core(n) => n.parameters(),
             Node::Custom(_) => HashMap::new(),
         }
+    }
+
+    pub fn resource_paths(&self) -> Vec<PathBuf> {
+        let mut resource_paths = Vec::new();
+
+        for (_, p) in self.parameters() {
+            let paths = match p {
+                ParameterValueType::Single(p) => p.resource_paths(),
+                ParameterValueType::List(p) => p.iter().flat_map(|p| p.resource_paths()).collect(),
+            };
+
+            resource_paths.extend(paths);
+        }
+
+        resource_paths
     }
 }

@@ -387,21 +387,21 @@ impl CoreParameter {
             CoreParameter::Aggregated(_) => Vec::new(),
             CoreParameter::AggregatedIndex(_) => Vec::new(),
             CoreParameter::AsymmetricSwitchIndex(_) => Vec::new(),
-            CoreParameter::Constant(_) => Vec::new(),
+            CoreParameter::Constant(p) => p.resource_paths(),
             CoreParameter::ControlCurvePiecewiseInterpolated(_) => Vec::new(),
             CoreParameter::ControlCurveInterpolated(_) => Vec::new(),
             CoreParameter::ControlCurveIndex(_) => Vec::new(),
             CoreParameter::ControlCurve(_) => Vec::new(),
-            CoreParameter::DailyProfile(_) => Vec::new(),
+            CoreParameter::DailyProfile(p) => p.resource_paths(),
             CoreParameter::IndexedArray(_) => Vec::new(),
-            CoreParameter::MonthlyProfile(_) => Vec::new(),
+            CoreParameter::MonthlyProfile(p) => p.resource_paths(),
             CoreParameter::UniformDrawdownProfile(_) => Vec::new(),
-            CoreParameter::Max(_) => todo!(),
-            CoreParameter::Min(_) => todo!(),
-            CoreParameter::Division(_) => todo!(),
-            CoreParameter::Negative(_) => todo!(),
-            CoreParameter::Polynomial1D(_) => todo!(),
-            CoreParameter::ParameterThreshold(_) => todo!(),
+            CoreParameter::Max(_) => Vec::new(),
+            CoreParameter::Min(_) => Vec::new(),
+            CoreParameter::Division(_) => Vec::new(),
+            CoreParameter::Negative(_) => Vec::new(),
+            CoreParameter::Polynomial1D(_) => Vec::new(),
+            CoreParameter::ParameterThreshold(_) => Vec::new(),
             CoreParameter::TablesArray(p) => p.resource_paths(),
             CoreParameter::DataFrame(p) => p.resource_paths(),
             CoreParameter::Deficit(_) => Vec::new(),
@@ -422,13 +422,12 @@ impl CoreParameter {
 
         for (_, value_type) in self.parameters() {
             match value_type {
-                ParameterValueType::Single(value) => match value {
-                    ParameterValue::Constant(_) => {}
-                    ParameterValue::Reference(_) => {}
-                    ParameterValue::Inline(_) => {}
-                    ParameterValue::Table(_) => {}
-                },
-                ParameterValueType::List(_) => {}
+                ParameterValueType::Single(value) => resource_paths.extend(value.resource_paths()),
+                ParameterValueType::List(values) => {
+                    for value in values {
+                        resource_paths.extend(value.resource_paths());
+                    }
+                }
             }
         }
 
@@ -482,7 +481,7 @@ impl Parameter {
     /// Return any external resource paths referenced by this parameter
     pub fn resource_paths(&self) -> Vec<PathBuf> {
         match self {
-            Self::Core(p) => p.resource_paths(),
+            Self::Core(p) => p.resource_paths_recursive(),
             // It is not possible to determine external resources for custom parameters
             Self::Custom(_) => Vec::new(),
         }
@@ -642,19 +641,19 @@ impl<'a> From<&'a ParameterValues> for ParameterValueType<'a> {
 }
 
 impl ParameterValue {
-    fn resource_paths(&self) -> Vec<PathBuf> {
+    pub fn resource_paths(&self) -> Vec<PathBuf> {
         match self {
             ParameterValue::Constant(_) => Vec::new(),
             ParameterValue::Reference(_) => Vec::new(),
             ParameterValue::Inline(p) => p.resource_paths(),
-            ParameterValue::Table(t) => Vec::new(),
+            ParameterValue::Table(_) => Vec::new(),
         }
     }
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct ExternalDataRef {
-    pub url: String,
+    pub url: PathBuf,
     pub column: Option<TableIndex>,
     pub index: Option<TableIndex>,
     #[serde(flatten)]
@@ -664,8 +663,15 @@ pub struct ExternalDataRef {
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(untagged)]
 pub enum TableIndex {
-    Single(String),
-    Multi(Vec<String>),
+    Single(TableIndexEntry),
+    Multi(Vec<TableIndexEntry>),
+}
+
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
+#[serde(untagged)]
+pub enum TableIndexEntry {
+    Name(String),
+    Index(usize),
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
