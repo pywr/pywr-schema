@@ -6,12 +6,19 @@ use std::collections::HashMap;
 use std::fmt;
 use std::marker::PhantomData;
 use std::ops::{Deref, DerefMut};
+use std::path::PathBuf;
 use std::vec::IntoIter;
 
 #[derive(serde::Deserialize, Clone)]
 pub struct Table {
     pub name: String,
-    pub url: String,
+    pub url: PathBuf,
+}
+
+impl Table {
+    pub fn resource_paths(&self) -> Vec<PathBuf> {
+        vec![self.url.clone()]
+    }
 }
 
 #[derive(Clone)]

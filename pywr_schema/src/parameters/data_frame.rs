@@ -3,18 +3,21 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
-pub struct TablesArrayParameter {
+pub struct DataFrameParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
-    pub node: String,
-    #[serde(rename = "where")]
-    pub wh: String,
     pub scenario: Option<String>,
-    pub checksum: Option<HashMap<String, String>>,
-    pub url: PathBuf,
+    pub timestep_offset: Option<i32>,
+    pub column: Option<String>,
+    pub index: Option<String>,
+    pub indexes: Option<String>,
+    pub table: Option<String>,
+    pub url: Option<PathBuf>,
+    #[serde(flatten)]
+    pub pandas_kwargs: HashMap<String, serde_json::Value>,
 }
 
-impl TablesArrayParameter {
+impl DataFrameParameter {
     pub fn node_references(&self) -> HashMap<&str, &str> {
         HashMap::new()
     }
@@ -22,6 +25,10 @@ impl TablesArrayParameter {
         HashMap::new()
     }
     pub fn resource_paths(&self) -> Vec<PathBuf> {
-        vec![self.url.clone()]
+        let mut resource_paths = Vec::new();
+        if let Some(url) = &self.url {
+            resource_paths.push(url.clone());
+        }
+        resource_paths
     }
 }

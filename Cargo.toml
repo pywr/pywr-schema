@@ -1,5 +1,5 @@
 [workspace]
-
+resolver = "2"
 members = [
     "pywr_schema",
     "pywr_validator",

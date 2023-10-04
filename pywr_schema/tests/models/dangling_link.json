@@ -1,0 +1,38 @@
+{
+    "metadata": {
+        "title": "Dangling link",
+        "description": "An example of an a model with an unconnected link.",
+        "minimum_version": "0.1"
+    },
+    "timestepper": {
+        "start": "2015-01-01",
+        "end": "2015-12-31",
+        "timestep": 1
+    },
+    "nodes": [
+        {
+            "name": "supply1",
+            "type": "Input",
+            "max_flow": 15
+        },
+        {
+            "name": "link1",
+            "type": "Link"
+        },
+        {
+            "name": "link2",
+            "type": "Link"
+        },
+        {
+            "name": "demand1",
+            "type": "Output",
+            "max_flow": 10,
+            "cost": -10
+        }
+    ],
+    "edges": [
+        ["supply1", "link1"],
+        ["supply1", "link2"],
+        ["link1", "demand1"]
+    ]
+}

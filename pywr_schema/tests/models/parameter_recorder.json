@@ -1,0 +1,50 @@
+{
+    "metadata": {
+        "title": "Parameter recorder",
+        "description": "JSON example of parameter recorder",
+        "minimum_version": "0.1"
+    },
+    "timestepper": {
+        "start": "2015-01-01",
+        "end": "2015-01-02",
+        "timestep": 1
+    },
+    "nodes": [
+        {
+            "name": "supply1",
+            "type": "Input",
+            "max_flow": "supply_max"
+        },
+        {
+            "name": "demand1",
+            "type": "Output",
+            "max_flow": "demand_max",
+            "cost": -10
+        }
+    ],
+    "edges": [
+        ["supply1", "demand1"]
+    ],
+    "parameters": {
+        "demand_max": {
+            "type": "constant",
+            "values": 10
+        },
+        "supply_max": {
+            "type": "constant",
+            "values": 15,
+            "name": "supply_max"
+        }
+    },
+    "recorders": {
+        "demand_max_recorder": {
+            "type": "NumpyArrayParameterRecorder",
+            "parameter": "demand_max"
+        },
+        "supply_max_recorder": {
+            "type": "NumpyArrayParameterRecorder",
+            "node": "supply1",
+            "parameter": "supply_max"
+        }
+    }
+}

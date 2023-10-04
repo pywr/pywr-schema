@@ -1,27 +1,19 @@
 use crate::parameters::{ParameterMeta, ParameterValueType};
 use std::collections::HashMap;
-use std::path::PathBuf;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
-pub struct TablesArrayParameter {
+pub struct DiscountFactorParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
-    pub node: String,
-    #[serde(rename = "where")]
-    pub wh: String,
-    pub scenario: Option<String>,
-    pub checksum: Option<HashMap<String, String>>,
-    pub url: PathBuf,
+    pub rate: f64,
+    pub base_year: i64,
 }
 
-impl TablesArrayParameter {
+impl DiscountFactorParameter {
     pub fn node_references(&self) -> HashMap<&str, &str> {
         HashMap::new()
     }
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         HashMap::new()
-    }
-    pub fn resource_paths(&self) -> Vec<PathBuf> {
-        vec![self.url.clone()]
     }
 }

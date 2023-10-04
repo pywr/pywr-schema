@@ -1,0 +1,42 @@
+{
+    "metadata": {
+        "title": "Reservoir 1",
+        "description": "Constraint on net abstraction.",
+        "minimum_version": "0.1"
+    },
+    "timestepper": {
+        "start": "2015-01-01",
+        "end": "2015-12-31",
+        "timestep": 1
+    },
+    "nodes": [
+        {
+            "name": "in",
+            "type": "Input",
+            "max_flow": 2
+        },
+        {
+            "name": "r",
+            "type": "Storage",
+            "max_volume": 35,
+            "initial_volume": 35
+        },
+        {
+            "name": "out",
+            "type": "Output",
+            "max_flow": 100,
+            "cost": -10
+        },
+        {
+            "name": "net_abs",
+            "type": "aggregatednode",
+            "nodes": ["in", "out"],
+            "max_flow": 10,
+            "flow_weights": [-1, 1]
+        }
+    ],
+    "edges": [
+        ["in", "r"],
+        ["r", "out"]
+    ]
+}
