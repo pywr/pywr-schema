@@ -46,7 +46,8 @@ pub use crate::parameters::thresholds::{ParameterThresholdParameter, Predicate};
 pub use data_frame::DataFrameParameter;
 use serde::de::value::MapDeserializer;
 use serde::de::{MapAccess, Visitor};
-use serde::{Deserialize, Deserializer};
+use serde::ser::{Error, SerializeMap};
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use serde_json::Value;
 use std::collections::HashMap;
 use std::fmt;
@@ -433,6 +434,42 @@ impl CoreParameter {
 
         resource_paths
     }
+
+    pub fn update_resource_paths(&mut self, new_paths: &HashMap<PathBuf, PathBuf>) {
+        match self {
+            CoreParameter::Aggregated(_) => {}
+            CoreParameter::AggregatedIndex(_) => {}
+            CoreParameter::AsymmetricSwitchIndex(_) => {}
+            CoreParameter::Constant(p) => p.update_resource_paths(new_paths),
+            CoreParameter::ControlCurvePiecewiseInterpolated(_) => {}
+            CoreParameter::ControlCurveInterpolated(_) => {}
+            CoreParameter::ControlCurveIndex(_) => {}
+            CoreParameter::ControlCurve(_) => {}
+            CoreParameter::DailyProfile(_) => {}
+            CoreParameter::IndexedArray(_) => {}
+            CoreParameter::MonthlyProfile(_) => {}
+            CoreParameter::UniformDrawdownProfile(_) => {}
+            CoreParameter::Max(_) => {}
+            CoreParameter::Min(_) => {}
+            CoreParameter::Division(_) => {}
+            CoreParameter::Negative(_) => {}
+            CoreParameter::Polynomial1D(_) => {}
+            CoreParameter::ParameterThreshold(_) => {}
+            CoreParameter::TablesArray(_) => {}
+            CoreParameter::DataFrame(_) => {}
+            CoreParameter::Deficit(_) => {}
+            CoreParameter::DiscountFactor(_) => {}
+            CoreParameter::InterpolatedVolume(_) => {}
+            CoreParameter::InterpolatedFlow(_) => {}
+            CoreParameter::HydropowerTarget(_) => {}
+            CoreParameter::Storage(_) => {}
+            CoreParameter::RollingMeanFlowNode(_) => {}
+            CoreParameter::ScenarioWrapper(_) => {}
+            CoreParameter::Flow(_) => {}
+        }
+    }
+
+    pub fn update_resource_paths_recursive(&mut self, new_paths: &HashMap<PathBuf, PathBuf>) {}
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
@@ -484,6 +521,15 @@ impl Parameter {
             Self::Core(p) => p.resource_paths_recursive(),
             // It is not possible to determine external resources for custom parameters
             Self::Custom(_) => Vec::new(),
+        }
+    }
+
+    /// Update any external resource paths referenced by this parameter if they are
+    /// in the provided map.
+    pub fn update_resource_paths(&mut self, new_paths: &HashMap<PathBuf, PathBuf>) {
+        match self {
+            Self::Core(p) => p.update_resource_paths_recursive(new_paths),
+            Self::Custom(_) => {}
         }
     }
 
@@ -612,6 +658,23 @@ impl<'de> Deserialize<'de> for ParameterVec {
     }
 }
 
+impl Serialize for ParameterVec {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let mut map = serializer.serialize_map(Some(self.len()))?;
+
+        for p in &self.0 {
+            let name = p
+                .name()
+                .ok_or(S::Error::custom("Parameter name is required"))?;
+            map.serialize_entry(name, p)?;
+        }
+        map.end()
+    }
+}
+
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(untagged)]
 pub enum ParameterValue {
@@ -640,6 +703,23 @@ impl<'a> From<&'a ParameterValues> for ParameterValueType<'a> {
     }
 }
 
+pub enum ParameterValueTypeMut<'a> {
+    Single(&'a mut ParameterValue),
+    List(&'a mut ParameterValues),
+}
+
+impl<'a> From<&'a mut ParameterValue> for ParameterValueTypeMut<'a> {
+    fn from(v: &'a mut ParameterValue) -> Self {
+        Self::Single(v)
+    }
+}
+
+impl<'a> From<&'a mut ParameterValues> for ParameterValueTypeMut<'a> {
+    fn from(v: &'a mut ParameterValues) -> Self {
+        Self::List(v)
+    }
+}
+
 impl ParameterValue {
     pub fn resource_paths(&self) -> Vec<PathBuf> {
         match self {
@@ -648,6 +728,15 @@ impl ParameterValue {
             ParameterValue::Inline(p) => p.resource_paths(),
             ParameterValue::Table(_) => Vec::new(),
         }
+    }
+
+    pub fn update_resource_paths(&mut self, new_paths: &HashMap<PathBuf, PathBuf>) {
+        match self {
+            ParameterValue::Constant(_) => {}
+            ParameterValue::Reference(_) => {}
+            ParameterValue::Inline(p) => p.update_resource_paths(new_paths),
+            ParameterValue::Table(_) => {}
+        };
     }
 }
 

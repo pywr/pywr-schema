@@ -14,7 +14,7 @@ pub use crate::nodes::core::{
     ReservoirNode, StorageNode,
 };
 pub use crate::nodes::river_split_with_gauge::RiverSplitWithGaugeNode;
-use crate::parameters::ParameterValueType;
+use crate::parameters::{ParameterValueType, ParameterValueTypeMut};
 pub use break_link::BreakLinkNode;
 pub use delay_node::DelayNode;
 pub use loss_link::LossLinkNode;
@@ -192,6 +192,33 @@ impl CoreNode {
         }
     }
 
+    pub fn parameters_mut(&mut self) -> HashMap<&str, ParameterValueTypeMut> {
+        match self {
+            CoreNode::Input(n) => n.parameters_mut(),
+            CoreNode::Link(n) => n.parameters_mut(),
+            CoreNode::Output(n) => n.parameters_mut(),
+            CoreNode::Storage(n) => n.parameters_mut(),
+            CoreNode::Reservoir(n) => n.parameters_mut(),
+            CoreNode::Catchment(n) => n.parameters_mut(),
+            CoreNode::RiverGauge(n) => n.parameters_mut(),
+            CoreNode::LossLink(n) => n.parameters_mut(),
+            CoreNode::PiecewiseLink(n) => n.parameters_mut(),
+            CoreNode::MultiSplitLink(n) => n.parameters_mut(),
+            CoreNode::BreakLink(n) => n.parameters_mut(),
+            CoreNode::Delay(n) => n.parameters_mut(),
+            CoreNode::River(n) => n.parameters_mut(),
+            CoreNode::RiverSplit(n) => n.parameters_mut(),
+            CoreNode::RiverSplitWithGauge(n) => n.parameters_mut(),
+            CoreNode::Aggregated(n) => n.parameters_mut(),
+            CoreNode::AggregatedStorage(n) => n.parameters_mut(),
+            CoreNode::VirtualStorage(n) => n.parameters_mut(),
+            CoreNode::AnnualVirtualStorage(n) => n.parameters_mut(),
+            CoreNode::MonthlyVirtualStorage(n) => n.parameters_mut(),
+            CoreNode::SeasonalVirtualStorage(n) => n.parameters_mut(),
+            CoreNode::RollingVirtualStorage(n) => n.parameters_mut(),
+        }
+    }
+
     pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
         match self {
             CoreNode::Input(n) => n.node_references(),
@@ -256,6 +283,13 @@ impl Node {
         }
     }
 
+    pub fn parameters_mut(&mut self) -> HashMap<&str, ParameterValueTypeMut> {
+        match self {
+            Node::Core(n) => n.parameters_mut(),
+            Node::Custom(_) => HashMap::new(),
+        }
+    }
+
     pub fn resource_paths(&self) -> Vec<PathBuf> {
         let mut resource_paths = Vec::new();
 
@@ -269,5 +303,18 @@ impl Node {
         }
 
         resource_paths
+    }
+
+    pub fn update_resource_paths(&mut self, new_paths: &HashMap<PathBuf, PathBuf>) {
+        for (_, p) in self.parameters_mut() {
+            match p {
+                ParameterValueTypeMut::Single(p) => p.update_resource_paths(new_paths),
+                ParameterValueTypeMut::List(p) => {
+                    for p in p.iter_mut() {
+                        p.update_resource_paths(new_paths);
+                    }
+                }
+            };
+        }
     }
 }

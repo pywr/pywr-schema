@@ -1,8 +1,9 @@
 use crate::nodes::NodeMeta;
-use crate::parameters::{ParameterValue, ParameterValueType};
+use crate::parameters::{ParameterValue, ParameterValueType, ParameterValueTypeMut};
+use pywr_schema_macros::PywrNode;
 use std::collections::HashMap;
 
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Clone, PywrNode)]
 pub struct VirtualStorageNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -16,21 +17,6 @@ pub struct VirtualStorageNode {
 }
 
 impl VirtualStorageNode {
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-        if let Some(p) = &self.max_volume {
-            attributes.insert("max_volume", ParameterValueType::Single(p));
-        }
-        if let Some(p) = &self.min_volume {
-            attributes.insert("min_volume", ParameterValueType::Single(p));
-        }
-        if let Some(p) = &self.cost {
-            attributes.insert("cost", ParameterValueType::Single(p));
-        }
-
-        attributes
-    }
-
     pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
         vec![(
             "nodes",
@@ -49,7 +35,7 @@ fn default_reset_month() -> time::Month {
     time::Month::January
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Clone, PywrNode)]
 pub struct AnnualVirtualStorageNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -69,21 +55,6 @@ pub struct AnnualVirtualStorageNode {
 }
 
 impl AnnualVirtualStorageNode {
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-        if let Some(p) = &self.max_volume {
-            attributes.insert("max_volume", ParameterValueType::Single(p));
-        }
-        if let Some(p) = &self.min_volume {
-            attributes.insert("min_volume", ParameterValueType::Single(p));
-        }
-        if let Some(p) = &self.cost {
-            attributes.insert("cost", ParameterValueType::Single(p));
-        }
-
-        attributes
-    }
-
     pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
         vec![(
             "nodes",
@@ -102,7 +73,7 @@ fn default_initial_months() -> u8 {
     1
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Clone, PywrNode)]
 pub struct MonthlyVirtualStorageNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -122,21 +93,6 @@ pub struct MonthlyVirtualStorageNode {
 }
 
 impl MonthlyVirtualStorageNode {
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-        if let Some(p) = &self.max_volume {
-            attributes.insert("max_volume", ParameterValueType::Single(p));
-        }
-        if let Some(p) = &self.min_volume {
-            attributes.insert("min_volume", ParameterValueType::Single(p));
-        }
-        if let Some(p) = &self.cost {
-            attributes.insert("cost", ParameterValueType::Single(p));
-        }
-
-        attributes
-    }
-
     pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
         vec![(
             "nodes",
@@ -155,7 +111,7 @@ fn default_end_month() -> time::Month {
     time::Month::December
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Clone, PywrNode)]
 pub struct SeasonalVirtualStorageNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -179,21 +135,6 @@ pub struct SeasonalVirtualStorageNode {
 }
 
 impl SeasonalVirtualStorageNode {
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-        if let Some(p) = &self.max_volume {
-            attributes.insert("max_volume", ParameterValueType::Single(p));
-        }
-        if let Some(p) = &self.min_volume {
-            attributes.insert("min_volume", ParameterValueType::Single(p));
-        }
-        if let Some(p) = &self.cost {
-            attributes.insert("cost", ParameterValueType::Single(p));
-        }
-
-        attributes
-    }
-
     pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
         vec![(
             "nodes",
@@ -204,7 +145,7 @@ impl SeasonalVirtualStorageNode {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Clone, PywrNode)]
 pub struct RollingVirtualStorageNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -220,21 +161,6 @@ pub struct RollingVirtualStorageNode {
 }
 
 impl RollingVirtualStorageNode {
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-        if let Some(p) = &self.max_volume {
-            attributes.insert("max_volume", ParameterValueType::Single(p));
-        }
-        if let Some(p) = &self.min_volume {
-            attributes.insert("min_volume", ParameterValueType::Single(p));
-        }
-        if let Some(p) = &self.cost {
-            attributes.insert("cost", ParameterValueType::Single(p));
-        }
-
-        attributes
-    }
-
     pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
         vec![(
             "nodes",

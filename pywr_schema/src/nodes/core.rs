@@ -1,8 +1,11 @@
 use crate::nodes::NodeMeta;
-use crate::parameters::{ParameterValue, ParameterValueType, ParameterValues};
+use crate::parameters::{
+    ParameterValue, ParameterValueType, ParameterValueTypeMut, ParameterValues,
+};
+use pywr_schema_macros::PywrNode;
 use std::collections::HashMap;
 
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Clone, PywrNode)]
 pub struct InputNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -12,27 +15,12 @@ pub struct InputNode {
 }
 
 impl InputNode {
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-        if let Some(p) = &self.max_flow {
-            attributes.insert("max_flow", ParameterValueType::Single(p));
-        }
-        if let Some(p) = &self.min_flow {
-            attributes.insert("min_flow", ParameterValueType::Single(p));
-        }
-        if let Some(p) = &self.cost {
-            attributes.insert("cost", ParameterValueType::Single(p));
-        }
-
-        attributes
-    }
-
     pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
         HashMap::new()
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Clone, PywrNode)]
 pub struct LinkNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -42,27 +30,12 @@ pub struct LinkNode {
 }
 
 impl LinkNode {
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-        if let Some(p) = &self.max_flow {
-            attributes.insert("max_flow", ParameterValueType::Single(p));
-        }
-        if let Some(p) = &self.min_flow {
-            attributes.insert("min_flow", ParameterValueType::Single(p));
-        }
-        if let Some(p) = &self.cost {
-            attributes.insert("cost", ParameterValueType::Single(p));
-        }
-
-        attributes
-    }
-
     pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
         HashMap::new()
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Clone, PywrNode)]
 pub struct OutputNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -72,27 +45,12 @@ pub struct OutputNode {
 }
 
 impl OutputNode {
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-        if let Some(p) = &self.max_flow {
-            attributes.insert("max_flow", ParameterValueType::Single(p));
-        }
-        if let Some(p) = &self.min_flow {
-            attributes.insert("min_flow", ParameterValueType::Single(p));
-        }
-        if let Some(p) = &self.cost {
-            attributes.insert("cost", ParameterValueType::Single(p));
-        }
-
-        attributes
-    }
-
     pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
         HashMap::new()
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Clone, PywrNode)]
 pub struct StorageNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -104,27 +62,12 @@ pub struct StorageNode {
 }
 
 impl StorageNode {
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-        if let Some(p) = &self.max_volume {
-            attributes.insert("max_volume", ParameterValueType::Single(p));
-        }
-        if let Some(p) = &self.min_volume {
-            attributes.insert("min_volume", ParameterValueType::Single(p));
-        }
-        if let Some(p) = &self.cost {
-            attributes.insert("cost", ParameterValueType::Single(p));
-        }
-
-        attributes
-    }
-
     pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
         HashMap::new()
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Clone, PywrNode)]
 pub struct ReservoirNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -136,27 +79,12 @@ pub struct ReservoirNode {
 }
 
 impl ReservoirNode {
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-        if let Some(p) = &self.max_volume {
-            attributes.insert("max_volume", ParameterValueType::Single(p));
-        }
-        if let Some(p) = &self.min_volume {
-            attributes.insert("min_volume", ParameterValueType::Single(p));
-        }
-        if let Some(p) = &self.cost {
-            attributes.insert("cost", ParameterValueType::Single(p));
-        }
-
-        attributes
-    }
-
     pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
         HashMap::new()
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Clone, PywrNode)]
 pub struct CatchmentNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -165,24 +93,12 @@ pub struct CatchmentNode {
 }
 
 impl CatchmentNode {
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-        if let Some(p) = &self.flow {
-            attributes.insert("flow", ParameterValueType::Single(p));
-        }
-        if let Some(p) = &self.cost {
-            attributes.insert("cost", ParameterValueType::Single(p));
-        }
-
-        attributes
-    }
-
     pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
         HashMap::new()
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Clone, PywrNode)]
 pub struct AggregatedNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -194,20 +110,6 @@ pub struct AggregatedNode {
 }
 
 impl AggregatedNode {
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-        if let Some(p) = &self.min_flow {
-            attributes.insert("min_flow", ParameterValueType::Single(p));
-        }
-        if let Some(p) = &self.max_flow {
-            attributes.insert("max_flow", ParameterValueType::Single(p));
-        }
-        if let Some(p) = &self.factors {
-            attributes.insert("factors", p.into());
-        }
-        attributes
-    }
-
     pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
         vec![(
             "nodes",
@@ -218,7 +120,7 @@ impl AggregatedNode {
     }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Clone, PywrNode)]
 pub struct AggregatedStorageNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
@@ -226,10 +128,6 @@ pub struct AggregatedStorageNode {
 }
 
 impl AggregatedStorageNode {
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        HashMap::new()
-    }
-
     pub fn node_references(&self) -> HashMap<&str, Vec<&str>> {
         vec![(
             "storage_nodes",
