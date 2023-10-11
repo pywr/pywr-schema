@@ -1,5 +1,5 @@
 use crate::nodes::NodeMeta;
-use crate::parameters::{ParameterValueType, ParameterValues};
+use crate::parameters::{ParameterValueType, ParameterValueTypeMut, ParameterValues};
 use std::collections::HashMap;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
@@ -23,6 +23,20 @@ impl MultiSplitLinkNode {
             attributes.insert("costs", costs.into());
         }
         if let Some(factors) = &self.factors {
+            attributes.insert("factors", factors.into());
+        }
+        attributes
+    }
+
+    pub fn parameters_mut(&mut self) -> HashMap<&str, ParameterValueTypeMut> {
+        let mut attributes = HashMap::new();
+        if let Some(max_flows) = &mut self.max_flows {
+            attributes.insert("max_flows", max_flows.into());
+        }
+        if let Some(costs) = &mut self.costs {
+            attributes.insert("costs", costs.into());
+        }
+        if let Some(factors) = &mut self.factors {
             attributes.insert("factors", factors.into());
         }
         attributes

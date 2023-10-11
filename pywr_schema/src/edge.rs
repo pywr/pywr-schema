@@ -1,4 +1,5 @@
 use serde::de::{self, IgnoredAny, SeqAccess, Visitor};
+use serde::ser::SerializeSeq;
 use std::fmt;
 
 #[derive(Clone)]
@@ -57,5 +58,28 @@ impl<'de> serde::Deserialize<'de> for Edge {
         }
 
         deserializer.deserialize_seq(EdgeVisitor)
+    }
+}
+
+impl serde::Serialize for Edge {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        let length = if self.from_slot.is_some() | self.to_slot.is_some() {
+            4
+        } else {
+            2
+        };
+        let mut seq = serializer.serialize_seq(Some(length))?;
+        seq.serialize_element(&self.from_node)?;
+        seq.serialize_element(&self.to_node)?;
+
+        if length == 4 {
+            seq.serialize_element(&self.from_slot)?;
+            seq.serialize_element(&self.to_slot)?;
+        }
+
+        seq.end()
     }
 }

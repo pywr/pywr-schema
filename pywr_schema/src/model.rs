@@ -2,7 +2,7 @@ use crate::edge::Edge;
 use crate::nodes::Node;
 use crate::parameters::{Parameter, ParameterVec};
 use crate::tables::TableVec;
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 use std::fs::File;
 use std::io;
 use std::path::{Path, PathBuf};
@@ -23,35 +23,35 @@ pub enum PywrSchemaError {
     InvalidPywrDataFormat,
 }
 
-#[derive(serde::Deserialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct Metadata {
     pub title: Option<String>,
     pub description: Option<String>,
     pub minimum_version: Option<String>,
 }
 
-#[derive(serde::Deserialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(untagged)]
 pub enum Timestep {
     Days(u64),
     Frequency(String),
 }
 
-#[derive(serde::Deserialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct Timestepper {
     pub start: Date,
     pub end: Date,
     pub timestep: Timestep,
 }
 
-#[derive(serde::Deserialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct Scenario {
     pub name: String,
     pub size: usize,
     pub ensemble_names: Option<Vec<String>>,
 }
 
-#[derive(serde::Deserialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct PywrModel {
     pub metadata: Metadata,
     pub timestepper: Timestepper,
@@ -165,6 +165,25 @@ impl PywrModel {
         }
 
         resource_paths
+    }
+
+    /// Update resource paths
+    pub fn update_resource_paths(&mut self, new_paths: &HashMap<PathBuf, PathBuf>) {
+        for node in &mut self.nodes {
+            node.update_resource_paths(new_paths);
+        }
+
+        if let Some(parameters) = &mut self.parameters {
+            for parameter in parameters.iter_mut() {
+                parameter.update_resource_paths(new_paths);
+            }
+        }
+
+        if let Some(tables) = &mut self.tables {
+            for table in tables.iter_mut() {
+                table.update_resource_paths(new_paths);
+            }
+        }
     }
 }
 

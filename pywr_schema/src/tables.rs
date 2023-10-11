@@ -1,6 +1,7 @@
 use serde::de::value::MapDeserializer;
 use serde::de::{MapAccess, Visitor};
-use serde::{de, Deserialize, Deserializer};
+use serde::ser::SerializeMap;
+use serde::{de, Deserialize, Deserializer, Serialize, Serializer};
 use serde_json::Value;
 use std::collections::HashMap;
 use std::fmt;
@@ -9,7 +10,7 @@ use std::ops::{Deref, DerefMut};
 use std::path::PathBuf;
 use std::vec::IntoIter;
 
-#[derive(serde::Deserialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct Table {
     pub name: String,
     pub url: PathBuf,
@@ -18,6 +19,14 @@ pub struct Table {
 impl Table {
     pub fn resource_paths(&self) -> Vec<PathBuf> {
         vec![self.url.clone()]
+    }
+
+    /// Update any external resource paths referenced by this parameter if they are
+    /// in the provided map.
+    pub fn update_resource_paths(&mut self, new_paths: &HashMap<PathBuf, PathBuf>) {
+        if let Some(new_path) = new_paths.get(&self.url) {
+            self.url = new_path.clone();
+        }
     }
 }
 
@@ -105,5 +114,19 @@ impl<'de> Deserialize<'de> for TableVec {
         D: Deserializer<'de>,
     {
         deserializer.deserialize_map(PywrTableMapVisitor::new())
+    }
+}
+
+impl Serialize for TableVec {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let mut map = serializer.serialize_map(Some(self.len()))?;
+
+        for tbl in &self.0 {
+            map.serialize_entry(&tbl.name, tbl)?;
+        }
+        map.end()
     }
 }

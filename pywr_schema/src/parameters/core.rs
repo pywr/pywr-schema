@@ -1,4 +1,6 @@
-use crate::parameters::{ExternalDataRef, ParameterMeta, ParameterValue, ParameterValueType, TableDataRef};
+use crate::parameters::{
+    ExternalDataRef, ParameterMeta, ParameterValue, ParameterValueType, TableDataRef,
+};
 use std::collections::HashMap;
 use std::path::PathBuf;
 
@@ -9,7 +11,7 @@ pub struct ConstantParameter {
     #[serde(alias = "values")]
     pub value: Option<f64>,
     #[serde(flatten)]
-    pub external: Option<ExternalDataRef>,    
+    pub external: Option<ExternalDataRef>,
     #[serde(flatten)]
     pub table: Option<TableDataRef>,
 }
@@ -22,13 +24,21 @@ impl ConstantParameter {
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         HashMap::new()
     }
-    
+
     pub fn resource_paths(&self) -> Vec<PathBuf> {
         let mut resource_paths = Vec::new();
         if let Some(external) = &self.external {
             resource_paths.push(external.url.clone());
         }
         resource_paths
+    }
+
+    pub fn update_resource_paths(&mut self, new_paths: &HashMap<PathBuf, PathBuf>) {
+        if let Some(external) = &mut self.external {
+            if let Some(new_path) = new_paths.get(&external.url) {
+                external.url = new_path.clone();
+            }
+        }
     }
 }
 
