@@ -1,7 +1,9 @@
-use crate::parameters::{ParameterMeta, ParameterValue, ParameterValueType};
+use crate::parameters::{ParameterMeta, ParameterValue, ParameterValueType, ParameterValueTypeMut};
+use pywr_schema_macros::PywrParameter;
 use std::collections::HashMap;
+use std::path::PathBuf;
 
-#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
 pub struct AsymmetricSwitchIndexParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -12,11 +14,5 @@ pub struct AsymmetricSwitchIndexParameter {
 impl AsymmetricSwitchIndexParameter {
     pub fn node_references(&self) -> HashMap<&str, &str> {
         HashMap::new()
-    }
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-        attributes.insert("on_index_parameter", (&self.on_index_parameter).into());
-        attributes.insert("off_index_parameter", (&self.off_index_parameter).into());
-        attributes
     }
 }

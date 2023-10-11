@@ -1,7 +1,9 @@
-use crate::parameters::{ParameterMeta, ParameterValueType};
+use crate::parameters::{ParameterMeta, ParameterValueType, ParameterValueTypeMut};
+use pywr_schema_macros::PywrParameter;
 use std::collections::HashMap;
+use std::path::PathBuf;
 
-#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
 pub struct StorageParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -13,8 +15,5 @@ impl StorageParameter {
         vec![("storage_node", self.storage_node.as_str())]
             .into_iter()
             .collect()
-    }
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        HashMap::new()
     }
 }

@@ -1,7 +1,9 @@
-use crate::parameters::{ParameterMeta, ParameterValueType};
+use crate::parameters::{ParameterMeta, ParameterValueType, ParameterValueTypeMut};
+use pywr_schema_macros::PywrParameter;
 use std::collections::HashMap;
+use std::path::PathBuf;
 
-#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
 pub struct DiscountFactorParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -11,9 +13,6 @@ pub struct DiscountFactorParameter {
 
 impl DiscountFactorParameter {
     pub fn node_references(&self) -> HashMap<&str, &str> {
-        HashMap::new()
-    }
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
         HashMap::new()
     }
 }
