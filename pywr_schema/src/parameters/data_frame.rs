@@ -1,8 +1,9 @@
-use crate::parameters::{ParameterMeta, ParameterValueType};
+use crate::parameters::{ParameterMeta, ParameterValueType, ParameterValueTypeMut};
+use pywr_schema_macros::PywrParameter;
 use std::collections::HashMap;
 use std::path::PathBuf;
 
-#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
 pub struct DataFrameParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -20,15 +21,5 @@ pub struct DataFrameParameter {
 impl DataFrameParameter {
     pub fn node_references(&self) -> HashMap<&str, &str> {
         HashMap::new()
-    }
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        HashMap::new()
-    }
-    pub fn resource_paths(&self) -> Vec<PathBuf> {
-        let mut resource_paths = Vec::new();
-        if let Some(url) = &self.url {
-            resource_paths.push(url.clone());
-        }
-        resource_paths
     }
 }

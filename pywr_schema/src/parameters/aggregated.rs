@@ -1,7 +1,8 @@
-use crate::parameters::{ParameterMeta, ParameterValueType};
-use std::collections::HashMap;
-
 use super::ParameterValues;
+use crate::parameters::{ParameterMeta, ParameterValueType, ParameterValueTypeMut};
+use pywr_schema_macros::PywrParameter;
+use std::collections::HashMap;
+use std::path::PathBuf;
 
 // TODO complete these
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
@@ -13,7 +14,7 @@ pub enum AggFunc {
     Min,
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
 pub struct AggregatedParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -24,15 +25,6 @@ pub struct AggregatedParameter {
 impl AggregatedParameter {
     pub fn node_references(&self) -> HashMap<&str, &str> {
         HashMap::new()
-    }
-
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-
-        let parameters = &self.parameters;
-        attributes.insert("parameters", parameters.into());
-
-        attributes
     }
 }
 
@@ -47,7 +39,7 @@ pub enum IndexAggFunc {
     All,
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
 pub struct AggregatedIndexParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -58,15 +50,6 @@ pub struct AggregatedIndexParameter {
 impl AggregatedIndexParameter {
     pub fn node_references(&self) -> HashMap<&str, &str> {
         HashMap::new()
-    }
-
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-
-        let parameters = &self.parameters;
-        attributes.insert("parameters", parameters.into());
-
-        attributes
     }
 }
 

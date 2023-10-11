@@ -1,7 +1,11 @@
-use crate::parameters::{ParameterMeta, ParameterValueType, ParameterValues};
+use crate::parameters::{
+    ParameterMeta, ParameterValueType, ParameterValueTypeMut, ParameterValues,
+};
+use pywr_schema_macros::PywrParameter;
 use std::collections::HashMap;
+use std::path::PathBuf;
 
-#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
 pub struct InterpolatedVolumeParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -15,17 +19,9 @@ impl InterpolatedVolumeParameter {
     pub fn node_references(&self) -> HashMap<&str, &str> {
         vec![("node", self.node.as_str())].into_iter().collect()
     }
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes: HashMap<&str, ParameterValueType> = HashMap::new();
-
-        attributes.insert("volumes", (&self.volumes).into());
-        attributes.insert("values", (&self.values).into());
-
-        attributes
-    }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
 pub struct InterpolatedFlowParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -38,13 +34,5 @@ pub struct InterpolatedFlowParameter {
 impl InterpolatedFlowParameter {
     pub fn node_references(&self) -> HashMap<&str, &str> {
         vec![("node", self.node.as_str())].into_iter().collect()
-    }
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes: HashMap<&str, ParameterValueType> = HashMap::new();
-
-        attributes.insert("flows", (&self.flows).into());
-        attributes.insert("values", (&self.values).into());
-
-        attributes
     }
 }

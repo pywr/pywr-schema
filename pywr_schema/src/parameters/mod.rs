@@ -348,6 +348,40 @@ impl CoreParameter {
         }
     }
 
+    pub fn parameters_mut(&mut self) -> HashMap<&str, ParameterValueTypeMut> {
+        match self {
+            Self::Constant(p) => p.parameters_mut(),
+            Self::ControlCurveInterpolated(p) => p.parameters_mut(),
+            Self::Aggregated(p) => p.parameters_mut(),
+            Self::AggregatedIndex(p) => p.parameters_mut(),
+            Self::AsymmetricSwitchIndex(p) => p.parameters_mut(),
+            Self::ControlCurvePiecewiseInterpolated(p) => p.parameters_mut(),
+            Self::ControlCurveIndex(p) => p.parameters_mut(),
+            Self::ControlCurve(p) => p.parameters_mut(),
+            Self::DailyProfile(p) => p.parameters_mut(),
+            Self::IndexedArray(p) => p.parameters_mut(),
+            Self::MonthlyProfile(p) => p.parameters_mut(),
+            Self::UniformDrawdownProfile(p) => p.parameters_mut(),
+            Self::Min(p) => p.parameters_mut(),
+            Self::Max(p) => p.parameters_mut(),
+            Self::Division(p) => p.parameters_mut(),
+            Self::Negative(p) => p.parameters_mut(),
+            Self::Polynomial1D(p) => p.parameters_mut(),
+            Self::ParameterThreshold(p) => p.parameters_mut(),
+            Self::TablesArray(p) => p.parameters_mut(),
+            Self::DataFrame(p) => p.parameters_mut(),
+            Self::Deficit(p) => p.parameters_mut(),
+            Self::DiscountFactor(p) => p.parameters_mut(),
+            Self::InterpolatedVolume(p) => p.parameters_mut(),
+            Self::InterpolatedFlow(p) => p.parameters_mut(),
+            Self::HydropowerTarget(p) => p.parameters_mut(),
+            Self::Storage(p) => p.parameters_mut(),
+            Self::RollingMeanFlowNode(p) => p.parameters_mut(),
+            Self::ScenarioWrapper(p) => p.parameters_mut(),
+            Self::Flow(p) => p.parameters_mut(),
+        }
+    }
+
     pub fn ty(&self) -> &'static str {
         match self {
             Self::Constant(_) => "Constant",
@@ -385,35 +419,35 @@ impl CoreParameter {
     /// Return any external resource paths referenced by this parameter
     pub fn resource_paths(&self) -> Vec<PathBuf> {
         match self {
-            CoreParameter::Aggregated(_) => Vec::new(),
-            CoreParameter::AggregatedIndex(_) => Vec::new(),
-            CoreParameter::AsymmetricSwitchIndex(_) => Vec::new(),
+            CoreParameter::Aggregated(p) => p.resource_paths(),
+            CoreParameter::AggregatedIndex(p) => p.resource_paths(),
+            CoreParameter::AsymmetricSwitchIndex(p) => p.resource_paths(),
             CoreParameter::Constant(p) => p.resource_paths(),
-            CoreParameter::ControlCurvePiecewiseInterpolated(_) => Vec::new(),
-            CoreParameter::ControlCurveInterpolated(_) => Vec::new(),
-            CoreParameter::ControlCurveIndex(_) => Vec::new(),
-            CoreParameter::ControlCurve(_) => Vec::new(),
+            CoreParameter::ControlCurvePiecewiseInterpolated(p) => p.resource_paths(),
+            CoreParameter::ControlCurveInterpolated(p) => p.resource_paths(),
+            CoreParameter::ControlCurveIndex(p) => p.resource_paths(),
+            CoreParameter::ControlCurve(p) => p.resource_paths(),
             CoreParameter::DailyProfile(p) => p.resource_paths(),
-            CoreParameter::IndexedArray(_) => Vec::new(),
+            CoreParameter::IndexedArray(p) => p.resource_paths(),
             CoreParameter::MonthlyProfile(p) => p.resource_paths(),
-            CoreParameter::UniformDrawdownProfile(_) => Vec::new(),
-            CoreParameter::Max(_) => Vec::new(),
-            CoreParameter::Min(_) => Vec::new(),
-            CoreParameter::Division(_) => Vec::new(),
-            CoreParameter::Negative(_) => Vec::new(),
-            CoreParameter::Polynomial1D(_) => Vec::new(),
-            CoreParameter::ParameterThreshold(_) => Vec::new(),
+            CoreParameter::UniformDrawdownProfile(p) => p.resource_paths(),
+            CoreParameter::Max(p) => p.resource_paths(),
+            CoreParameter::Min(p) => p.resource_paths(),
+            CoreParameter::Division(p) => p.resource_paths(),
+            CoreParameter::Negative(p) => p.resource_paths(),
+            CoreParameter::Polynomial1D(p) => p.resource_paths(),
+            CoreParameter::ParameterThreshold(p) => p.resource_paths(),
             CoreParameter::TablesArray(p) => p.resource_paths(),
             CoreParameter::DataFrame(p) => p.resource_paths(),
-            CoreParameter::Deficit(_) => Vec::new(),
-            CoreParameter::DiscountFactor(_) => Vec::new(),
-            CoreParameter::InterpolatedVolume(_) => Vec::new(),
-            CoreParameter::InterpolatedFlow(_) => Vec::new(),
-            CoreParameter::HydropowerTarget(_) => Vec::new(),
-            CoreParameter::Storage(_) => Vec::new(),
-            CoreParameter::RollingMeanFlowNode(_) => Vec::new(),
-            CoreParameter::ScenarioWrapper(_) => Vec::new(),
-            CoreParameter::Flow(_) => Vec::new(),
+            CoreParameter::Deficit(p) => p.resource_paths(),
+            CoreParameter::DiscountFactor(p) => p.resource_paths(),
+            CoreParameter::InterpolatedVolume(p) => p.resource_paths(),
+            CoreParameter::InterpolatedFlow(p) => p.resource_paths(),
+            CoreParameter::HydropowerTarget(p) => p.resource_paths(),
+            CoreParameter::Storage(p) => p.resource_paths(),
+            CoreParameter::RollingMeanFlowNode(p) => p.resource_paths(),
+            CoreParameter::ScenarioWrapper(p) => p.resource_paths(),
+            CoreParameter::Flow(p) => p.resource_paths(),
         }
     }
 
@@ -437,39 +471,55 @@ impl CoreParameter {
 
     pub fn update_resource_paths(&mut self, new_paths: &HashMap<PathBuf, PathBuf>) {
         match self {
-            CoreParameter::Aggregated(_) => {}
-            CoreParameter::AggregatedIndex(_) => {}
-            CoreParameter::AsymmetricSwitchIndex(_) => {}
+            CoreParameter::Aggregated(p) => p.update_resource_paths(new_paths),
+            CoreParameter::AggregatedIndex(p) => p.update_resource_paths(new_paths),
+            CoreParameter::AsymmetricSwitchIndex(p) => p.update_resource_paths(new_paths),
             CoreParameter::Constant(p) => p.update_resource_paths(new_paths),
-            CoreParameter::ControlCurvePiecewiseInterpolated(_) => {}
-            CoreParameter::ControlCurveInterpolated(_) => {}
-            CoreParameter::ControlCurveIndex(_) => {}
-            CoreParameter::ControlCurve(_) => {}
-            CoreParameter::DailyProfile(_) => {}
-            CoreParameter::IndexedArray(_) => {}
-            CoreParameter::MonthlyProfile(_) => {}
-            CoreParameter::UniformDrawdownProfile(_) => {}
-            CoreParameter::Max(_) => {}
-            CoreParameter::Min(_) => {}
-            CoreParameter::Division(_) => {}
-            CoreParameter::Negative(_) => {}
-            CoreParameter::Polynomial1D(_) => {}
-            CoreParameter::ParameterThreshold(_) => {}
-            CoreParameter::TablesArray(_) => {}
-            CoreParameter::DataFrame(_) => {}
-            CoreParameter::Deficit(_) => {}
-            CoreParameter::DiscountFactor(_) => {}
-            CoreParameter::InterpolatedVolume(_) => {}
-            CoreParameter::InterpolatedFlow(_) => {}
-            CoreParameter::HydropowerTarget(_) => {}
-            CoreParameter::Storage(_) => {}
-            CoreParameter::RollingMeanFlowNode(_) => {}
-            CoreParameter::ScenarioWrapper(_) => {}
-            CoreParameter::Flow(_) => {}
+            CoreParameter::ControlCurvePiecewiseInterpolated(p) => {
+                p.update_resource_paths(new_paths)
+            }
+            CoreParameter::ControlCurveInterpolated(p) => p.update_resource_paths(new_paths),
+            CoreParameter::ControlCurveIndex(p) => p.update_resource_paths(new_paths),
+            CoreParameter::ControlCurve(p) => p.update_resource_paths(new_paths),
+            CoreParameter::DailyProfile(p) => p.update_resource_paths(new_paths),
+            CoreParameter::IndexedArray(p) => p.update_resource_paths(new_paths),
+            CoreParameter::MonthlyProfile(p) => p.update_resource_paths(new_paths),
+            CoreParameter::UniformDrawdownProfile(p) => p.update_resource_paths(new_paths),
+            CoreParameter::Max(p) => p.update_resource_paths(new_paths),
+            CoreParameter::Min(p) => p.update_resource_paths(new_paths),
+            CoreParameter::Division(p) => p.update_resource_paths(new_paths),
+            CoreParameter::Negative(p) => p.update_resource_paths(new_paths),
+            CoreParameter::Polynomial1D(p) => p.update_resource_paths(new_paths),
+            CoreParameter::ParameterThreshold(p) => p.update_resource_paths(new_paths),
+            CoreParameter::TablesArray(p) => p.update_resource_paths(new_paths),
+            CoreParameter::DataFrame(p) => p.update_resource_paths(new_paths),
+            CoreParameter::Deficit(p) => p.update_resource_paths(new_paths),
+            CoreParameter::DiscountFactor(p) => p.update_resource_paths(new_paths),
+            CoreParameter::InterpolatedVolume(p) => p.update_resource_paths(new_paths),
+            CoreParameter::InterpolatedFlow(p) => p.update_resource_paths(new_paths),
+            CoreParameter::HydropowerTarget(p) => p.update_resource_paths(new_paths),
+            CoreParameter::Storage(p) => p.update_resource_paths(new_paths),
+            CoreParameter::RollingMeanFlowNode(p) => p.update_resource_paths(new_paths),
+            CoreParameter::ScenarioWrapper(p) => p.update_resource_paths(new_paths),
+            CoreParameter::Flow(p) => p.update_resource_paths(new_paths),
         }
     }
 
-    pub fn update_resource_paths_recursive(&mut self, new_paths: &HashMap<PathBuf, PathBuf>) {}
+    pub fn update_resource_paths_recursive(&mut self, new_paths: &HashMap<PathBuf, PathBuf>) {
+        // This parameter's resources
+        self.update_resource_paths(new_paths);
+
+        for (_, value_type) in self.parameters_mut() {
+            match value_type {
+                ParameterValueTypeMut::Single(value) => value.update_resource_paths(new_paths),
+                ParameterValueTypeMut::List(values) => {
+                    for value in values {
+                        value.update_resource_paths(new_paths);
+                    }
+                }
+            }
+        }
+    }
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]

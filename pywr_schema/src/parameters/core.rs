@@ -1,10 +1,12 @@
 use crate::parameters::{
-    ExternalDataRef, ParameterMeta, ParameterValue, ParameterValueType, TableDataRef,
+    ExternalDataRef, ParameterMeta, ParameterValue, ParameterValueType, ParameterValueTypeMut,
+    TableDataRef,
 };
+use pywr_schema_macros::PywrParameter;
 use std::collections::HashMap;
 use std::path::PathBuf;
 
-#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
 pub struct ConstantParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -20,29 +22,9 @@ impl ConstantParameter {
     pub fn node_references(&self) -> HashMap<&str, &str> {
         HashMap::new()
     }
-
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        HashMap::new()
-    }
-
-    pub fn resource_paths(&self) -> Vec<PathBuf> {
-        let mut resource_paths = Vec::new();
-        if let Some(external) = &self.external {
-            resource_paths.push(external.url.clone());
-        }
-        resource_paths
-    }
-
-    pub fn update_resource_paths(&mut self, new_paths: &HashMap<PathBuf, PathBuf>) {
-        if let Some(external) = &mut self.external {
-            if let Some(new_path) = new_paths.get(&external.url) {
-                external.url = new_path.clone();
-            }
-        }
-    }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
 pub struct MaxParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -54,14 +36,9 @@ impl MaxParameter {
     pub fn node_references(&self) -> HashMap<&str, &str> {
         HashMap::new()
     }
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-        attributes.insert("parameter", (&self.parameter).into());
-        attributes
-    }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
 pub struct NegativeParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -72,14 +49,9 @@ impl NegativeParameter {
     pub fn node_references(&self) -> HashMap<&str, &str> {
         HashMap::new()
     }
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-        attributes.insert("parameter", (&self.parameter).into());
-        attributes
-    }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
 pub struct MinParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -91,14 +63,9 @@ impl MinParameter {
     pub fn node_references(&self) -> HashMap<&str, &str> {
         HashMap::new()
     }
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-        attributes.insert("parameter", (&self.parameter).into());
-        attributes
-    }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
 pub struct DivisionParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -109,11 +76,5 @@ pub struct DivisionParameter {
 impl DivisionParameter {
     pub fn node_references(&self) -> HashMap<&str, &str> {
         HashMap::new()
-    }
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-        attributes.insert("numerator", (&self.numerator).into());
-        attributes.insert("denominator", (&self.denominator).into());
-        attributes
     }
 }

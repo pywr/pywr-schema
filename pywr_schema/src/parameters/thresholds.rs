@@ -1,5 +1,7 @@
-use crate::parameters::{ParameterMeta, ParameterValue, ParameterValueType};
+use crate::parameters::{ParameterMeta, ParameterValue, ParameterValueType, ParameterValueTypeMut};
+use pywr_schema_macros::PywrParameter;
 use std::collections::HashMap;
+use std::path::PathBuf;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone, Copy)]
 pub enum Predicate {
@@ -15,7 +17,7 @@ pub enum Predicate {
     GE,
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
 pub struct ParameterThresholdParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -28,14 +30,5 @@ pub struct ParameterThresholdParameter {
 impl ParameterThresholdParameter {
     pub fn node_references(&self) -> HashMap<&str, &str> {
         HashMap::new()
-    }
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-
-        attributes.insert("parameter", (&self.parameter).into());
-
-        attributes.insert("threshold", (&self.threshold).into());
-
-        attributes
     }
 }

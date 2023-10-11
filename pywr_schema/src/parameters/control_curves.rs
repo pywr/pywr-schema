@@ -1,7 +1,11 @@
-use crate::parameters::{ParameterMeta, ParameterValue, ParameterValueType, ParameterValues};
+use crate::parameters::{
+    ParameterMeta, ParameterValue, ParameterValueType, ParameterValueTypeMut, ParameterValues,
+};
+use pywr_schema_macros::PywrParameter;
 use std::collections::HashMap;
+use std::path::PathBuf;
 
-#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
 pub struct ControlCurveInterpolatedParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -18,23 +22,9 @@ impl ControlCurveInterpolatedParameter {
             .into_iter()
             .collect()
     }
-
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-        if let Some(p) = &self.control_curve {
-            attributes.insert("control_curve", p.into());
-        }
-        if let Some(parameters) = &self.control_curves {
-            attributes.insert("control_curves", parameters.into());
-        }
-        if let Some(parameters) = &self.parameters {
-            attributes.insert("parameters", parameters.into());
-        }
-        attributes
-    }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
 pub struct ControlCurveIndexParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -49,18 +39,9 @@ impl ControlCurveIndexParameter {
             .into_iter()
             .collect()
     }
-
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-
-        let cc = &self.control_curves;
-        attributes.insert("control_curves", cc.into());
-
-        attributes
-    }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
 pub struct ControlCurveParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -77,23 +58,9 @@ impl ControlCurveParameter {
             .into_iter()
             .collect()
     }
-
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-        if let Some(p) = &self.control_curve {
-            attributes.insert("control_curve", p.into());
-        }
-        if let Some(parameters) = &self.control_curves {
-            attributes.insert("control_curves", parameters.into());
-        }
-        if let Some(parameters) = &self.parameters {
-            attributes.insert("parameters", parameters.into());
-        }
-        attributes
-    }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
 pub struct ControlCurvePiecewiseInterpolatedParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -110,21 +77,6 @@ impl ControlCurvePiecewiseInterpolatedParameter {
         vec![("storage_node", self.storage_node.as_str())]
             .into_iter()
             .collect()
-    }
-
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-
-        if let Some(p) = &self.control_curve {
-            attributes.insert("control_curve", p.into());
-        }
-        if let Some(parameters) = &self.control_curves {
-            attributes.insert("control_curves", parameters.into());
-        }
-        if let Some(parameters) = &self.parameters {
-            attributes.insert("parameters", parameters.into());
-        }
-        attributes
     }
 }
 

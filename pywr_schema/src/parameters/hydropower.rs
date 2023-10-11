@@ -1,7 +1,9 @@
-use crate::parameters::{ParameterMeta, ParameterValue, ParameterValueType};
+use crate::parameters::{ParameterMeta, ParameterValue, ParameterValueType, ParameterValueTypeMut};
+use pywr_schema_macros::PywrParameter;
 use std::collections::HashMap;
+use std::path::PathBuf;
 
-#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
 pub struct HydropowerTargetParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -20,20 +22,5 @@ pub struct HydropowerTargetParameter {
 impl HydropowerTargetParameter {
     pub fn node_references(&self) -> HashMap<&str, &str> {
         HashMap::new()
-    }
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes: HashMap<&str, ParameterValueType> = HashMap::new();
-        attributes.insert("target", (&self.target).into());
-
-        if let Some(p) = &self.water_elevation_parameter {
-            attributes.insert("water_elevation_parameter", p.into());
-        }
-        if let Some(p) = &self.max_flow {
-            attributes.insert("max_flow", p.into());
-        }
-        if let Some(p) = &self.min_flow {
-            attributes.insert("min_flow", p.into());
-        }
-        attributes
     }
 }

@@ -1,9 +1,10 @@
-use crate::parameters::{ParameterMeta, ParameterValue, ParameterValueType};
-use std::collections::HashMap;
-
 use super::ParameterValues;
+use crate::parameters::{ParameterMeta, ParameterValue, ParameterValueType, ParameterValueTypeMut};
+use pywr_schema_macros::PywrParameter;
+use std::collections::HashMap;
+use std::path::PathBuf;
 
-#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
 pub struct IndexedArrayParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
@@ -15,17 +16,5 @@ pub struct IndexedArrayParameter {
 impl IndexedArrayParameter {
     pub fn node_references(&self) -> HashMap<&str, &str> {
         HashMap::new()
-    }
-
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
-        let mut attributes = HashMap::new();
-
-        let p = &self.index_parameter;
-        attributes.insert("index_parameter", p.into());
-
-        let parameters = &self.parameters;
-        attributes.insert("parameters", parameters.into());
-
-        attributes
     }
 }
