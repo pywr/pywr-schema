@@ -8,11 +8,17 @@ pub struct VirtualStorageNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
     pub nodes: Vec<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub factors: Option<Vec<f64>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub max_volume: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub min_volume: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub cost: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub initial_volume: Option<f64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub initial_volume_pc: Option<f64>,
 }
 
@@ -40,11 +46,17 @@ pub struct AnnualVirtualStorageNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
     pub nodes: Vec<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub factors: Option<Vec<f64>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub max_volume: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub min_volume: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub cost: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub initial_volume: Option<f64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub initial_volume_pc: Option<f64>,
     #[serde(default = "default_reset_day")]
     pub reset_day: u8,
@@ -78,11 +90,17 @@ pub struct MonthlyVirtualStorageNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
     pub nodes: Vec<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub factors: Option<Vec<f64>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub max_volume: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub min_volume: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub cost: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub initial_volume: Option<f64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub initial_volume_pc: Option<f64>,
     #[serde(default = "default_months")]
     pub months: u8,
@@ -116,11 +134,17 @@ pub struct SeasonalVirtualStorageNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
     pub nodes: Vec<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub factors: Option<Vec<f64>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub max_volume: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub min_volume: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub cost: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub initial_volume: Option<f64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub initial_volume_pc: Option<f64>,
     #[serde(default = "default_reset_day")]
     pub reset_day: u8,
@@ -150,13 +174,21 @@ pub struct RollingVirtualStorageNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
     pub nodes: Vec<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub factors: Option<Vec<f64>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub max_volume: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub min_volume: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub cost: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub initial_volume: Option<f64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub initial_volume_pc: Option<f64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub timesteps: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub days: Option<i64>,
 }
 

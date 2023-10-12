@@ -9,8 +9,11 @@ use std::collections::HashMap;
 pub struct InputNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub max_flow: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub min_flow: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub cost: Option<ParameterValue>,
 }
 
@@ -24,8 +27,11 @@ impl InputNode {
 pub struct LinkNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub max_flow: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub min_flow: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub cost: Option<ParameterValue>,
 }
 
@@ -39,8 +45,11 @@ impl LinkNode {
 pub struct OutputNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub max_flow: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub min_flow: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub cost: Option<ParameterValue>,
 }
 
@@ -54,10 +63,15 @@ impl OutputNode {
 pub struct StorageNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub max_volume: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub min_volume: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub cost: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub initial_volume: Option<f64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub initial_volume_pc: Option<f64>,
 }
 
@@ -71,10 +85,15 @@ impl StorageNode {
 pub struct ReservoirNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub max_volume: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub min_volume: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub cost: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub initial_volume: Option<f64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub initial_volume_pc: Option<f64>,
 }
 
@@ -88,7 +107,9 @@ impl ReservoirNode {
 pub struct CatchmentNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub flow: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub cost: Option<ParameterValue>,
 }
 
@@ -103,9 +124,13 @@ pub struct AggregatedNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
     pub nodes: Vec<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub max_flow: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub min_flow: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub factors: Option<ParameterValues>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub flow_weights: Option<Vec<f64>>,
 }
 

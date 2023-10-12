@@ -7,7 +7,9 @@ use std::collections::HashMap;
 pub struct RiverGaugeNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub mrf: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub mrf_cost: Option<ParameterValue>,
 }
 

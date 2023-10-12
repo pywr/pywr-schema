@@ -9,8 +9,11 @@ pub struct Polynomial1DParameter {
     pub meta: Option<ParameterMeta>,
     pub storage_node: String,
     pub coefficients: Vec<f64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub use_proportional_volume: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub scale: Option<f64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub offset: Option<f64>,
 }
 

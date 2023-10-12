@@ -7,8 +7,11 @@ use std::collections::HashMap;
 pub struct DelayNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub days: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub timesteps: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub initial_flow: Option<f64>,
 }
 

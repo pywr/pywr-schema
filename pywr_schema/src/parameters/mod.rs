@@ -58,7 +58,9 @@ use std::vec::IntoIter;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct ParameterMeta {
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub comment: Option<String>,
 }
 
@@ -793,7 +795,9 @@ impl ParameterValue {
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct ExternalDataRef {
     pub url: PathBuf,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub column: Option<TableIndex>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub index: Option<TableIndex>,
     #[serde(flatten)]
     pub attributes: HashMap<String, Value>,
@@ -816,7 +820,9 @@ pub enum TableIndexEntry {
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct TableDataRef {
     pub table: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub column: Option<TableIndex>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub index: Option<TableIndex>,
 }
 

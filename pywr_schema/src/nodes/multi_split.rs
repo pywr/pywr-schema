@@ -6,10 +6,15 @@ use std::collections::HashMap;
 pub struct MultiSplitLinkNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub max_flows: Option<ParameterValues>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub costs: Option<ParameterValues>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub extra_slots: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub slot_names: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub factors: Option<ParameterValues>,
 }
 

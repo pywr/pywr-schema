@@ -7,12 +7,19 @@ use std::path::PathBuf;
 pub struct DataFrameParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub scenario: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub timestep_offset: Option<i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub column: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub index: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub indexes: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub table: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub url: Option<PathBuf>,
     #[serde(flatten)]
     pub pandas_kwargs: HashMap<String, serde_json::Value>,

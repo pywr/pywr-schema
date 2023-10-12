@@ -32,14 +32,18 @@ pub use virtual_storage::{
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct NodePosition {
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub schematic: Option<(f32, f32)>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub geographic: Option<(f32, f32)>,
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct NodeMeta {
     pub name: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub comment: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub position: Option<NodePosition>,
 }
 

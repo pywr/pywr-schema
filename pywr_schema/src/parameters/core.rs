@@ -10,11 +10,11 @@ use std::path::PathBuf;
 pub struct ConstantParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
-    #[serde(alias = "values")]
+    #[serde(alias = "values", skip_serializing_if = "Option::is_none")]
     pub value: Option<f64>,
-    #[serde(flatten)]
+    #[serde(flatten, skip_serializing_if = "Option::is_none")]
     pub external: Option<ExternalDataRef>,
-    #[serde(flatten)]
+    #[serde(flatten, skip_serializing_if = "Option::is_none")]
     pub table: Option<TableDataRef>,
 }
 

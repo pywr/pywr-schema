@@ -12,6 +12,7 @@ pub struct InterpolatedVolumeParameter {
     pub node: String,
     pub volumes: ParameterValues,
     pub values: ParameterValues,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub interp_kwargs: Option<HashMap<String, serde_json::Value>>,
 }
 
@@ -28,6 +29,7 @@ pub struct InterpolatedFlowParameter {
     pub node: String,
     pub flows: ParameterValues,
     pub values: ParameterValues,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub interp_kwargs: Option<HashMap<String, serde_json::Value>>,
 }
 
