@@ -8,7 +8,9 @@ pub struct PiecewiseLinkNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
     pub nsteps: usize,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub max_flows: Option<ParameterValues>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub costs: Option<ParameterValues>,
 }
 

@@ -25,8 +25,11 @@ pub enum PywrSchemaError {
 
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct Metadata {
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub minimum_version: Option<String>,
 }
 
@@ -48,6 +51,7 @@ pub struct Timestepper {
 pub struct Scenario {
     pub name: String,
     pub size: usize,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub ensemble_names: Option<Vec<String>>,
 }
 
@@ -55,11 +59,15 @@ pub struct Scenario {
 pub struct PywrModel {
     pub metadata: Metadata,
     pub timestepper: Timestepper,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub scenarios: Option<Vec<Scenario>>,
     pub nodes: Vec<Node>,
     pub edges: Vec<Edge>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub parameters: Option<ParameterVec>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub tables: Option<TableVec>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub recorders: Option<serde_json::Value>,
 }
 

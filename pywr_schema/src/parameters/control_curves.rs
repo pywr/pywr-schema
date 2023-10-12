@@ -64,11 +64,16 @@ impl ControlCurveParameter {
 pub struct ControlCurvePiecewiseInterpolatedParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub control_curve: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub control_curves: Option<ParameterValues>,
     pub storage_node: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub values: Option<Vec<[f64; 2]>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub parameters: Option<ParameterValues>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub minimum: Option<f64>,
 }
 

@@ -9,10 +9,11 @@ use std::path::PathBuf;
 pub struct DailyProfileParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub values: Option<Vec<f64>>,
-    #[serde(flatten)]
+    #[serde(flatten, skip_serializing_if = "Option::is_none")]
     pub external: Option<ExternalDataRef>,
-    #[serde(flatten)]
+    #[serde(flatten, skip_serializing_if = "Option::is_none")]
     pub table_ref: Option<TableDataRef>,
 }
 
