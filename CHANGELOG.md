@@ -1,6 +1,24 @@
 # Changelog
 
-## [v0.7.0](https://github.com/pywr/pywr-schema/compare/v0.6.0...HEAD) (2023-09-15)
+## [v0.8.0](https://github.com/pywr/pywr-schema/compare/v0.7.0...v0.8.0) (2023-10-12)
+
+### Features
+
+* Add PywrParameter derive
+([a21d02c](https://github.com/pywr/pywr-schema/commit/a21d02cf0416f957a61bed9c8541799b656bfa78))
+* Use proc-macro to generate some Node methods.
+([a4efb91](https://github.com/pywr/pywr-schema/commit/a4efb91f7058770ad6953304c531508619374bce))
+* Improve resource path discovery.
+([ff831c2](https://github.com/pywr/pywr-schema/commit/ff831c23b135c16bb6521a3689cbf724bb502bf9))
+* Add additional parameters.
+([abc1c75](https://github.com/pywr/pywr-schema/commit/abc1c757d0e11292e1cf4b23d0abcee6501f732c))
+
+### Fixes
+
+* Skip serializing None for most fields.
+([28e3a33](https://github.com/pywr/pywr-schema/commit/28e3a3376154acd51fe2fe6059f507c9e62f90bd))
+
+## [v0.7.0](https://github.com/pywr/pywr-schema/compare/v0.6.0...v0.7.0) (2023-09-16)
 
 ### Features
 
