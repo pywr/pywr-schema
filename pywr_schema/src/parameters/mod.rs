@@ -35,6 +35,7 @@ pub use crate::parameters::hydropower::HydropowerTargetParameter;
 pub use crate::parameters::indexed_array::IndexedArrayParameter;
 pub use crate::parameters::interpolated::{InterpolatedFlowParameter, InterpolatedVolumeParameter};
 pub use crate::parameters::polynomial::Polynomial1DParameter;
+use crate::parameters::profiles::RbfProfileParameter;
 pub use crate::parameters::profiles::{
     DailyProfileParameter, MonthInterpDay, MonthlyProfileParameter, UniformDrawdownProfileParameter,
 };
@@ -243,6 +244,12 @@ pub enum CoreParameter {
     ScenarioWrapper(ScenarioWrapperParameter),
     #[serde(alias = "flow", alias = "flowparameter", alias = "FlowParameter")]
     Flow(FlowParameter),
+    #[serde(
+        alias = "rbfprofile",
+        alias = "rbfprofileparameter",
+        alias = "RbfProfileParameter"
+    )]
+    RbfProfile(RbfProfileParameter),
 }
 
 impl CoreParameter {
@@ -279,6 +286,7 @@ impl CoreParameter {
             Self::RollingMeanFlowNode(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::ScenarioWrapper(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::Flow(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::RbfProfile(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
         }
     }
 
@@ -313,6 +321,7 @@ impl CoreParameter {
             Self::RollingMeanFlowNode(p) => p.node_references(),
             Self::ScenarioWrapper(p) => p.node_references(),
             Self::Flow(p) => p.node_references(),
+            Self::RbfProfile(p) => p.node_references(),
         }
     }
 
@@ -347,6 +356,7 @@ impl CoreParameter {
             Self::RollingMeanFlowNode(p) => p.parameters(),
             Self::ScenarioWrapper(p) => p.parameters(),
             Self::Flow(p) => p.parameters(),
+            Self::RbfProfile(p) => p.parameters(),
         }
     }
 
@@ -381,6 +391,7 @@ impl CoreParameter {
             Self::RollingMeanFlowNode(p) => p.parameters_mut(),
             Self::ScenarioWrapper(p) => p.parameters_mut(),
             Self::Flow(p) => p.parameters_mut(),
+            Self::RbfProfile(p) => p.parameters_mut(),
         }
     }
 
@@ -415,6 +426,7 @@ impl CoreParameter {
             Self::RollingMeanFlowNode(_) => "RollingMeanFlowNode",
             Self::ScenarioWrapper(_) => "ScenarioWrapper",
             Self::Flow(_) => "Flow",
+            Self::RbfProfile(_) => "RbfProfile",
         }
     }
 
@@ -450,6 +462,7 @@ impl CoreParameter {
             CoreParameter::RollingMeanFlowNode(p) => p.resource_paths(),
             CoreParameter::ScenarioWrapper(p) => p.resource_paths(),
             CoreParameter::Flow(p) => p.resource_paths(),
+            CoreParameter::RbfProfile(p) => p.resource_paths(),
         }
     }
 
@@ -504,6 +517,7 @@ impl CoreParameter {
             CoreParameter::RollingMeanFlowNode(p) => p.update_resource_paths(new_paths),
             CoreParameter::ScenarioWrapper(p) => p.update_resource_paths(new_paths),
             CoreParameter::Flow(p) => p.update_resource_paths(new_paths),
+            CoreParameter::RbfProfile(p) => p.update_resource_paths(new_paths),
         }
     }
 
