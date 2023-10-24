@@ -36,7 +36,8 @@ pub use crate::parameters::indexed_array::IndexedArrayParameter;
 pub use crate::parameters::interpolated::{InterpolatedFlowParameter, InterpolatedVolumeParameter};
 pub use crate::parameters::polynomial::Polynomial1DParameter;
 pub use crate::parameters::profiles::{
-    DailyProfileParameter, MonthInterpDay, MonthlyProfileParameter, UniformDrawdownProfileParameter,
+    DailyProfileParameter, MonthInterpDay, MonthlyProfileParameter,
+    UniformDrawdownProfileParameter, WeeklyProfileParameter,
 };
 pub use crate::parameters::rolling_mean_flow_node::RollingMeanFlowNodeParameter;
 pub use crate::parameters::scenario_wrapper::ScenarioWrapperParameter;
@@ -55,7 +56,6 @@ use std::marker::PhantomData;
 use std::ops::{Deref, DerefMut};
 use std::path::PathBuf;
 use std::vec::IntoIter;
-use crate::parameters::profiles::WeeklyProfileParameter;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct ParameterMeta {
