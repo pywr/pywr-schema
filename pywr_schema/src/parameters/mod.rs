@@ -35,9 +35,9 @@ pub use crate::parameters::hydropower::HydropowerTargetParameter;
 pub use crate::parameters::indexed_array::IndexedArrayParameter;
 pub use crate::parameters::interpolated::{InterpolatedFlowParameter, InterpolatedVolumeParameter};
 pub use crate::parameters::polynomial::Polynomial1DParameter;
-use crate::parameters::profiles::RbfProfileParameter;
 pub use crate::parameters::profiles::{
-    DailyProfileParameter, MonthInterpDay, MonthlyProfileParameter, UniformDrawdownProfileParameter,
+    DailyProfileParameter, MonthInterpDay, MonthlyProfileParameter, RbfProfileParameter,
+    UniformDrawdownProfileParameter,
 };
 pub use crate::parameters::rolling_mean_flow_node::RollingMeanFlowNodeParameter;
 pub use crate::parameters::scenario_wrapper::ScenarioWrapperParameter;
