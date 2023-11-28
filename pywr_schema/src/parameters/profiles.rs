@@ -79,3 +79,23 @@ impl WeeklyProfileParameter {
         HashMap::new()
     }
 }
+
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
+pub struct RbfProfileParameter {
+    #[serde(flatten)]
+    pub meta: Option<ParameterMeta>,
+    pub days_of_year: Vec<u32>,
+    pub values: Vec<f64>,
+    pub lower_bounds: Option<f64>,
+    pub upper_bounds: Option<f64>,
+    pub variable_days_of_year_range: Option<u32>,
+    pub min_value: Option<f64>,
+    pub max_value: Option<f64>,
+    pub rbf_kwargs: HashMap<String, serde_json::Value>,
+}
+
+impl RbfProfileParameter {
+    pub fn node_references(&self) -> HashMap<&str, &str> {
+        HashMap::new()
+    }
+}
