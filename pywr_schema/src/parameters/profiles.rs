@@ -64,6 +64,23 @@ impl UniformDrawdownProfileParameter {
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
+pub struct WeeklyProfileParameter {
+    #[serde(flatten)]
+    pub meta: Option<ParameterMeta>,
+    pub values: Option<Vec<f64>>,
+    #[serde(flatten)]
+    pub external: Option<ExternalDataRef>,
+    #[serde(flatten)]
+    pub table_ref: Option<TableDataRef>,
+}
+
+impl WeeklyProfileParameter {
+    pub fn node_references(&self) -> HashMap<&str, &str> {
+        HashMap::new()
+    }
+}
+
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
 pub struct RbfProfileParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,

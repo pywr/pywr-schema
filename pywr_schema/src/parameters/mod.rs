@@ -37,7 +37,7 @@ pub use crate::parameters::interpolated::{InterpolatedFlowParameter, Interpolate
 pub use crate::parameters::polynomial::Polynomial1DParameter;
 pub use crate::parameters::profiles::{
     DailyProfileParameter, MonthInterpDay, MonthlyProfileParameter, RbfProfileParameter,
-    UniformDrawdownProfileParameter,
+    UniformDrawdownProfileParameter, WeeklyProfileParameter,
 };
 pub use crate::parameters::rolling_mean_flow_node::RollingMeanFlowNodeParameter;
 pub use crate::parameters::scenario_wrapper::ScenarioWrapperParameter;
@@ -148,6 +148,12 @@ pub enum CoreParameter {
         alias = "MonthlyProfileParameter"
     )]
     MonthlyProfile(MonthlyProfileParameter),
+    #[serde(
+        alias = "weeklyprofile",
+        alias = "weeklyprofileparameter",
+        alias = "WeeklyProfileParameter"
+    )]
+    WeeklyProfile(WeeklyProfileParameter),
     #[serde(
         alias = "uniformdrawdownprofile",
         alias = "uniformdrawdownprofileparameter",
@@ -268,6 +274,7 @@ impl CoreParameter {
             Self::DailyProfile(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::IndexedArray(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::MonthlyProfile(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::WeeklyProfile(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::UniformDrawdownProfile(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::Max(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::Min(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
@@ -303,6 +310,7 @@ impl CoreParameter {
             Self::DailyProfile(p) => p.node_references(),
             Self::IndexedArray(p) => p.node_references(),
             Self::MonthlyProfile(p) => p.node_references(),
+            Self::WeeklyProfile(p) => p.node_references(),
             Self::UniformDrawdownProfile(p) => p.node_references(),
             Self::Max(p) => p.node_references(),
             Self::Min(p) => p.node_references(),
@@ -338,6 +346,7 @@ impl CoreParameter {
             Self::DailyProfile(p) => p.parameters(),
             Self::IndexedArray(p) => p.parameters(),
             Self::MonthlyProfile(p) => p.parameters(),
+            Self::WeeklyProfile(p) => p.parameters(),
             Self::UniformDrawdownProfile(p) => p.parameters(),
             Self::Min(p) => p.parameters(),
             Self::Max(p) => p.parameters(),
@@ -373,6 +382,7 @@ impl CoreParameter {
             Self::DailyProfile(p) => p.parameters_mut(),
             Self::IndexedArray(p) => p.parameters_mut(),
             Self::MonthlyProfile(p) => p.parameters_mut(),
+            Self::WeeklyProfile(p) => p.parameters_mut(),
             Self::UniformDrawdownProfile(p) => p.parameters_mut(),
             Self::Min(p) => p.parameters_mut(),
             Self::Max(p) => p.parameters_mut(),
@@ -408,6 +418,7 @@ impl CoreParameter {
             Self::DailyProfile(_) => "DailyProfile",
             Self::IndexedArray(_) => "IndexedArray",
             Self::MonthlyProfile(_) => "MonthlyProfile",
+            Self::WeeklyProfile(_) => "WeeklyProfile",
             Self::UniformDrawdownProfile(_) => "UniformDrawdownProfile",
             Self::Max(_) => "Max",
             Self::Min(_) => "Min",
@@ -444,6 +455,7 @@ impl CoreParameter {
             CoreParameter::DailyProfile(p) => p.resource_paths(),
             CoreParameter::IndexedArray(p) => p.resource_paths(),
             CoreParameter::MonthlyProfile(p) => p.resource_paths(),
+            CoreParameter::WeeklyProfile(p) => p.resource_paths(),
             CoreParameter::UniformDrawdownProfile(p) => p.resource_paths(),
             CoreParameter::Max(p) => p.resource_paths(),
             CoreParameter::Min(p) => p.resource_paths(),
@@ -499,6 +511,7 @@ impl CoreParameter {
             CoreParameter::DailyProfile(p) => p.update_resource_paths(new_paths),
             CoreParameter::IndexedArray(p) => p.update_resource_paths(new_paths),
             CoreParameter::MonthlyProfile(p) => p.update_resource_paths(new_paths),
+            CoreParameter::WeeklyProfile(p) => p.update_resource_paths(new_paths),
             CoreParameter::UniformDrawdownProfile(p) => p.update_resource_paths(new_paths),
             CoreParameter::Max(p) => p.update_resource_paths(new_paths),
             CoreParameter::Min(p) => p.update_resource_paths(new_paths),
