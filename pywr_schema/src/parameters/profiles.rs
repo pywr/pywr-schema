@@ -68,6 +68,10 @@ pub struct WeeklyProfileParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
     pub values: Option<Vec<f64>>,
+    #[serde(flatten)]
+    pub external: Option<ExternalDataRef>,
+    #[serde(flatten)]
+    pub table_ref: Option<TableDataRef>,
 }
 
 impl WeeklyProfileParameter {
