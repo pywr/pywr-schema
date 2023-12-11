@@ -25,11 +25,11 @@ pub use river_split::RiverSplitNode;
 use serde_json::Value;
 use std::collections::HashMap;
 use std::path::PathBuf;
+use strum_macros::EnumVariantNames;
 pub use virtual_storage::{
     AnnualVirtualStorageNode, MonthlyVirtualStorageNode, RollingVirtualStorageNode,
     SeasonalVirtualStorageNode, VirtualStorageNode,
 };
-use strum_macros::EnumVariantNames;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct NodePosition {
