@@ -15,3 +15,5 @@ serde_json = "1.0"
 time = { version = "0.3.14", features = ["serde", "serde-well-known", "serde-human-readable"] }
 thiserror = "1.0.44"
 pywr-schema-macros = { path = "../pywr-schema-macros" }
+strum = "0.25"
+strum_macros = "0.25"

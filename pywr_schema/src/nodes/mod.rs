@@ -29,6 +29,7 @@ pub use virtual_storage::{
     AnnualVirtualStorageNode, MonthlyVirtualStorageNode, RollingVirtualStorageNode,
     SeasonalVirtualStorageNode, VirtualStorageNode,
 };
+use strum_macros::EnumVariantNames;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct NodePosition {
@@ -57,7 +58,7 @@ pub struct CustomNode {
     pub attributes: HashMap<String, Value>,
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, EnumVariantNames, Clone)]
 #[serde(tag = "type")]
 pub enum CoreNode {
     #[serde(alias = "input")]
