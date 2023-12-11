@@ -139,7 +139,7 @@ dependencies = [
 
 [[package]]
 name = "pywr-schema"
-version = "0.9.0"
+version = "0.10.0"
 dependencies = [
  "pywr-schema-macros",
  "serde",
@@ -152,7 +152,7 @@ dependencies = [
 
 [[package]]
 name = "pywr-schema-macros"
-version = "0.8.0"
+version = "0.10.0"
 dependencies = [
  "quote",
  "syn 2.0.38",
@@ -160,7 +160,7 @@ dependencies = [
 
 [[package]]
 name = "pywr_validator"
-version = "0.9.0"
+version = "0.10.0"
 dependencies = [
  "clap",
  "pywr-schema",
