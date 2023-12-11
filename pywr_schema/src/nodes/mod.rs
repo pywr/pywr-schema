@@ -25,6 +25,7 @@ pub use river_split::RiverSplitNode;
 use serde_json::Value;
 use std::collections::HashMap;
 use std::path::PathBuf;
+use strum_macros::EnumVariantNames;
 pub use virtual_storage::{
     AnnualVirtualStorageNode, MonthlyVirtualStorageNode, RollingVirtualStorageNode,
     SeasonalVirtualStorageNode, VirtualStorageNode,
@@ -57,7 +58,7 @@ pub struct CustomNode {
     pub attributes: HashMap<String, Value>,
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, EnumVariantNames, Clone)]
 #[serde(tag = "type")]
 pub enum CoreNode {
     #[serde(alias = "input")]
