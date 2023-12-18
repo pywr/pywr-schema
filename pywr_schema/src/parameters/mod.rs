@@ -26,7 +26,8 @@ pub use crate::parameters::control_curves::{
     ControlCurvePiecewiseInterpolatedParameter,
 };
 pub use crate::parameters::core::{
-    ConstantParameter, DivisionParameter, MaxParameter, MinParameter, NegativeParameter,
+    ConstantParameter, DivisionParameter, MaxParameter, MinParameter, NegativeMaxParameter,
+    NegativeMinParameter, NegativeParameter,
 };
 pub use crate::parameters::deficit::DeficitParameter;
 pub use crate::parameters::discount_factor::DiscountFactorParameter;
@@ -165,6 +166,18 @@ pub enum CoreParameter {
     #[serde(alias = "min", alias = "minparameter", alias = "MinParameter")]
     Min(MinParameter),
     #[serde(
+        alias = "negativemin",
+        alias = "negativeminparameter",
+        alias = "NegativeMinParameter"
+    )]
+    NegativeMin(NegativeMinParameter),
+    #[serde(
+        alias = "negativemax",
+        alias = "negativemaxparameter",
+        alias = "NegativeMaxParameter"
+    )]
+    NegativeMax(NegativeMaxParameter),
+    #[serde(
         alias = "division",
         alias = "divisionparameter",
         alias = "DivisionParameter"
@@ -278,6 +291,8 @@ impl CoreParameter {
             Self::UniformDrawdownProfile(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::Max(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::Min(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::NegativeMin(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::NegativeMax(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::Division(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::Negative(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::Polynomial1D(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
@@ -313,6 +328,8 @@ impl CoreParameter {
             Self::WeeklyProfile(p) => p.node_references(),
             Self::UniformDrawdownProfile(p) => p.node_references(),
             Self::Max(p) => p.node_references(),
+            Self::NegativeMin(p) => p.node_references(),
+            Self::NegativeMax(p) => p.node_references(),
             Self::Min(p) => p.node_references(),
             Self::Division(p) => p.node_references(),
             Self::Negative(p) => p.node_references(),
@@ -348,6 +365,8 @@ impl CoreParameter {
             Self::MonthlyProfile(p) => p.parameters(),
             Self::WeeklyProfile(p) => p.parameters(),
             Self::UniformDrawdownProfile(p) => p.parameters(),
+            Self::NegativeMin(p) => p.parameters(),
+            Self::NegativeMax(p) => p.parameters(),
             Self::Min(p) => p.parameters(),
             Self::Max(p) => p.parameters(),
             Self::Division(p) => p.parameters(),
@@ -384,6 +403,8 @@ impl CoreParameter {
             Self::MonthlyProfile(p) => p.parameters_mut(),
             Self::WeeklyProfile(p) => p.parameters_mut(),
             Self::UniformDrawdownProfile(p) => p.parameters_mut(),
+            Self::NegativeMax(p) => p.parameters_mut(),
+            Self::NegativeMin(p) => p.parameters_mut(),
             Self::Min(p) => p.parameters_mut(),
             Self::Max(p) => p.parameters_mut(),
             Self::Division(p) => p.parameters_mut(),
@@ -423,6 +444,8 @@ impl CoreParameter {
             Self::Max(_) => "Max",
             Self::Min(_) => "Min",
             Self::Division(_) => "Division",
+            Self::NegativeMin(_) => "NegativeMin",
+            Self::NegativeMax(_) => "NegativeMax",
             Self::Negative(_) => "Negative",
             Self::Polynomial1D(_) => "Polynomial1D",
             Self::ParameterThreshold(_) => "ParameterThreshold",
@@ -461,6 +484,8 @@ impl CoreParameter {
             CoreParameter::Min(p) => p.resource_paths(),
             CoreParameter::Division(p) => p.resource_paths(),
             CoreParameter::Negative(p) => p.resource_paths(),
+            CoreParameter::NegativeMin(p) => p.resource_paths(),
+            CoreParameter::NegativeMax(p) => p.resource_paths(),
             CoreParameter::Polynomial1D(p) => p.resource_paths(),
             CoreParameter::ParameterThreshold(p) => p.resource_paths(),
             CoreParameter::TablesArray(p) => p.resource_paths(),
@@ -517,6 +542,8 @@ impl CoreParameter {
             CoreParameter::Min(p) => p.update_resource_paths(new_paths),
             CoreParameter::Division(p) => p.update_resource_paths(new_paths),
             CoreParameter::Negative(p) => p.update_resource_paths(new_paths),
+            CoreParameter::NegativeMin(p) => p.update_resource_paths(new_paths),
+            CoreParameter::NegativeMax(p) => p.update_resource_paths(new_paths),
             CoreParameter::Polynomial1D(p) => p.update_resource_paths(new_paths),
             CoreParameter::ParameterThreshold(p) => p.update_resource_paths(new_paths),
             CoreParameter::TablesArray(p) => p.update_resource_paths(new_paths),
