@@ -66,6 +66,34 @@ impl MinParameter {
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
+pub struct NegativeMinParameter {
+    #[serde(flatten)]
+    pub meta: Option<ParameterMeta>,
+    pub parameter: ParameterValue,
+    pub threshold: Option<f64>,
+}
+
+impl NegativeMinParameter {
+    pub fn node_references(&self) -> HashMap<&str, &str> {
+        HashMap::new()
+    }
+}
+
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
+pub struct NegativeMaxParameter {
+    #[serde(flatten)]
+    pub meta: Option<ParameterMeta>,
+    pub parameter: ParameterValue,
+    pub threshold: Option<f64>,
+}
+
+impl NegativeMaxParameter {
+    pub fn node_references(&self) -> HashMap<&str, &str> {
+        HashMap::new()
+    }
+}
+
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
 pub struct DivisionParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
