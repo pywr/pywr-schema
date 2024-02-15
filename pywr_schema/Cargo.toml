@@ -13,7 +13,7 @@ path = "src/lib.rs"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1.0"
 time = { version = "0.3.14", features = ["serde", "serde-well-known", "serde-human-readable"] }
-thiserror = "1.0.55"
+thiserror = "1.0.57"
 pywr-schema-macros = { path = "../pywr-schema-macros" }
 strum = "0.26"
 strum_macros = "0.26"
