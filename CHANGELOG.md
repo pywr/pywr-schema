@@ -1,6 +1,8 @@
 # Changelog
 
-## [v0.11.0](https://github.com/pywr/pywr-schema/compare/v0.10.0...HEAD) (2023-12-21)
+## [v0.11.1](https://github.com/pywr/pywr-schema/compare/v0.11.0...v0.11.1) (2024-02-15)
+
+## [v0.11.0](https://github.com/pywr/pywr-schema/compare/v0.10.0...v0.11.0) (2024-01-03)
 
 ### Features
 
