@@ -12,7 +12,7 @@ path = "src/lib.rs"
 proc-macro = true
 
 [dependencies]
-syn = "2.0.53"
+syn = "2.0.55"
 quote = "1.0.35"
 
 
