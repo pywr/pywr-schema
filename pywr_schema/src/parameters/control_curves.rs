@@ -29,7 +29,6 @@ pub struct ControlCurveIndexParameter {
     #[serde(flatten)]
     pub meta: Option<ParameterMeta>,
     pub control_curves: ParameterValues,
-    pub parameters: Option<ParameterValues>,
     pub storage_node: String,
 }
 
