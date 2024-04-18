@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.2](https://github.com/pywr/pywr-schema/compare/v0.11.1...v0.11.2) - 2024-02-15
+
+### Fixes
+
+- Remove parameter attribute from ControlCurveIndexParameter definition (#54)
+([6255ce0](https://github.com/pywr/pywr-schema/commit/6255ce0debad874d56049c1d3a73b318ce572bba))
+
 ## [v0.11.1](https://github.com/pywr/pywr-schema/compare/v0.11.0...v0.11.1) (2024-02-15)
 
 ## [v0.11.0](https://github.com/pywr/pywr-schema/compare/v0.10.0...v0.11.0) (2024-01-03)
