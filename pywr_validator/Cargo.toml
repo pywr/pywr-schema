@@ -1,12 +1,12 @@
 [package]
 name = "pywr_validator"
-version = "0.11.2"
+version = "0.12.0"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-pywr-schema = {  path = "../pywr_schema" }
-clap = {version = "4", features = ["derive"] }
+pywr-schema = { path = "../pywr_schema" }
+clap = { version = "4", features = ["derive"] }
 serde_json = "1.0"
