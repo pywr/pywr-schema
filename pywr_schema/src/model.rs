@@ -2,12 +2,12 @@ use crate::edge::Edge;
 use crate::nodes::Node;
 use crate::parameters::{Parameter, ParameterVec};
 use crate::tables::TableVec;
+use chrono::{NaiveDate, NaiveDateTime};
 use std::collections::{HashMap, HashSet};
 use std::fs::File;
 use std::io;
 use std::path::{Path, PathBuf};
 use thiserror::Error;
-use time::Date;
 
 #[derive(Error, Debug)]
 pub enum PywrSchemaError {
@@ -40,10 +40,17 @@ pub enum Timestep {
     Frequency(String),
 }
 
+#[derive(serde::Deserialize, serde::Serialize, Clone, Copy, Debug)]
+#[serde(untagged)]
+pub enum DateType {
+    Date(NaiveDate),
+    DateTime(NaiveDateTime),
+}
+
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct Timestepper {
-    pub start: Date,
-    pub end: Date,
+    pub start: DateType,
+    pub end: DateType,
     pub timestep: Timestep,
 }
 

@@ -33,12 +33,12 @@ impl VirtualStorageNode {
     }
 }
 
-fn default_reset_day() -> u8 {
+fn default_reset_day() -> u32 {
     1
 }
 
-fn default_reset_month() -> time::Month {
-    time::Month::January
+fn default_reset_month() -> u32 {
+    1
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Clone, PywrNode)]
@@ -59,9 +59,9 @@ pub struct AnnualVirtualStorageNode {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub initial_volume_pc: Option<f64>,
     #[serde(default = "default_reset_day")]
-    pub reset_day: u8,
+    pub reset_day: u32,
     #[serde(default = "default_reset_month")]
-    pub reset_month: time::Month,
+    pub reset_month: u32,
     #[serde(default)]
     pub reset_to_initial_volume: bool,
 }
@@ -121,12 +121,12 @@ impl MonthlyVirtualStorageNode {
     }
 }
 
-fn default_end_day() -> u8 {
+fn default_end_day() -> u32 {
     31
 }
 
-fn default_end_month() -> time::Month {
-    time::Month::December
+fn default_end_month() -> u32 {
+    12
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Clone, PywrNode)]
@@ -147,13 +147,13 @@ pub struct SeasonalVirtualStorageNode {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub initial_volume_pc: Option<f64>,
     #[serde(default = "default_reset_day")]
-    pub reset_day: u8,
+    pub reset_day: u32,
     #[serde(default = "default_reset_month")]
-    pub reset_month: time::Month,
+    pub reset_month: u32,
     #[serde(default = "default_end_day")]
-    pub end_day: u8,
+    pub end_day: u32,
     #[serde(default = "default_end_month")]
-    pub end_month: time::Month,
+    pub end_month: u32,
     #[serde(default)]
     pub reset_to_initial_volume: bool,
 }
