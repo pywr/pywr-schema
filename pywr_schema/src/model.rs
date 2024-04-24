@@ -63,13 +63,11 @@ pub struct Scenario {
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
-pub struct PywrModel {
-    pub metadata: Metadata,
-    pub timestepper: Timestepper,
+pub struct PywrNetwork {
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub scenarios: Option<Vec<Scenario>>,
-    pub nodes: Vec<Node>,
-    pub edges: Vec<Edge>,
+    pub nodes: Option<Vec<Node>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub edges: Option<Vec<Edge>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub parameters: Option<ParameterVec>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -78,7 +76,7 @@ pub struct PywrModel {
     pub recorders: Option<serde_json::Value>,
 }
 
-impl PywrModel {
+impl PywrNetwork {
     /// Load a PywrNetwork from a file path
     pub fn from_path<P: AsRef<Path>>(path: P) -> Result<Self, PywrSchemaError> {
         let file = File::open(path)?;
@@ -91,17 +89,26 @@ impl PywrModel {
 
     /// Return a [`Node`] from its name. If no node  with that name exists return [`None`].
     pub fn get_node_by_name(&self, name: &str) -> Option<&Node> {
-        self.nodes.iter().find(|n| n.name() == name)
+        match &self.nodes {
+            Some(nodes) => nodes.iter().find(|n| n.name() == name),
+            None => None,
+        }
     }
 
     /// Return a node's index from its name. If no node with that name exists return [`None`].
     pub fn get_node_index_by_name(&self, name: &str) -> Option<usize> {
-        self.nodes.iter().position(|n| (n.name() == name))
+        match &self.nodes {
+            Some(nodes) => nodes.iter().position(|n| n.name() == name),
+            None => None,
+        }
     }
 
     /// Return a [`Node`] from its index. If no node  with that name exists return [`None`].
     pub fn get_node(&self, idx: usize) -> Option<&Node> {
-        self.nodes.get(idx)
+        match &self.nodes {
+            Some(nodes) => nodes.get(idx),
+            None => None,
+        }
     }
 
     /// Return a [`Parameter`] from its name. If no node  with that name exists return [`None`].
@@ -146,9 +153,11 @@ impl PywrModel {
     pub fn node_resource_paths(&self) -> HashSet<PathBuf> {
         let mut resource_paths = HashSet::new();
 
-        for node in &self.nodes {
-            let paths = node.resource_paths();
-            resource_paths.extend(paths);
+        if let Some(nodes) = &self.nodes {
+            for node in nodes.iter() {
+                let paths = node.resource_paths();
+                resource_paths.extend(paths);
+            }
         }
 
         resource_paths
@@ -184,8 +193,10 @@ impl PywrModel {
 
     /// Update resource paths
     pub fn update_resource_paths(&mut self, new_paths: &HashMap<PathBuf, PathBuf>) {
-        for node in &mut self.nodes {
-            node.update_resource_paths(new_paths);
+        if let Some(nodes) = &mut self.nodes {
+            for node in nodes.iter_mut() {
+                node.update_resource_paths(new_paths);
+            }
         }
 
         if let Some(parameters) = &mut self.parameters {
@@ -199,6 +210,86 @@ impl PywrModel {
                 table.update_resource_paths(new_paths);
             }
         }
+    }
+}
+
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
+pub struct PywrModel {
+    pub metadata: Metadata,
+    pub timestepper: Timestepper,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub scenarios: Option<Vec<Scenario>>,
+    #[serde(flatten)]
+    pub network: PywrNetwork,
+}
+
+impl crate::PywrModel {
+    /// Load a PywrNetwork from a file path
+    pub fn from_path<P: AsRef<Path>>(path: P) -> Result<Self, PywrSchemaError> {
+        let file = File::open(path)?;
+        let reader = io::BufReader::new(file);
+        // Read the JSON contents of the file as an instance of `User`.
+        let data = serde_json::from_reader(reader)?;
+
+        Ok(data)
+    }
+
+    /// Return a [`Node`] from its name. If no node  with that name exists return [`None`].
+    pub fn get_node_by_name(&self, name: &str) -> Option<&Node> {
+        self.network.get_node_by_name(name)
+    }
+
+    /// Return a node's index from its name. If no node with that name exists return [`None`].
+    pub fn get_node_index_by_name(&self, name: &str) -> Option<usize> {
+        self.network.get_node_index_by_name(name)
+    }
+
+    /// Return a [`Node`] from its index. If no node  with that name exists return [`None`].
+    pub fn get_node(&self, idx: usize) -> Option<&Node> {
+        self.network.get_node(idx)
+    }
+
+    /// Return a [`Parameter`] from its name. If no node  with that name exists return [`None`].
+    pub fn get_parameter_by_name(&self, name: &str) -> Option<&Parameter> {
+        self.network.get_parameter_by_name(name)
+    }
+
+    /// Return a parameter's index from its name. If no parameter with that name exists
+    /// return [`None`].
+    pub fn get_parameter_index_by_name(&self, name: &str) -> Option<usize> {
+        self.network.get_parameter_index_by_name(name)
+    }
+
+    /// Return a [`Parameter`] from its index. If no parameter with that name exists return [`None`].
+    pub fn get_parameter(&self, idx: usize) -> Option<&Parameter> {
+        self.network.get_parameter(idx)
+    }
+
+    /// Return all of the model's resource paths
+    pub fn resource_paths(&self) -> HashSet<PathBuf> {
+        self.network.resource_paths()
+    }
+
+    /// Return the model's node resource paths
+    ///
+    /// Note that this will include resource paths for any parameters defined inline within the nodes.
+    pub fn node_resource_paths(&self) -> HashSet<PathBuf> {
+        self.network.node_resource_paths()
+    }
+
+    /// Return the model's parameter resource paths
+    pub fn parameter_resource_paths(&self) -> HashSet<PathBuf> {
+        self.network.parameter_resource_paths()
+    }
+
+    /// Return the model's table resource paths
+    pub fn table_resource_paths(&self) -> HashSet<PathBuf> {
+        self.network.table_resource_paths()
+    }
+
+    /// Update resource paths
+    pub fn update_resource_paths(&mut self, new_paths: &HashMap<PathBuf, PathBuf>) {
+        self.network.update_resource_paths(new_paths)
     }
 }
 
@@ -250,8 +341,8 @@ mod tests {
 
         let model: PywrModel = serde_json::from_str(data).unwrap();
 
-        assert_eq!(model.nodes.len(), 3);
-        assert_eq!(model.edges.len(), 2);
+        assert_eq!(model.network.nodes.unwrap().len(), 3);
+        assert_eq!(model.network.edges.unwrap().len(), 2);
     }
 
     // #[test]
@@ -387,7 +478,7 @@ mod tests {
             });
 
             // None of the standard models should have custom parameters
-            if let Some(parameters) = &model.parameters {
+            if let Some(parameters) = &model.network.parameters {
                 if parameters.iter().any(|p| p.is_custom()) {
                     panic!(
                         "Deserialised model ({:?}) contains unexpected custom parameters!",
