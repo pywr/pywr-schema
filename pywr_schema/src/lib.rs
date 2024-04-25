@@ -4,7 +4,7 @@ pub mod nodes;
 pub mod parameters;
 pub mod tables;
 
-pub use model::PywrModel;
+pub use model::{PywrModel, PywrNetwork};
 
 #[cfg(test)]
 mod tests {

@@ -9,6 +9,8 @@ use std::io::BufReader;
 struct Args {
     #[arg(short, long)]
     path: std::path::PathBuf,
+    #[arg(short, long)]
+    network_only: bool,
 }
 
 fn main() {
@@ -19,25 +21,32 @@ fn main() {
     let file = File::open(args.path).expect("Could not open file.");
     let reader = BufReader::new(file);
 
-    let model: pywr_schema::PywrModel =
-        serde_json::from_reader(reader).expect("Failed to parse Pywr JSON file.");
+    let network: pywr_schema::PywrNetwork = if args.network_only {
+        serde_json::from_reader(reader).expect("Failed to parse Pywr JSON file.")
+    } else {
+        let model: pywr_schema::PywrModel =
+            serde_json::from_reader(reader).expect("Failed to parse Pywr JSON file.");
+
+        model.network
+    };
 
     println!("Parsed Pywr JSON file successfully!");
 
     {
         // Identify custom nodes
-        let custom_types: HashSet<_> = model
-            .nodes
-            .iter()
-            .filter_map(|n| {
-                if let pywr_schema::nodes::Node::Custom(c) = n {
-                    println!("Custom node: {:#?}", c);
-                    Some(c.ty.clone())
-                } else {
-                    None
-                }
-            })
-            .collect();
+        let custom_types: HashSet<_> = match network.nodes {
+            Some(nodes) => nodes
+                .iter()
+                .filter_map(|n| {
+                    if let pywr_schema::nodes::Node::Custom(c) = n {
+                        Some(c.ty.clone())
+                    } else {
+                        None
+                    }
+                })
+                .collect(),
+            None => HashSet::new(),
+        };
 
         let mut custom_types: Vec<_> = custom_types.into_iter().collect();
         custom_types.sort();
@@ -52,7 +61,7 @@ fn main() {
         }
     }
 
-    if let Some(parameters) = model.parameters {
+    if let Some(parameters) = network.parameters {
         let custom_types: HashSet<_> = parameters
             .iter()
             .filter_map(|p| {
