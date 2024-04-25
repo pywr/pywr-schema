@@ -244,7 +244,7 @@ dependencies = [
 
 [[package]]
 name = "pywr-schema"
-version = "0.12.0"
+version = "0.13.0"
 dependencies = [
  "chrono",
  "pywr-schema-macros",
@@ -257,7 +257,7 @@ dependencies = [
 
 [[package]]
 name = "pywr-schema-macros"
-version = "0.12.0"
+version = "0.13.0"
 dependencies = [
  "quote",
  "syn",
@@ -265,7 +265,7 @@ dependencies = [
 
 [[package]]
 name = "pywr_validator"
-version = "0.12.0"
+version = "0.13.0"
 dependencies = [
  "clap",
  "pywr-schema",
