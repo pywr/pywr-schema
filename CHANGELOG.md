@@ -1,145 +1,212 @@
 # Changelog
 
-## [v0.12.0](https://github.com/pywr/pywr-schema/compare/v0.11.2...HEAD) (2024-04-23)
+All notable changes to this project will be documented in this file.
 
-### [v0.11.2](https://github.com/pywr/pywr-schema/compare/v0.11.1...v0.11.2) (2024-04-19)
-
-#### Fixes
-
-* Remove parameter attribute from ControlCurveIndexParameter definition (#54)
-([6255ce0](https://github.com/pywr/pywr-schema/commit/6255ce0debad874d56049c1d3a73b318ce572bba)),
-closes [#54](https://github.com/pywr/pywr-schema/issues/54)
-
-### [v0.11.1](https://github.com/pywr/pywr-schema/compare/v0.11.0...v0.11.1) (2024-02-15)
-
-## [v0.11.0](https://github.com/pywr/pywr-schema/compare/v0.10.0...v0.11.0) (2024-01-03)
+## [0.13.0] - 2024-04-25
 
 ### Features
 
-* Implemented NegativeMaxParameter and NegativeMinParameter (#22)
-([6ff0865](https://github.com/pywr/pywr-schema/commit/6ff0865dc704ecb592b07ee86e36739de1fc756a)),
-closes [#22](https://github.com/pywr/pywr-schema/issues/22)
+- Separate out the network from the model. ([#62](https://github.com/orhun/git-cliff/issues/62))
 
-## [v0.10.0](https://github.com/pywr/pywr-schema/compare/v0.9.0...v0.10.0) (2023-12-12)
+## [0.12.0] - 2024-04-23
 
-### Features
+### Miscellaneous Tasks
 
-* Add strum EnumVariantNames macro to CoreNode enum (#20)
-([cf2d00e](https://github.com/pywr/pywr-schema/commit/cf2d00e5b5ea14c0787c0353ff12d5ef044fa498)),
-closes [#20](https://github.com/pywr/pywr-schema/issues/20)
+- Bump thiserror from 1.0.58 to 1.0.59 ([#59](https://github.com/orhun/git-cliff/issues/59))
+- Release v0.12.0 ([#61](https://github.com/orhun/git-cliff/issues/61))
 
-## [v0.9.0](https://github.com/pywr/pywr-schema/compare/v0.8.0...v0.9.0) (2023-11-25)
+### Refactor
 
-### Features
+- Use chrono instead of time for consistency with pywr-next. ([#60](https://github.com/orhun/git-cliff/issues/60))
 
-* Add RbfProfileParameter. (#16)
-([1575d33](https://github.com/pywr/pywr-schema/commit/1575d334afa12da70bdcde71aa7ec15e9b37c425)),
-closes [#16](https://github.com/pywr/pywr-schema/issues/16)
+## [0.11.2] - 2024-04-19
 
-### Fixes
+### Bug Fixes
 
-* Make RbfProfileParameter public in parameters module. (#18)
-([7bbf013](https://github.com/pywr/pywr-schema/commit/7bbf013bd5add6f7567aafa3bf86d28c5164efcf)),
-closes [#18](https://github.com/pywr/pywr-schema/issues/18)
+- Remove parameter attribute from ControlCurveIndexParameter definition ([#54](https://github.com/orhun/git-cliff/issues/54))
 
-## [v0.8.0](https://github.com/pywr/pywr-schema/compare/v0.7.0...v0.8.0) (2023-10-13)
+### Miscellaneous Tasks
 
-### Features
+- Bump time from 0.3.15 to 0.3.34 ([#38](https://github.com/orhun/git-cliff/issues/38))
+- Bump serde_json from 1.0.109 to 1.0.113 ([#37](https://github.com/orhun/git-cliff/issues/37))
+- Bump serde from 1.0.193 to 1.0.196 ([#35](https://github.com/orhun/git-cliff/issues/35))
+- Bump syn from 2.0.48 to 2.0.49 ([#34](https://github.com/orhun/git-cliff/issues/34))
+- Bump clap from 4.5.0 to 4.5.1 ([#36](https://github.com/orhun/git-cliff/issues/36))
+- Bump syn from 2.0.49 to 2.0.51 ([#39](https://github.com/orhun/git-cliff/issues/39))
+- Bump serde from 1.0.196 to 1.0.197 ([#41](https://github.com/orhun/git-cliff/issues/41))
+- Bump serde_json from 1.0.113 to 1.0.114 ([#40](https://github.com/orhun/git-cliff/issues/40))
+- Bump clap from 4.5.1 to 4.5.3 ([#47](https://github.com/orhun/git-cliff/issues/47))
+- Bump thiserror from 1.0.57 to 1.0.58 ([#46](https://github.com/orhun/git-cliff/issues/46))
+- Bump strum_macros from 0.26.1 to 0.26.2 ([#43](https://github.com/orhun/git-cliff/issues/43))
+- Bump strum from 0.26.1 to 0.26.2 ([#45](https://github.com/orhun/git-cliff/issues/45))
+- Bump syn from 2.0.51 to 2.0.53 ([#48](https://github.com/orhun/git-cliff/issues/48))
+- Bump serde_json from 1.0.114 to 1.0.115 ([#51](https://github.com/orhun/git-cliff/issues/51))
+- Bump clap from 4.5.3 to 4.5.4 ([#52](https://github.com/orhun/git-cliff/issues/52))
+- Bump syn from 2.0.53 to 2.0.58 ([#53](https://github.com/orhun/git-cliff/issues/53))
+- Bump syn from 2.0.58 to 2.0.59 ([#57](https://github.com/orhun/git-cliff/issues/57))
+- Bump time from 0.3.34 to 0.3.36 ([#55](https://github.com/orhun/git-cliff/issues/55))
+- Bump quote from 1.0.35 to 1.0.36 ([#56](https://github.com/orhun/git-cliff/issues/56))
+- Release v0.11.2 ([#58](https://github.com/orhun/git-cliff/issues/58))
 
-* Add PywrParameter derive
-([a21d02c](https://github.com/pywr/pywr-schema/commit/a21d02cf0416f957a61bed9c8541799b656bfa78))
-* Use proc-macro to generate some Node methods.
-([a4efb91](https://github.com/pywr/pywr-schema/commit/a4efb91f7058770ad6953304c531508619374bce))
-* Improve resource path discovery.
-([ff831c2](https://github.com/pywr/pywr-schema/commit/ff831c23b135c16bb6521a3689cbf724bb502bf9))
-* Add additional parameters.
-([abc1c75](https://github.com/pywr/pywr-schema/commit/abc1c757d0e11292e1cf4b23d0abcee6501f732c))
+## [0.11.1] - 2024-02-15
 
-### Fixes
+### Miscellaneous Tasks
 
-* Skip serializing None for most fields.
-([28e3a33](https://github.com/pywr/pywr-schema/commit/28e3a3376154acd51fe2fe6059f507c9e62f90bd))
+- Update strum to v0.26 ([#24](https://github.com/orhun/git-cliff/issues/24))
+- Bump actions/checkout from 2 to 4 ([#26](https://github.com/orhun/git-cliff/issues/26))
+- Bump quote from 1.0.33 to 1.0.35 ([#27](https://github.com/orhun/git-cliff/issues/27))
+- Bump serde from 1.0.145 to 1.0.193 ([#28](https://github.com/orhun/git-cliff/issues/28))
+- Bump clap from 4.0.12 to 4.5.0 ([#29](https://github.com/orhun/git-cliff/issues/29))
+- Bump thiserror from 1.0.48 to 1.0.55 ([#30](https://github.com/orhun/git-cliff/issues/30))
+- Bump serde_json from 1.0.86 to 1.0.109 ([#31](https://github.com/orhun/git-cliff/issues/31))
+- Bump thiserror from 1.0.48 to 1.0.57 ([#32](https://github.com/orhun/git-cliff/issues/32))
+- Release v0.11.1 ([#33](https://github.com/orhun/git-cliff/issues/33))
 
-## [v0.7.0](https://github.com/pywr/pywr-schema/compare/v0.6.0...v0.7.0) (2023-09-16)
+### Ci
 
-### Features
+- Add dependabot config. ([#25](https://github.com/orhun/git-cliff/issues/25))
 
-* Added DivisionParameter schema (#12)
-([329cd89](https://github.com/pywr/pywr-schema/commit/329cd898cf596d28873c51fd55ff4cbe0e5d5e09)),
-closes [#12](https://github.com/pywr/pywr-schema/issues/12)
-* Added MinParameter 
-([b182fa3](https://github.com/pywr/pywr-schema/commit/b182fa3981057148fb8555fff03dccd708d5052d))
-
-## [v0.6.0](https://github.com/pywr/pywr-schema/compare/v0.5.3...v0.6.0) (2023-05-10)
-
-### Features
-
-* Derive Clone for the whole schema. (#9)
-([4829f76](https://github.com/pywr/pywr-schema/commit/4829f76b09a32dbf6ab965334dff04df0644acc1)),
-closes [#9](https://github.com/pywr/pywr-schema/issues/9)
-* Derive Clone for the whole schema.
-([8c0c117](https://github.com/pywr/pywr-schema/commit/8c0c117d7d7897d51964b690913b5081311c55a0))
-
-### [v0.5.3](https://github.com/pywr/pywr-schema/compare/v0.5.2...v0.5.3) (2023-03-06)
-
-#### Fixes
-
-* Fix DelayNode schema. (#7)
-([330dde9](https://github.com/pywr/pywr-schema/commit/330dde97c62342b5be33e54974e511b24a376c07)),
-closes [#7](https://github.com/pywr/pywr-schema/issues/7)
-
-### [v0.5.2](https://github.com/pywr/pywr-schema/compare/v0.5.1...v0.5.2) (2023-03-06)
-
-#### Fixes
-
-* Add missing nsteps attribute of PiecewiseLink. (#6)
-([35c128d](https://github.com/pywr/pywr-schema/commit/35c128df4f001de685d877026365353d995bbe63)),
-closes [#6](https://github.com/pywr/pywr-schema/issues/6)
-
-### [v0.5.1](https://github.com/pywr/pywr-schema/compare/v0.5.0...v0.5.1) (2023-03-03)
-
-#### Fixes
-
-* River split node factors should not be optional.
-([d499097](https://github.com/pywr/pywr-schema/commit/d499097e0212513f79686f61586cf30642e6ecdf))
-* Remove unused imports.
-([41fb951](https://github.com/pywr/pywr-schema/commit/41fb95169f2e8878e85301c94418321b5bff3959))
-
-## [v0.5.0](https://github.com/pywr/pywr-schema/compare/v0.4.0...v0.5.0) (2023-03-03)
+## [0.11.0] - 2024-01-03
 
 ### Features
 
-* add schemas for remaining nodes (#1)
-([6662df9](https://github.com/pywr/pywr-schema/commit/6662df9bc62117fa09ab4ca32a7d772b4437a383)),
-closes [#1](https://github.com/pywr/pywr-schema/issues/1)
-* Add interp_day to MonthlyProfileParameter. (#3)
-([5aafa46](https://github.com/pywr/pywr-schema/commit/5aafa4633a6d696818eb694d19ae128e7d41c301)),
-closes [#3](https://github.com/pywr/pywr-schema/issues/3)
+- Implemented NegativeMaxParameter and NegativeMinParameter ([#22](https://github.com/orhun/git-cliff/issues/22))
 
-### Fixes
+### Miscellaneous Tasks
 
-* Add missing index_parameter to parameters() method in IndexedArrayParameter.
-(#2)
-([710d8e0](https://github.com/pywr/pywr-schema/commit/710d8e0e2211fbc117e070766520798da6daaedd)),
-closes [#2](https://github.com/pywr/pywr-schema/issues/2)
+- Release v0.11.0 ([#23](https://github.com/orhun/git-cliff/issues/23))
 
-## [v0.4.0](https://github.com/pywr/pywr-schema/compare/v0.3.0...v0.4.0) (2023-01-31)
+## [0.10.0] - 2023-12-12
 
 ### Features
 
-* Add methods for finding parameters.
-([6ab6a41](https://github.com/pywr/pywr-schema/commit/6ab6a41ac1427b391d2dedc8518d4246f9e74ae4))
+- Add strum EnumVariantNames macro to CoreNode enum ([#20](https://github.com/orhun/git-cliff/issues/20))
 
-## [v0.3.0](https://github.com/pywr/pywr-schema/compare/v0.2.0...v0.3.0) (2023-01-20)
+### Miscellaneous Tasks
+
+- Release v0.10.0 ([#21](https://github.com/orhun/git-cliff/issues/21))
+
+## [0.9.0] - 2023-11-25
+
+### Bug Fixes
+
+- Make RbfProfileParameter public in parameters module. ([#18](https://github.com/orhun/git-cliff/issues/18))
 
 ### Features
 
-* Add additional tests and swap enum order in ParameterValue.
-([878dbc7](https://github.com/pywr/pywr-schema/commit/878dbc795150dc497fd095d59572d51c6a2da452))
+- Add RbfProfileParameter. ([#16](https://github.com/orhun/git-cliff/issues/16))
 
-## v0.2.0 (2022-12-21)
+### Miscellaneous Tasks
+
+- Release v0.9.0 ([#19](https://github.com/orhun/git-cliff/issues/19))
+
+## [0.8.0] - 2023-10-13
+
+### Bug Fixes
+
+- Skip serializing None for most fields.
 
 ### Features
 
-* Add additional nodes and parameters.
-([cf0b8df](https://github.com/pywr/pywr-schema/commit/cf0b8df4c0bff260fbbd28f72a272b5bd8ed0c99))
+- Add additional parameters.
+- Improve resource path discovery.
+- Use proc-macro to generate some Node methods.
+- Add PywrParameter derive
+
+### Miscellaneous Tasks
+
+- Add additional comments to pywr-schema-macros
+- Release v0.8.0 ([#15](https://github.com/orhun/git-cliff/issues/15))
+
+## [0.7.0] - 2023-09-16
+
+### Features
+
+- Added MinParameter 
+- Added DivisionParameter schema ([#12](https://github.com/orhun/git-cliff/issues/12))
+
+### Miscellaneous Tasks
+
+- Release v0.7.0 ([#13](https://github.com/orhun/git-cliff/issues/13))
+
+## [0.6.0] - 2023-05-10
+
+### Features
+
+- Derive Clone for the whole schema.
+- Derive Clone for the whole schema. ([#9](https://github.com/orhun/git-cliff/issues/9))
+
+### Miscellaneous Tasks
+
+- Release v0.6.0 ([#10](https://github.com/orhun/git-cliff/issues/10))
+
+## [0.5.3] - 2023-03-06
+
+### Bug Fixes
+
+- Fix DelayNode schema. ([#7](https://github.com/orhun/git-cliff/issues/7))
+
+### Miscellaneous Tasks
+
+- Setup CI. ([#8](https://github.com/orhun/git-cliff/issues/8))
+- Release v0.5.3
+
+## [0.5.2] - 2023-03-06
+
+### Bug Fixes
+
+- Add missing nsteps attribute of PiecewiseLink. ([#6](https://github.com/orhun/git-cliff/issues/6))
+
+### Miscellaneous Tasks
+
+- Release v0.5.2
+
+## [0.5.1] - 2023-03-03
+
+### Bug Fixes
+
+- Remove unused imports.
+- River split node factors should not be optional.
+
+### Miscellaneous Tasks
+
+- Release v0.5.1
+
+## [0.5.0] - 2023-03-03
+
+### Bug Fixes
+
+- Add missing index_parameter to parameters() method in IndexedArrayParameter. ([#2](https://github.com/orhun/git-cliff/issues/2))
+
+### Features
+
+- Add interp_day to MonthlyProfileParameter. ([#3](https://github.com/orhun/git-cliff/issues/3))
+- Add schemas for remaining nodes ([#1](https://github.com/orhun/git-cliff/issues/1))
+
+## [0.4.0] - 2023-01-31
+
+### Features
+
+- Add methods for finding parameters.
+
+### Miscellaneous Tasks
+
+- Release v0.4.0
+
+## [0.3.0] - 2023-01-20
+
+### Features
+
+- Add additional tests and swap enum order in ParameterValue.
+
+### Miscellaneous Tasks
+
+- Release v0.3.0
+
+## [0.2.0] - 2022-12-21
+
+### Features
+
+- Add additional nodes and parameters.
+
+<!-- generated by git-cliff -->
