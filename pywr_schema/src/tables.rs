@@ -25,7 +25,7 @@ impl Table {
     /// in the provided map.
     pub fn update_resource_paths(&mut self, new_paths: &HashMap<PathBuf, PathBuf>) {
         if let Some(new_path) = new_paths.get(&self.url) {
-            self.url = new_path.clone();
+            self.url.clone_from(new_path);
         }
     }
 }
