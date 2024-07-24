@@ -1,8 +1,8 @@
 [workspace]
 resolver = "2"
 members = [
-    "pywr-schema-macros",
-    "pywr_schema",
-    "pywr_validator",
+    "pywr-v1-schema-macros",
+    "pywr-v1-schema",
+    "pywr-v1-validator",
 ]
 

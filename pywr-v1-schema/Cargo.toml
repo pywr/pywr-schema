@@ -1,0 +1,18 @@
+[package]
+name = "pywr-v1-schema"
+version = "0.13.1"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+
+[lib]
+path = "src/lib.rs"
+
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "1.0.63"
+pywr-v1-schema-macros = { path = "../pywr-v1-schema-macros" }
+strum = "0.26"
+strum_macros = "0.26"
+chrono = { version = "0.4.34", features = ["serde"] }
