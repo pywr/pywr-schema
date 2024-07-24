@@ -6,3 +6,8 @@ members = [
     "pywr-v1-validator",
 ]
 
+[workspace.package]
+authors = ["James Tomlinson <tomo.bbe@gmail.com>"]
+version = "0.13.1"
+edition = "2021"
+license = "MIT OR Apache-2.0"

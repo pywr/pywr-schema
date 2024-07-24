@@ -1,8 +1,9 @@
 [package]
 name = "pywr-v1-schema-macros"
-version = "0.13.1"
-edition = "2021"
-license = "MIT OR Apache-2.0"
+authors.workspace = true
+version.workspace = true
+edition.workspace = true
+license.workspace = true
 
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
