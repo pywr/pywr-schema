@@ -1,8 +1,8 @@
 {
   "packages": {
-    "pywr-v1-schema-macros": "0.13.1",
-    "pywr-v1-schema": "0.13.1",
-    "pywr-v1-validator": "0.13.1"
+    "pywr-v1-schema-macros": {},
+    "pywr-v1-schema": {},
+    "pywr-v1-validator": {}
   },
   "plugins": [
     {
