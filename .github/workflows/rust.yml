@@ -1,69 +1,70 @@
-on: [push, pull_request]
+name: Rust
 
-name: Pywr Schema
+on:
+  push:
+
+env:
+  CARGO_TERM_COLOR: always
 
 jobs:
-  check:
-    name: Check
-    runs-on: ubuntu-latest
+  build-test:
+    name: Build and test (${{ matrix.os }})
+
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
+
+    runs-on: ${{ matrix.os }}
+
     steps:
-      - name: Checkout sources
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
+      - uses: swatinem/rust-cache@v2
+      - name: Clippy
+        run: cargo clippy --all-targets
+      - name: Build
+        run: cargo build --locked --all-targets
 
-      - name: Install stable toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-          override: true
+      - name: Run tests (without coverage)
+        run: cargo test --all-targets
 
-      - name: Run cargo check
-        uses: actions-rs/cargo@v1
-        with:
-          command: check
+  release-please:
+    name: Execute release chores
 
-  test:
-    name: Test Suite
+    permissions:
+      contents: write
+      pull-requests: write
+
     runs-on: ubuntu-latest
+    needs: build-test
+
+    outputs:
+      created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+
     steps:
-      - name: Checkout sources
-        uses: actions/checkout@v4
-
-      - name: Install stable toolchain
-        uses: actions-rs/toolchain@v1
+      - uses: google-github-actions/release-please-action@v3
+        id: release
         with:
-          profile: minimal
-          toolchain: stable
-          override: true
+          release-type: rust
 
-      - name: Run cargo test
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
-
-  lints:
-    name: Lints
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v4
-
-      - name: Install stable toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-          override: true
-          components: rustfmt, clippy
-
-      - name: Run cargo fmt
-        uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: --all -- --check
-
-      - name: Run cargo clippy
-        uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: -- -D warnings
+#  publish:
+#    name: Publish to crates.io
+#
+#    runs-on: ubuntu-latest
+#    needs: release-please
+#    if: needs.release-please.outputs.created
+#
+#    environment: crates.io
+#
+#    steps:
+#      - uses: actions/checkout@v3
+#      - uses: swatinem/rust-cache@v2
+#
+#      - name: Publish
+#        # https://doc.rust-lang.org/cargo/reference/config.html?highlight=CARGO_REGISTRY_TOKEN#credentials
+#        run: >
+#          cargo publish
+#          --verbose
+#          --locked
+#          --no-verify
+#          --token ${{ secrets.CARGO_REGISTRY_TOKEN }}

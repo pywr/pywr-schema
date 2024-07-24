@@ -464,7 +464,7 @@ mod tests {
             vec![PathBuf::from("data/thames_stochastic_flow.gz")],
         );
 
-        for path in read_dir(&test_models_dir).unwrap() {
+        for path in read_dir(test_models_dir).unwrap() {
             let model_fn = path.unwrap().path();
             if exclude_models.contains(&model_fn.file_name().unwrap()) {
                 continue;
