@@ -11,6 +11,8 @@ pub struct RiverGaugeNode {
     pub mrf: Option<ParameterValue>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub mrf_cost: Option<ParameterValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub cost: Option<ParameterValue>,
 }
 
 impl RiverGaugeNode {
