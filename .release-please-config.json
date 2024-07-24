@@ -5,6 +5,10 @@
     "pywr-v1-validator": "0.13.1"
   },
   "plugins": [
-    "cargo-workspace"
-  ]
+    {
+      "type": "cargo-workspace",
+      "updatePeerDependencies": true
+    }
+  ],
+  "release-type": "rust"
 }
