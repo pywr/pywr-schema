@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.14.0] - 2024-07-25
+
+### 🚜 Refactor
+
+- [**breaking**] Renamed crates to be pywr-v1-xxx (#90)
+
+### ⚙️ Miscellaneous Tasks
+
+- Inherit package attributes from workspace.
+- Configure CHANGELOG for each crate.
+
 ## [0.13.1] - 2024-07-15
 
 ### 🎨 Styling
