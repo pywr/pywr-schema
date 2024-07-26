@@ -129,7 +129,7 @@ pub struct AggregatedNode {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub min_flow: Option<ParameterValue>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub factors: Option<ParameterValues>,
+    pub factors: Option<ParameterValue>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub flow_weights: Option<Vec<f64>>,
 }
