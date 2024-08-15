@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.15.0] - 2024-08-15
+
+### 🚜 Refactor
+
+- Move PywrSchemaError to the top-level module. ([#96](https://github.com/pywr/pywr-schema/pull/96))
+
 ## [0.14.0] - 2024-07-25
 
 ### 🐛 Bug Fixes
