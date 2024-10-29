@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.15.3] - 2024-10-29
+
+### 🚀 Features
+
+- Add more deserialisation aliases to node enum ([#137](https://github.com/pywr/pywr-schema/pull/137))
+
 ## [0.15.0] - 2024-09-10
 
 ### 🚜 Refactor
