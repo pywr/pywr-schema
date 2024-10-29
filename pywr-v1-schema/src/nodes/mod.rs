@@ -73,37 +73,37 @@ pub enum CoreNode {
     Reservoir(ReservoirNode),
     #[serde(alias = "catchment")]
     Catchment(CatchmentNode),
-    #[serde(alias = "rivergauge")]
+    #[serde(alias = "rivergauge", alias = "Rivergauge")]
     RiverGauge(RiverGaugeNode),
-    #[serde(alias = "losslink")]
+    #[serde(alias = "losslink", alias = "Losslink")]
     LossLink(LossLinkNode),
     #[serde(alias = "river")]
     River(LinkNode), // TODO make this its own type.
-    #[serde(alias = "piecewiselink")]
+    #[serde(alias = "piecewiselink", alias = "Piecewiselink")]
     PiecewiseLink(PiecewiseLinkNode),
-    #[serde(alias = "multisplitlink")]
+    #[serde(alias = "multisplitlink", alias = "Multisplitlink")]
     MultiSplitLink(MultiSplitLinkNode),
     #[serde(alias = "breaklink")]
     BreakLink(BreakLinkNode),
-    #[serde(alias = "delaynode")]
+    #[serde(alias = "delaynode", alias = "DelayNode", alias = "Delaynode")]
     Delay(DelayNode),
-    #[serde(alias = "riversplit")]
+    #[serde(alias = "riversplit", alias = "Riversplit")]
     RiverSplit(RiverSplitNode),
-    #[serde(alias = "riversplitwithgauge")]
+    #[serde(alias = "riversplitwithgauge", alias = "Riversplitwithgauge")]
     RiverSplitWithGauge(RiverSplitWithGaugeNode),
-    #[serde(alias = "aggregatednode")]
+    #[serde(alias = "aggregatednode", alias = "AggregatedNode")]
     Aggregated(AggregatedNode),
-    #[serde(alias = "aggregatedstorage")]
+    #[serde(alias = "aggregatedstorage", alias = "Aggregatedstorage")]
     AggregatedStorage(AggregatedStorageNode),
-    #[serde(alias = "virtualstorage")]
+    #[serde(alias = "virtualstorage", alias = "Virtualstorage")]
     VirtualStorage(VirtualStorageNode),
-    #[serde(alias = "annualvirtualstorage")]
+    #[serde(alias = "annualvirtualstorage", alias = "Annualvirtualstorage")]
     AnnualVirtualStorage(AnnualVirtualStorageNode),
-    #[serde(alias = "monthlyvirtualstorage")]
+    #[serde(alias = "monthlyvirtualstorage", alias = "Monthlyvirtualstorage")]
     MonthlyVirtualStorage(MonthlyVirtualStorageNode),
-    #[serde(alias = "seasonalvirtualstorage")]
+    #[serde(alias = "seasonalvirtualstorage", alias = "Seasonalvirtualstorage")]
     SeasonalVirtualStorage(SeasonalVirtualStorageNode),
-    #[serde(alias = "rollingvirtualstorage")]
+    #[serde(alias = "rollingvirtualstorage", alias = "Rollingvirtualstorage")]
     RollingVirtualStorage(RollingVirtualStorageNode),
 }
 
