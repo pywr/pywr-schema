@@ -302,6 +302,11 @@ impl Node {
             let paths = match p {
                 ParameterValueType::Single(p) => p.resource_paths(),
                 ParameterValueType::List(p) => p.iter().flat_map(|p| p.resource_paths()).collect(),
+                ParameterValueType::OptionalList(p) => p
+                    .iter()
+                    .flat_map(|p| p.as_ref().map(|p| p.resource_paths()))
+                    .flatten()
+                    .collect(),
             };
 
             resource_paths.extend(paths);
@@ -316,6 +321,11 @@ impl Node {
                 ParameterValueTypeMut::Single(p) => p.update_resource_paths(new_paths),
                 ParameterValueTypeMut::List(p) => {
                     for p in p.iter_mut() {
+                        p.update_resource_paths(new_paths);
+                    }
+                }
+                ParameterValueTypeMut::OptionalList(p) => {
+                    for p in p.iter_mut().flatten() {
                         p.update_resource_paths(new_paths);
                     }
                 }

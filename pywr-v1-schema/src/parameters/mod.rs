@@ -515,6 +515,11 @@ impl CoreParameter {
                         resource_paths.extend(value.resource_paths());
                     }
                 }
+                ParameterValueType::OptionalList(values) => {
+                    for value in values.iter().flatten() {
+                        resource_paths.extend(value.resource_paths());
+                    }
+                }
             }
         }
 
@@ -570,6 +575,11 @@ impl CoreParameter {
                 ParameterValueTypeMut::Single(value) => value.update_resource_paths(new_paths),
                 ParameterValueTypeMut::List(values) => {
                     for value in values {
+                        value.update_resource_paths(new_paths);
+                    }
+                }
+                ParameterValueTypeMut::OptionalList(values) => {
+                    for value in values.iter_mut().flatten() {
                         value.update_resource_paths(new_paths);
                     }
                 }
@@ -791,10 +801,12 @@ pub enum ParameterValue {
 }
 
 pub type ParameterValues = Vec<ParameterValue>;
+pub type OptionalParameterValues = Vec<Option<ParameterValue>>;
 
 pub enum ParameterValueType<'a> {
     Single(&'a ParameterValue),
     List(&'a ParameterValues),
+    OptionalList(&'a OptionalParameterValues),
 }
 
 impl<'a> From<&'a ParameterValue> for ParameterValueType<'a> {
@@ -809,9 +821,15 @@ impl<'a> From<&'a ParameterValues> for ParameterValueType<'a> {
     }
 }
 
+impl<'a> From<&'a OptionalParameterValues> for ParameterValueType<'a> {
+    fn from(v: &'a OptionalParameterValues) -> Self {
+        Self::OptionalList(v)
+    }
+}
 pub enum ParameterValueTypeMut<'a> {
     Single(&'a mut ParameterValue),
     List(&'a mut ParameterValues),
+    OptionalList(&'a mut OptionalParameterValues),
 }
 
 impl<'a> From<&'a mut ParameterValue> for ParameterValueTypeMut<'a> {
@@ -823,6 +841,12 @@ impl<'a> From<&'a mut ParameterValue> for ParameterValueTypeMut<'a> {
 impl<'a> From<&'a mut ParameterValues> for ParameterValueTypeMut<'a> {
     fn from(v: &'a mut ParameterValues) -> Self {
         Self::List(v)
+    }
+}
+
+impl<'a> From<&'a mut OptionalParameterValues> for ParameterValueTypeMut<'a> {
+    fn from(v: &'a mut OptionalParameterValues) -> Self {
+        Self::OptionalList(v)
     }
 }
 
