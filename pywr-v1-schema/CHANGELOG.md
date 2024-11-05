@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.16.0] - 2024-11-05
+
+### 🚀 Features
+
+- Add OptionalParameterValues type ([#140](https://github.com/pywr/pywr-schema/pull/140))
+
 ## [0.15.3] - 2024-10-29
 
 ### 🚀 Features
