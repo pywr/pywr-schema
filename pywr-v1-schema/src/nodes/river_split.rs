@@ -1,5 +1,7 @@
 use crate::nodes::NodeMeta;
-use crate::parameters::{ParameterValueType, ParameterValueTypeMut, ParameterValues};
+use crate::parameters::{
+    OptionalParameterValues, ParameterValueType, ParameterValueTypeMut, ParameterValues,
+};
 use pywr_v1_schema_macros::PywrNode;
 use std::collections::HashMap;
 
@@ -8,7 +10,7 @@ pub struct RiverSplitNode {
     #[serde(flatten)]
     pub meta: NodeMeta,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub max_flows: Option<ParameterValues>,
+    pub max_flows: Option<OptionalParameterValues>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub costs: Option<ParameterValues>,
     #[serde(skip_serializing_if = "Option::is_none")]
