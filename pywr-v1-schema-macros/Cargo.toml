@@ -14,7 +14,7 @@ path = "src/lib.rs"
 proc-macro = true
 
 [dependencies]
-syn = "2.0.89"
+syn = "2.0.90"
 quote = "1.0.37"
 
 
