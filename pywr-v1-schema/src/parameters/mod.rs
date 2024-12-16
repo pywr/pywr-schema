@@ -44,7 +44,11 @@ pub use crate::parameters::rolling_mean_flow_node::RollingMeanFlowNodeParameter;
 pub use crate::parameters::scenario_wrapper::ScenarioWrapperParameter;
 pub use crate::parameters::storage::StorageParameter;
 pub use crate::parameters::tables::TablesArrayParameter;
-pub use crate::parameters::thresholds::{ParameterThresholdParameter, Predicate};
+pub use crate::parameters::thresholds::{
+    CurrentOrdinalDayThresholdParameter, CurrentYearThresholdParameter,
+    MultipleThresholdIndexParameter, MultipleThresholdParameterIndexParameter,
+    NodeThresholdParameter, ParameterThresholdParameter, Predicate, StorageThresholdParameter,
+};
 pub use data_frame::DataFrameParameter;
 use serde::de::value::MapDeserializer;
 use serde::de::{MapAccess, Visitor};
@@ -202,6 +206,42 @@ pub enum CoreParameter {
     )]
     ParameterThreshold(ParameterThresholdParameter),
     #[serde(
+        alias = "nodethreshold",
+        alias = "nodethresholdparameter",
+        alias = "NodeThresholdParameter"
+    )]
+    NodeThreshold(NodeThresholdParameter),
+    #[serde(
+        alias = "storagethreshold",
+        alias = "storagethresholdparameter",
+        alias = "StorageThresholdParameter"
+    )]
+    StorageThreshold(StorageThresholdParameter),
+    #[serde(
+        alias = "multiplethresholdindex",
+        alias = "multiplethresholdindexparameter",
+        alias = "MultipleThresholdIndexParameter"
+    )]
+    MultipleThresholdIndex(MultipleThresholdIndexParameter),
+    #[serde(
+        alias = "multiplethresholdparameterindex",
+        alias = "multiplethresholdparameterindexparameter",
+        alias = "MultipleThresholdparameterIndexParameter"
+    )]
+    MultipleThresholdParameterIndex(MultipleThresholdParameterIndexParameter),
+    #[serde(
+        alias = "currentyearthreshold",
+        alias = "currentyearthresholdparameter",
+        alias = "CurrentYearThresholdParameter"
+    )]
+    CurrentYearThreshold(CurrentYearThresholdParameter),
+    #[serde(
+        alias = "currentordinaldaythreshold",
+        alias = "currentordinaldaythresholdparameter",
+        alias = "CurrentOrdinalDayThresholdParameter"
+    )]
+    CurrentOrdinalDayThreshold(CurrentOrdinalDayThresholdParameter),
+    #[serde(
         alias = "tablesarray",
         alias = "tablesarrayparameter",
         alias = "TablesArrayParameter"
@@ -297,6 +337,14 @@ impl CoreParameter {
             Self::Negative(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::Polynomial1D(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::ParameterThreshold(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::NodeThreshold(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::StorageThreshold(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::MultipleThresholdIndex(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::MultipleThresholdParameterIndex(p) => {
+                p.meta.as_ref().and_then(|m| m.name.as_deref())
+            }
+            Self::CurrentYearThreshold(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::CurrentOrdinalDayThreshold(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::TablesArray(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::DataFrame(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::Deficit(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
@@ -335,6 +383,12 @@ impl CoreParameter {
             Self::Negative(p) => p.node_references(),
             Self::Polynomial1D(p) => p.node_references(),
             Self::ParameterThreshold(p) => p.node_references(),
+            Self::NodeThreshold(p) => p.node_references(),
+            Self::StorageThreshold(p) => p.node_references(),
+            Self::MultipleThresholdIndex(p) => p.node_references(),
+            Self::MultipleThresholdParameterIndex(p) => p.node_references(),
+            Self::CurrentYearThreshold(p) => p.node_references(),
+            Self::CurrentOrdinalDayThreshold(p) => p.node_references(),
             Self::TablesArray(p) => p.node_references(),
             Self::DataFrame(p) => p.node_references(),
             Self::Deficit(p) => p.node_references(),
@@ -373,6 +427,12 @@ impl CoreParameter {
             Self::Negative(p) => p.parameters(),
             Self::Polynomial1D(p) => p.parameters(),
             Self::ParameterThreshold(p) => p.parameters(),
+            Self::NodeThreshold(p) => p.parameters(),
+            Self::StorageThreshold(p) => p.parameters(),
+            Self::MultipleThresholdIndex(p) => p.parameters(),
+            Self::MultipleThresholdParameterIndex(p) => p.parameters(),
+            Self::CurrentYearThreshold(p) => p.parameters(),
+            Self::CurrentOrdinalDayThreshold(p) => p.parameters(),
             Self::TablesArray(p) => p.parameters(),
             Self::DataFrame(p) => p.parameters(),
             Self::Deficit(p) => p.parameters(),
@@ -411,6 +471,12 @@ impl CoreParameter {
             Self::Negative(p) => p.parameters_mut(),
             Self::Polynomial1D(p) => p.parameters_mut(),
             Self::ParameterThreshold(p) => p.parameters_mut(),
+            Self::NodeThreshold(p) => p.parameters_mut(),
+            Self::StorageThreshold(p) => p.parameters_mut(),
+            Self::MultipleThresholdIndex(p) => p.parameters_mut(),
+            Self::MultipleThresholdParameterIndex(p) => p.parameters_mut(),
+            Self::CurrentYearThreshold(p) => p.parameters_mut(),
+            Self::CurrentOrdinalDayThreshold(p) => p.parameters_mut(),
             Self::TablesArray(p) => p.parameters_mut(),
             Self::DataFrame(p) => p.parameters_mut(),
             Self::Deficit(p) => p.parameters_mut(),
@@ -449,6 +515,12 @@ impl CoreParameter {
             Self::Negative(_) => "Negative",
             Self::Polynomial1D(_) => "Polynomial1D",
             Self::ParameterThreshold(_) => "ParameterThreshold",
+            Self::NodeThreshold(_) => "NodeThreshold",
+            Self::StorageThreshold(_) => "StorageThreshold",
+            Self::MultipleThresholdIndex(_) => "MultipleThresholdIndex",
+            Self::MultipleThresholdParameterIndex(_) => "MultipleThresholdIndex",
+            Self::CurrentYearThreshold(_) => "CurrentYearThreshold",
+            Self::CurrentOrdinalDayThreshold(_) => "CurrentOrdinalDayThreshold",
             Self::TablesArray(_) => "TablesArray",
             Self::DataFrame(_) => "DataFrame",
             Self::Deficit(_) => "Deficit",
@@ -488,6 +560,12 @@ impl CoreParameter {
             CoreParameter::NegativeMax(p) => p.resource_paths(),
             CoreParameter::Polynomial1D(p) => p.resource_paths(),
             CoreParameter::ParameterThreshold(p) => p.resource_paths(),
+            CoreParameter::NodeThreshold(p) => p.resource_paths(),
+            CoreParameter::StorageThreshold(p) => p.resource_paths(),
+            CoreParameter::MultipleThresholdIndex(p) => p.resource_paths(),
+            CoreParameter::MultipleThresholdParameterIndex(p) => p.resource_paths(),
+            CoreParameter::CurrentYearThreshold(p) => p.resource_paths(),
+            CoreParameter::CurrentOrdinalDayThreshold(p) => p.resource_paths(),
             CoreParameter::TablesArray(p) => p.resource_paths(),
             CoreParameter::DataFrame(p) => p.resource_paths(),
             CoreParameter::Deficit(p) => p.resource_paths(),
@@ -551,6 +629,12 @@ impl CoreParameter {
             CoreParameter::NegativeMax(p) => p.update_resource_paths(new_paths),
             CoreParameter::Polynomial1D(p) => p.update_resource_paths(new_paths),
             CoreParameter::ParameterThreshold(p) => p.update_resource_paths(new_paths),
+            CoreParameter::NodeThreshold(p) => p.update_resource_paths(new_paths),
+            CoreParameter::StorageThreshold(p) => p.update_resource_paths(new_paths),
+            CoreParameter::MultipleThresholdIndex(p) => p.update_resource_paths(new_paths),
+            CoreParameter::MultipleThresholdParameterIndex(p) => p.update_resource_paths(new_paths),
+            CoreParameter::CurrentYearThreshold(p) => p.update_resource_paths(new_paths),
+            CoreParameter::CurrentOrdinalDayThreshold(p) => p.update_resource_paths(new_paths),
             CoreParameter::TablesArray(p) => p.update_resource_paths(new_paths),
             CoreParameter::DataFrame(p) => p.update_resource_paths(new_paths),
             CoreParameter::Deficit(p) => p.update_resource_paths(new_paths),
