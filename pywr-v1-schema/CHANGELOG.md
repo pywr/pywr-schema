@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.17.0] - 2024-12-16
+
+### 🚀 Features
+
+- Add most remaining threshold parameters to schema (#153)
+
 ## [0.16.0] - 2024-11-05
 
 ### 🚀 Features
