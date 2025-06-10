@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.18.0] - 2025-06-10
+
+### 🐛 Bug Fixes
+
+- Add is_variable field to ParameterMeta. (#208)
+
 ## [0.17.0] - 2024-12-16
 
 ### 🚀 Features
