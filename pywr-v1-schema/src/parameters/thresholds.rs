@@ -78,8 +78,6 @@ pub struct MultipleThresholdIndexParameter {
     pub meta: Option<ParameterMeta>,
     pub node: String,
     pub thresholds: Vec<ParameterValue>,
-    #[serde(default = "default_predicate")]
-    pub predicate: Predicate,
 }
 
 impl MultipleThresholdIndexParameter {
@@ -94,8 +92,6 @@ pub struct MultipleThresholdParameterIndexParameter {
     pub meta: Option<ParameterMeta>,
     pub parameter: ParameterValue,
     pub thresholds: Vec<ParameterValue>,
-    #[serde(default = "default_predicate")]
-    pub predicate: Predicate,
 }
 
 impl MultipleThresholdParameterIndexParameter {
