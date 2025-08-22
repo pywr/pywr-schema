@@ -5,15 +5,15 @@ use std::path::PathBuf;
 
 #[derive(serde::Deserialize, serde::Serialize, PartialEq, Debug, Clone, Copy)]
 pub enum Predicate {
-    #[serde(alias = "<")]
+    #[serde(alias = "<", alias = "lt", alias = "LT")]
     LT,
-    #[serde(alias = ">")]
+    #[serde(alias = ">", alias = "gt", alias = "GT")]
     GT,
-    #[serde(alias = "==")]
+    #[serde(alias = "==", alias = "eq", alias = "EQ")]
     EQ,
-    #[serde(alias = "<=")]
+    #[serde(alias = "<=", alias = "le", alias = "LE")]
     LE,
-    #[serde(alias = ">=")]
+    #[serde(alias = ">=", alias = "ge", alias = "GE")]
     GE,
 }
 
