@@ -406,7 +406,7 @@ impl CoreParameter {
         }
     }
 
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
+    pub fn parameters(&self) -> HashMap<&str, ParameterValueType<'_>> {
         match self {
             Self::Constant(p) => p.parameters(),
             Self::ControlCurveInterpolated(p) => p.parameters(),
@@ -450,7 +450,7 @@ impl CoreParameter {
         }
     }
 
-    pub fn parameters_mut(&mut self) -> HashMap<&str, ParameterValueTypeMut> {
+    pub fn parameters_mut(&mut self) -> HashMap<&str, ParameterValueTypeMut<'_>> {
         match self {
             Self::Constant(p) => p.parameters_mut(),
             Self::ControlCurveInterpolated(p) => p.parameters_mut(),
@@ -702,7 +702,7 @@ impl Parameter {
     }
 
     /// Return a map of attribute to parameter values.
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
+    pub fn parameters(&self) -> HashMap<&str, ParameterValueType<'_>> {
         match self {
             Self::Core(p) => p.parameters(),
             Self::Custom(_) => HashMap::new(),

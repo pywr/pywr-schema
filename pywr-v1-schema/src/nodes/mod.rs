@@ -170,7 +170,7 @@ impl CoreNode {
         }
     }
 
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
+    pub fn parameters(&self) -> HashMap<&str, ParameterValueType<'_>> {
         match self {
             CoreNode::Input(n) => n.parameters(),
             CoreNode::Link(n) => n.parameters(),
@@ -197,7 +197,7 @@ impl CoreNode {
         }
     }
 
-    pub fn parameters_mut(&mut self) -> HashMap<&str, ParameterValueTypeMut> {
+    pub fn parameters_mut(&mut self) -> HashMap<&str, ParameterValueTypeMut<'_>> {
         match self {
             CoreNode::Input(n) => n.parameters_mut(),
             CoreNode::Link(n) => n.parameters_mut(),
@@ -281,14 +281,14 @@ impl Node {
         }
     }
 
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
+    pub fn parameters(&self) -> HashMap<&str, ParameterValueType<'_>> {
         match self {
             Node::Core(n) => n.parameters(),
             Node::Custom(_) => HashMap::new(),
         }
     }
 
-    pub fn parameters_mut(&mut self) -> HashMap<&str, ParameterValueTypeMut> {
+    pub fn parameters_mut(&mut self) -> HashMap<&str, ParameterValueTypeMut<'_>> {
         match self {
             Node::Core(n) => n.parameters_mut(),
             Node::Custom(_) => HashMap::new(),
