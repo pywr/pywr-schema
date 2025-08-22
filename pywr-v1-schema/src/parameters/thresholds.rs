@@ -252,16 +252,10 @@ mod tests {
             {
                 "type": "multiplethresholdindex",
                 "node": "Gauge1",
-                "thresholds": [2.0, 7.0],
-                "predicate": ">"
+                "thresholds": [2.0, 7.0]
             }
             "#;
         let param: MultipleThresholdIndexParameter = serde_json::from_str(data).unwrap();
-
-        match param.predicate {
-            Predicate::GT => {}
-            _ => panic!("Predicate is not correct"),
-        }
 
         assert_eq!(param.node, "Gauge1");
 
@@ -286,16 +280,10 @@ mod tests {
             {
                 "type": "multiplethresholdparameterindex",
                 "parameter": "Param1",
-                "thresholds": [2.0, 7.0],
-                "predicate": ">"
+                "thresholds": [2.0, 7.0]
             }
             "#;
         let param: MultipleThresholdParameterIndexParameter = serde_json::from_str(data).unwrap();
-
-        match param.predicate {
-            Predicate::GT => {}
-            _ => panic!("Predicate is not correct"),
-        }
 
         match param.parameter {
             ParameterValue::Reference(val) => {
