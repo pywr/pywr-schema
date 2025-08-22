@@ -21,7 +21,7 @@ pub struct MultiSplitLinkNode {
 }
 
 impl MultiSplitLinkNode {
-    pub fn parameters(&self) -> HashMap<&str, ParameterValueType> {
+    pub fn parameters(&self) -> HashMap<&str, ParameterValueType<'_>> {
         let mut attributes = HashMap::new();
         if let Some(max_flows) = &self.max_flows {
             attributes.insert("max_flows", max_flows.into());
@@ -35,7 +35,7 @@ impl MultiSplitLinkNode {
         attributes
     }
 
-    pub fn parameters_mut(&mut self) -> HashMap<&str, ParameterValueTypeMut> {
+    pub fn parameters_mut(&mut self) -> HashMap<&str, ParameterValueTypeMut<'_>> {
         let mut attributes = HashMap::new();
         if let Some(max_flows) = &mut self.max_flows {
             attributes.insert("max_flows", max_flows.into());
