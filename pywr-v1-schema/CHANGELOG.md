@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.19.0] - 2025-08-22
+
+### 🚀 Features
+
+- Add additional predicate aliases (LT, GE, etc) ([#225](https://github.com/pywr/pywr-schema/pull/225))
+
+### 🐛 Bug Fixes
+
+- Remove incorrect predicate field on multiple threshold parameters. ([#224](https://github.com/pywr/pywr-schema/pull/224))
+- Show elided lifetimes to reduce confusion. ([#226](https://github.com/pywr/pywr-schema/pull/226))
+
 ## [0.18.0] - 2025-06-10
 
 ### 🐛 Bug Fixes
