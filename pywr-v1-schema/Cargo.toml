@@ -18,4 +18,4 @@ thiserror = "2.0.16"
 pywr-v1-schema-macros = { path = "../pywr-v1-schema-macros", version = "0.19" }
 strum = "0.27"
 strum_macros = "0.27"
-chrono = { version = "0.4.41", features = ["serde"] }
+chrono = { version = "0.4.42", features = ["serde"] }
