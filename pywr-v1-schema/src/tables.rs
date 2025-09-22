@@ -14,6 +14,18 @@ use std::vec::IntoIter;
 pub struct Table {
     pub name: String,
     pub url: PathBuf,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub column: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub columns: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub index: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub indexes: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub table: Option<String>,
+    #[serde(flatten)]
+    pub pandas_kwargs: HashMap<String, serde_json::Value>,
 }
 
 impl Table {
