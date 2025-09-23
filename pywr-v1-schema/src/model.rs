@@ -4,6 +4,7 @@ use crate::parameters::{Parameter, ParameterVec};
 use crate::tables::TableVec;
 use crate::PywrSchemaError;
 use chrono::{NaiveDate, NaiveDateTime};
+use serde::{Deserialize, Deserializer};
 use std::collections::{HashMap, HashSet};
 use std::fs::File;
 use std::io;
@@ -40,10 +41,32 @@ pub struct Timestepper {
     pub timestep: Timestep,
 }
 
+fn validate_scenario_slice_length<'de, D>(
+    deserializer: D,
+) -> Result<Option<Vec<Option<usize>>>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let slice: Option<Vec<Option<usize>>> = Option::deserialize(deserializer)?;
+
+    if let Some(ref vec) = slice {
+        if vec.len() < 2 || vec.len() > 3 {
+            return Err(serde::de::Error::custom(
+                "A scenario slice must have a length between 2 and 3 elements",
+            ));
+        }
+    }
+
+    Ok(slice)
+}
+
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct Scenario {
     pub name: String,
     pub size: usize,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default, deserialize_with = "validate_scenario_slice_length")]
+    pub slice: Option<Vec<Option<usize>>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub ensemble_names: Option<Vec<String>>,
 }
