@@ -21,6 +21,8 @@ pub struct DataFrameParameter {
     pub table: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub url: Option<PathBuf>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub checksum: Option<HashMap<String, String>>,
     #[serde(flatten)]
     pub pandas_kwargs: HashMap<String, serde_json::Value>,
 }
