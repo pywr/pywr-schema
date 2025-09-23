@@ -50,9 +50,9 @@ where
     let slice: Option<Vec<Option<usize>>> = Option::deserialize(deserializer)?;
 
     if let Some(ref vec) = slice {
-        if vec.len() < 2 || vec.len() > 3 {
+        if vec.is_empty() || vec.len() > 3 {
             return Err(serde::de::Error::custom(
-                "A scenario slice must have a length between 2 and 3 elements",
+                "A scenario slice must have a length between 1 and 3 elements",
             ));
         }
     }
