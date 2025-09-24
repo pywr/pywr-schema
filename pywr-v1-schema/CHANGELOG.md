@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.20.0] - 2025-09-23
+
+### 🐛 Bug Fixes
+
+- Add missing table attributes to v1 schema ([#236](https://github.com/pywr/pywr-schema/pull/236))
+- Add checksum attribute to dataframe parameter ([#237](https://github.com/pywr/pywr-schema/pull/237))
+- Add slice attribute to scenario ([#238](https://github.com/pywr/pywr-schema/pull/238))
+
+
 ## [0.19.0] - 2025-08-22
 
 ### 🚀 Features
