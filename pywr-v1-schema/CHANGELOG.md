@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.21.0] - 2025-09-26
+
+### 🚀 Features
+
+- Add constant scenario parameter to schema ([#239](https://github.com/pywr/pywr-schema/pull/239))
+
+
 ## [0.20.0] - 2025-09-23
 
 ### 🐛 Bug Fixes
