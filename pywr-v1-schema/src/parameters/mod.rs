@@ -25,6 +25,7 @@ pub use crate::parameters::control_curves::{
     ControlCurveIndexParameter, ControlCurveInterpolatedParameter, ControlCurveParameter,
     ControlCurvePiecewiseInterpolatedParameter,
 };
+pub use crate::parameters::core::ConstantScenarioParameter;
 pub use crate::parameters::core::{
     ConstantParameter, DivisionParameter, MaxParameter, MinParameter, NegativeMaxParameter,
     NegativeMinParameter, NegativeParameter,
@@ -113,6 +114,12 @@ pub enum CoreParameter {
         alias = "ConstantParameter"
     )]
     Constant(ConstantParameter),
+    #[serde(
+        alias = "constantscenario",
+        alias = "constantscenarioparameter",
+        alias = "ConstantScenarioParameter"
+    )]
+    ConstantScenario(ConstantScenarioParameter),
     #[serde(
         alias = "controlcurvepiecewiseinterpolated",
         alias = "controlcurvepiecewiseinterpolatedparameter",
@@ -317,6 +324,7 @@ impl CoreParameter {
     fn name(&self) -> Option<&str> {
         match self {
             Self::Constant(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::ConstantScenario(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::ControlCurveInterpolated(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::Aggregated(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
             Self::AggregatedIndex(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
@@ -365,6 +373,7 @@ impl CoreParameter {
     fn node_references(&self) -> HashMap<&str, &str> {
         match self {
             Self::Constant(p) => p.node_references(),
+            Self::ConstantScenario(p) => p.node_references(),
             Self::ControlCurveInterpolated(p) => p.node_references(),
             Self::Aggregated(p) => p.node_references(),
             Self::AggregatedIndex(p) => p.node_references(),
@@ -409,6 +418,7 @@ impl CoreParameter {
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType<'_>> {
         match self {
             Self::Constant(p) => p.parameters(),
+            Self::ConstantScenario(p) => p.parameters(),
             Self::ControlCurveInterpolated(p) => p.parameters(),
             Self::Aggregated(p) => p.parameters(),
             Self::AggregatedIndex(p) => p.parameters(),
@@ -453,6 +463,7 @@ impl CoreParameter {
     pub fn parameters_mut(&mut self) -> HashMap<&str, ParameterValueTypeMut<'_>> {
         match self {
             Self::Constant(p) => p.parameters_mut(),
+            Self::ConstantScenario(p) => p.parameters_mut(),
             Self::ControlCurveInterpolated(p) => p.parameters_mut(),
             Self::Aggregated(p) => p.parameters_mut(),
             Self::AggregatedIndex(p) => p.parameters_mut(),
@@ -497,6 +508,7 @@ impl CoreParameter {
     pub fn ty(&self) -> &'static str {
         match self {
             Self::Constant(_) => "Constant",
+            Self::ConstantScenario(_) => "ConstantScenario",
             Self::ControlCurveInterpolated(_) => "ControlCurveInterpolated",
             Self::Aggregated(_) => "Aggregated",
             Self::AggregatedIndex(_) => "AggregatedIndex",
@@ -542,6 +554,7 @@ impl CoreParameter {
     pub fn resource_paths(&self) -> Vec<PathBuf> {
         match self {
             CoreParameter::Aggregated(p) => p.resource_paths(),
+            CoreParameter::ConstantScenario(p) => p.resource_paths(),
             CoreParameter::AggregatedIndex(p) => p.resource_paths(),
             CoreParameter::AsymmetricSwitchIndex(p) => p.resource_paths(),
             CoreParameter::Constant(p) => p.resource_paths(),
@@ -612,6 +625,7 @@ impl CoreParameter {
             CoreParameter::AggregatedIndex(p) => p.update_resource_paths(new_paths),
             CoreParameter::AsymmetricSwitchIndex(p) => p.update_resource_paths(new_paths),
             CoreParameter::Constant(p) => p.update_resource_paths(new_paths),
+            CoreParameter::ConstantScenario(p) => p.update_resource_paths(new_paths),
             CoreParameter::ControlCurvePiecewiseInterpolated(p) => {
                 p.update_resource_paths(new_paths)
             }

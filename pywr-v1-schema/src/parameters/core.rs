@@ -24,6 +24,26 @@ impl ConstantParameter {
     }
 }
 
+
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
+pub struct ConstantScenarioParameter {
+    #[serde(flatten)]
+    pub meta: Option<ParameterMeta>,
+    pub scenario: String,
+    #[serde(alias = "values", skip_serializing_if = "Option::is_none")]
+    pub values: Option<Vec<f64>>,
+    #[serde(flatten, skip_serializing_if = "Option::is_none")]
+    pub external: Option<ExternalDataRef>,
+    #[serde(flatten, skip_serializing_if = "Option::is_none")]
+    pub table: Option<TableDataRef>,
+}
+
+impl ConstantScenarioParameter {
+    pub fn node_references(&self) -> HashMap<&str, &str> {
+        HashMap::new()
+    }
+}
+
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone, PywrParameter)]
 pub struct MaxParameter {
     #[serde(flatten)]
