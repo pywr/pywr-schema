@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.21.1] - 2026-02-07
+
+### ⚙️ Miscellaneous Tasks
+
+- Drop specific patch numbers in Cargo.toml ([#257](https://github.com/pywr/pywr-schema/pull/257))
+
+
 ## [0.21.0] - 2025-09-26
 
 ### 🚀 Features
