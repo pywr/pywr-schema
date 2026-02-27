@@ -65,7 +65,9 @@ use std::vec::IntoIter;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct ParameterMeta {
-    #[serde(skip_serializing_if = "Option::is_none")]
+    // Do not serialize name on the object as it is used as the key in the parent map,
+    // and we don't want to duplicate it in the output.
+    #[serde(skip_serializing)]
     pub name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub comment: Option<String>,

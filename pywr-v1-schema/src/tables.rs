@@ -12,6 +12,9 @@ use std::vec::IntoIter;
 
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct Table {
+    // Do not serialize name on the object as it is used as the key in the parent map,
+    // and we don't want to duplicate it in the output.
+    #[serde(skip_serializing)]
     pub name: String,
     pub url: PathBuf,
     #[serde(skip_serializing_if = "Option::is_none")]
