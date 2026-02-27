@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.21.2] - 2026-02-27
+
+### 🐛 Bug Fixes
+
+- Do not serialize name fields in parameters and tables. ([#264](https://github.com/pywr/pywr-schema/pull/264))
+
+
 ## [0.21.1] - 2026-02-07
 
 ### ⚙️ Miscellaneous Tasks
