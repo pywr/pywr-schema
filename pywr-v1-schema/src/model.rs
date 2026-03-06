@@ -1,8 +1,8 @@
+use crate::PywrSchemaError;
 use crate::edge::Edge;
 use crate::nodes::Node;
 use crate::parameters::{Parameter, ParameterVec};
 use crate::tables::TableVec;
-use crate::PywrSchemaError;
 use chrono::{NaiveDate, NaiveDateTime};
 use serde::{Deserialize, Deserializer};
 use std::collections::{HashMap, HashSet};
@@ -132,7 +132,7 @@ impl PywrNetwork {
     /// return [`None`].
     pub fn get_parameter_index_by_name(&self, name: &str) -> Option<usize> {
         match &self.parameters {
-            Some(parameters) => parameters.iter().position(|n| (n.name() == Some(name))),
+            Some(parameters) => parameters.iter().position(|n| n.name() == Some(name)),
             None => None,
         }
     }
