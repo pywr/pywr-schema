@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.21.3] - 2026-03-10
+
+### 🚀 Features
+
+- Add is_virtual method to CoreNode ([#270](https://github.com/pywr/pywr-schema/pull/270))
+
+### ⚙️ Miscellaneous Tasks
+
+- Remove unneeded parentheses. ([#267](https://github.com/pywr/pywr-schema/pull/267))
+
+
 ## [0.21.2] - 2026-02-27
 
 ### 🐛 Bug Fixes
