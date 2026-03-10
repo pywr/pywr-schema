@@ -250,6 +250,19 @@ impl CoreNode {
             CoreNode::RollingVirtualStorage(n) => n.node_references(),
         }
     }
+
+    pub fn is_virtual(&self) -> bool {
+        matches!(
+            self,
+            CoreNode::Aggregated(_)
+                | CoreNode::AggregatedStorage(_)
+                | CoreNode::VirtualStorage(_)
+                | CoreNode::AnnualVirtualStorage(_)
+                | CoreNode::MonthlyVirtualStorage(_)
+                | CoreNode::SeasonalVirtualStorage(_)
+                | CoreNode::RollingVirtualStorage(_)
+        )
+    }
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
