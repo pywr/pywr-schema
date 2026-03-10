@@ -232,7 +232,7 @@ pub struct PywrModel {
     pub network: PywrNetwork,
 }
 
-impl crate::PywrModel {
+impl PywrModel {
     /// Load a PywrNetwork from a file path
     pub fn from_path<P: AsRef<Path>>(path: P) -> Result<Self, PywrSchemaError> {
         let file = File::open(path)?;
@@ -299,6 +299,45 @@ impl crate::PywrModel {
     /// Update resource paths
     pub fn update_resource_paths(&mut self, new_paths: &HashMap<PathBuf, PathBuf>) {
         self.network.update_resource_paths(new_paths)
+    }
+}
+
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
+pub struct SubModel {
+    pub name: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub filename: Option<PathBuf>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub data: Option<PywrModel>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub path: Option<PathBuf>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub solver: Option<String>,
+}
+
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
+pub struct PywrMultiModel {
+    pub metadata: Metadata,
+    pub timestepper: Timestepper,
+    pub models: Vec<SubModel>,
+}
+
+impl PywrMultiModel {
+    /// Load a PywrMultiModel from a file path
+    pub fn from_path<P: AsRef<Path>>(path: P) -> Result<Self, PywrSchemaError> {
+        let file = File::open(path)?;
+        let reader = io::BufReader::new(file);
+        // Read the JSON contents of the file as an instance of `User`.
+        let data = serde_json::from_reader(reader)?;
+
+        Ok(data)
+    }
+
+    pub fn get_model_by_name(&self, name: &str) -> Option<&PywrModel> {
+        self.models
+            .iter()
+            .find_map(|sub_model| (sub_model.name == name).then_some(sub_model.data.as_ref()))
+            .flatten()
     }
 }
 
