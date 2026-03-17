@@ -46,6 +46,8 @@ pub struct NodeMeta {
     pub comment: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub position: Option<NodePosition>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tags: Option<HashMap<String, Value>>,
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
