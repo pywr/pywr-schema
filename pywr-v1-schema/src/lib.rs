@@ -4,7 +4,7 @@ pub mod nodes;
 pub mod parameters;
 pub mod tables;
 
-pub use model::{PywrModel, PywrNetwork};
+pub use model::{PywrModel, PywrMultiModel, PywrNetwork};
 use std::io;
 use std::path::PathBuf;
 use thiserror::Error;
