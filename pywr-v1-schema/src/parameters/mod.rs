@@ -73,6 +73,8 @@ pub struct ParameterMeta {
     pub comment: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub is_variable: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tags: Option<HashMap<String, Value>>,
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
@@ -826,6 +828,7 @@ impl<'de> Visitor<'de> for PywrParameterMapVisitor {
 
         #[derive(serde::Deserialize, Debug)]
         struct Helper {
+            pub tags: Option<HashMap<String, Value>>,
             pub comment: Option<String>,
             #[serde(rename = "type")]
             pub ty: String,
@@ -855,6 +858,7 @@ impl<'de> Visitor<'de> for PywrParameterMapVisitor {
                             name: Some(name),
                             comment: value.comment,
                             is_variable: None,
+                            tags: value.tags,
                         },
                         ty: value.ty,
                         attributes: value.attributes,
