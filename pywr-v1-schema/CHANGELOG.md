@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.22.0] - 2026-03-18
+
+### 🚀 Features
+
+- Add is_virtual method to CoreNode ([#270](https://github.com/pywr/pywr-schema/pull/270))
+- Add tags to NodeMeta and ParameterMeta. ([#272](https://github.com/pywr/pywr-schema/pull/272))
+- Add PywrMultiModel to the schema. ([#266](https://github.com/pywr/pywr-schema/pull/266))
+
+### ⚙️ Miscellaneous Tasks
+
+- Remove unneeded parentheses. ([#267](https://github.com/pywr/pywr-schema/pull/267))
+
+
 ## [0.21.2] - 2026-02-27
 
 ### 🐛 Bug Fixes
