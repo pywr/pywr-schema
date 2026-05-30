@@ -855,6 +855,12 @@ impl<'de> Visitor<'de> for PywrParameterMapVisitor {
             let mut py_attributes = value.attributes.clone();
             py_attributes.insert("name".to_string(), Value::String(name.clone()));
             py_attributes.insert("type".to_string(), Value::String(ty.to_string()));
+            if let Some(tags) = &value.tags {
+                py_attributes.insert(
+                    "tags".to_string(),
+                    serde_json::to_value(tags).unwrap_or_default(),
+                );
+            }
 
             let p =
                 match CoreParameter::deserialize(MapDeserializer::new(py_attributes.into_iter())) {
