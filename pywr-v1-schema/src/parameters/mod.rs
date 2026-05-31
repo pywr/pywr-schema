@@ -326,51 +326,51 @@ pub enum CoreParameter {
 
 impl CoreParameter {
     fn name(&self) -> Option<&str> {
+        self.meta().and_then(|meta| meta.name.as_deref())
+    }
+
+    fn meta(&self) -> Option<&ParameterMeta> {
         match self {
-            Self::Constant(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::ConstantScenario(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::ControlCurveInterpolated(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::Aggregated(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::AggregatedIndex(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::AsymmetricSwitchIndex(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::ControlCurvePiecewiseInterpolated(p) => {
-                p.meta.as_ref().and_then(|m| m.name.as_deref())
-            }
-            Self::ControlCurveIndex(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::ControlCurve(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::DailyProfile(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::IndexedArray(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::MonthlyProfile(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::WeeklyProfile(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::UniformDrawdownProfile(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::Max(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::Min(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::NegativeMin(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::NegativeMax(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::Division(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::Negative(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::Polynomial1D(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::ParameterThreshold(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::NodeThreshold(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::StorageThreshold(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::MultipleThresholdIndex(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::MultipleThresholdParameterIndex(p) => {
-                p.meta.as_ref().and_then(|m| m.name.as_deref())
-            }
-            Self::CurrentYearThreshold(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::CurrentOrdinalDayThreshold(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::TablesArray(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::DataFrame(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::Deficit(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::DiscountFactor(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::InterpolatedVolume(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::InterpolatedFlow(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::HydropowerTarget(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::Storage(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::RollingMeanFlowNode(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::ScenarioWrapper(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::Flow(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
-            Self::RbfProfile(p) => p.meta.as_ref().and_then(|m| m.name.as_deref()),
+            Self::Constant(p) => p.meta.as_ref(),
+            Self::ConstantScenario(p) => p.meta.as_ref(),
+            Self::ControlCurveInterpolated(p) => p.meta.as_ref(),
+            Self::Aggregated(p) => p.meta.as_ref(),
+            Self::AggregatedIndex(p) => p.meta.as_ref(),
+            Self::AsymmetricSwitchIndex(p) => p.meta.as_ref(),
+            Self::ControlCurvePiecewiseInterpolated(p) => p.meta.as_ref(),
+            Self::ControlCurveIndex(p) => p.meta.as_ref(),
+            Self::ControlCurve(p) => p.meta.as_ref(),
+            Self::DailyProfile(p) => p.meta.as_ref(),
+            Self::IndexedArray(p) => p.meta.as_ref(),
+            Self::MonthlyProfile(p) => p.meta.as_ref(),
+            Self::WeeklyProfile(p) => p.meta.as_ref(),
+            Self::UniformDrawdownProfile(p) => p.meta.as_ref(),
+            Self::Max(p) => p.meta.as_ref(),
+            Self::Min(p) => p.meta.as_ref(),
+            Self::NegativeMin(p) => p.meta.as_ref(),
+            Self::NegativeMax(p) => p.meta.as_ref(),
+            Self::Division(p) => p.meta.as_ref(),
+            Self::Negative(p) => p.meta.as_ref(),
+            Self::Polynomial1D(p) => p.meta.as_ref(),
+            Self::ParameterThreshold(p) => p.meta.as_ref(),
+            Self::NodeThreshold(p) => p.meta.as_ref(),
+            Self::StorageThreshold(p) => p.meta.as_ref(),
+            Self::MultipleThresholdIndex(p) => p.meta.as_ref(),
+            Self::MultipleThresholdParameterIndex(p) => p.meta.as_ref(),
+            Self::CurrentYearThreshold(p) => p.meta.as_ref(),
+            Self::CurrentOrdinalDayThreshold(p) => p.meta.as_ref(),
+            Self::TablesArray(p) => p.meta.as_ref(),
+            Self::DataFrame(p) => p.meta.as_ref(),
+            Self::Deficit(p) => p.meta.as_ref(),
+            Self::DiscountFactor(p) => p.meta.as_ref(),
+            Self::InterpolatedVolume(p) => p.meta.as_ref(),
+            Self::InterpolatedFlow(p) => p.meta.as_ref(),
+            Self::HydropowerTarget(p) => p.meta.as_ref(),
+            Self::Storage(p) => p.meta.as_ref(),
+            Self::RollingMeanFlowNode(p) => p.meta.as_ref(),
+            Self::ScenarioWrapper(p) => p.meta.as_ref(),
+            Self::Flow(p) => p.meta.as_ref(),
+            Self::RbfProfile(p) => p.meta.as_ref(),
         }
     }
 
@@ -708,6 +708,13 @@ impl Parameter {
         match self {
             Self::Core(p) => p.name(),
             Self::Custom(p) => p.meta.name.as_deref(),
+        }
+    }
+
+    pub fn meta(&self) -> Option<&ParameterMeta> {
+        match self {
+            Self::Core(p) => p.meta(),
+            Self::Custom(p) => Some(&p.meta),
         }
     }
 
