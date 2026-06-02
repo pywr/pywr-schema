@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 
 
+## [0.22.1] - 2026-06-02
+
+### ⚙️ Miscellaneous Tasks
+
+- Remove patch version from pywr-v1-schema-macros Cargo.toml ([#265](https://github.com/pywr/pywr-schema/pull/265))
+
+
 ## [0.14.0] - 2024-07-25
 
 ### 🚜 Refactor

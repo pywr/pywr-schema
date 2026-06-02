@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.22.1] - 2026-06-02
+
+### 🚀 Features
+
+- Add meta method to Parameter ([#276](https://github.com/pywr/pywr-schema/pull/276))
+- Add a method to retrieve a reference to NodeMeta ([#273](https://github.com/pywr/pywr-schema/pull/273))
+
+### 🐛 Bug Fixes
+
+- Retain tags when deserialising parameters ([#277](https://github.com/pywr/pywr-schema/pull/277))
+
+
 ## [0.22.0] - 2026-03-18
 
 ### 🚀 Features
