@@ -858,7 +858,7 @@ impl<'de> Visitor<'de> for PywrParameterMapVisitor {
             if let Some(tags) = &value.tags {
                 py_attributes.insert(
                     "tags".to_string(),
-                    serde_json::to_value(tags).unwrap_or_default(),
+                    serde_json::to_value(tags).map_err(serde::de::Error::custom)?,
                 );
             }
 
