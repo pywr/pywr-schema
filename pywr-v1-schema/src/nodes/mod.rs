@@ -296,6 +296,13 @@ impl Node {
         }
     }
 
+    pub fn meta(&self) -> &NodeMeta {
+        match self {
+            Node::Core(n) => n.meta(),
+            Node::Custom(n) => &n.meta,
+        }
+    }
+
     pub fn parameters(&self) -> HashMap<&str, ParameterValueType<'_>> {
         match self {
             Node::Core(n) => n.parameters(),
