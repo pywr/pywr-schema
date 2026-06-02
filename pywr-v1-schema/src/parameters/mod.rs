@@ -856,10 +856,8 @@ impl<'de> Visitor<'de> for PywrParameterMapVisitor {
             py_attributes.insert("name".to_string(), Value::String(name.clone()));
             py_attributes.insert("type".to_string(), Value::String(ty.to_string()));
             if let Some(tags) = &value.tags {
-                py_attributes.insert(
-                    "tags".to_string(),
-                    serde_json::to_value(tags).map_err(serde::de::Error::custom)?,
-                );
+                let value = tags.clone().into_iter().collect();
+                py_attributes.insert("tags".to_string(), Value::Object(value));
             }
 
             let p =
