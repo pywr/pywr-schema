@@ -228,6 +228,8 @@ pub struct PywrModel {
     pub timestepper: Timestepper,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub scenarios: Option<Vec<Scenario>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub scenario_combinations: Option<Vec<Vec<usize>>>,
     #[serde(flatten)]
     pub network: PywrNetwork,
 }
@@ -391,6 +393,40 @@ mod tests {
 
         assert_eq!(model.network.nodes.unwrap().len(), 3);
         assert_eq!(model.network.edges.unwrap().len(), 2);
+    }
+
+    /// `scenario_combinations` must deserialize from its JSON key and survive a
+    /// round-trip (it is dropped if the field is missing, which would silently
+    /// change which scenarios a model runs).
+    #[test]
+    fn test_scenario_combinations() {
+        let data = r#"
+            {
+                "metadata": { "title": "combos" },
+                "timestepper": {
+                    "start": "2015-01-01",
+                    "end": "2015-12-31",
+                    "timestep": 1
+                },
+                "scenarios": [ { "name": "scenario1", "size": 3 } ],
+                "scenario_combinations": [ [0], [2] ]
+            }
+            "#;
+
+        let model: PywrModel = serde_json::from_str(data).unwrap();
+        assert_eq!(
+            model.scenario_combinations,
+            Some(vec![vec![0], vec![2]]),
+            "scenario_combinations should parse from the JSON key"
+        );
+
+        let value: serde_json::Value =
+            serde_json::from_str(&serde_json::to_string(&model).unwrap()).unwrap();
+        assert_eq!(
+            value["scenario_combinations"],
+            serde_json::json!([[0], [2]]),
+            "scenario_combinations should survive re-serialization"
+        );
     }
 
     // #[test]
