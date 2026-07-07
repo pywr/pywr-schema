@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.23.0] - 2026-07-07
+
+### 🚀 Features
+
+- Add user_combinations to model schema ([#282](https://github.com/pywr/pywr-schema/pull/282))
+
+
 ## [0.22.1] - 2026-06-02
 
 ### 🚀 Features
