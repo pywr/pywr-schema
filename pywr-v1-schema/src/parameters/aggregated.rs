@@ -57,6 +57,7 @@ impl AggregatedIndexParameter {
 mod tests {
     use crate::parameters::aggregated::AggregatedParameter;
     use crate::parameters::{CoreParameter, Parameter, ParameterValue, ParameterValueType};
+    use std::ops::Deref;
 
     #[test]
     fn test_aggregated() {
@@ -110,7 +111,7 @@ mod tests {
                 for p in children {
                     match p {
                         ParameterValue::Inline(p) => match p.as_ref() {
-                            Parameter::Core(p) => match p {
+                            Parameter::Core(p) => match p.deref() {
                                 CoreParameter::ControlCurvePiecewiseInterpolated(p) => assert_eq!(
                                     p.node_references().remove("storage_node"),
                                     Some("Reservoir")

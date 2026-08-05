@@ -695,7 +695,7 @@ impl CoreParameter {
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(untagged)]
 pub enum Parameter {
-    Core(CoreParameter),
+    Core(Box<CoreParameter>),
     Custom(CustomParameter),
 }
 
@@ -862,7 +862,7 @@ impl<'de> Visitor<'de> for PywrParameterMapVisitor {
 
             let p =
                 match CoreParameter::deserialize(MapDeserializer::new(py_attributes.into_iter())) {
-                    Ok(p) => Parameter::Core(p),
+                    Ok(p) => Parameter::Core(Box::new(p)),
                     // Deserializing a core parameter failed; deserialize as a custom parameter
                     Err(_) => Parameter::Custom(CustomParameter {
                         meta: ParameterMeta {
@@ -1025,6 +1025,7 @@ pub struct TableDataRef {
 #[cfg(test)]
 mod tests {
     use crate::parameters::{CoreParameter, Parameter, ParameterValue};
+    use std::ops::Deref;
 
     /// Test loading a DailyProfile with a tables definition.
     #[test]
@@ -1064,11 +1065,11 @@ mod tests {
         assert_eq!("IndexedArray", p.ty());
 
         if let Parameter::Core(p) = &p {
-            if let CoreParameter::IndexedArray(p) = p {
+            if let CoreParameter::IndexedArray(p) = p.deref() {
                 if let ParameterValue::Inline(daily_profile) = &p.parameters[0] {
                     assert_eq!("DailyProfile", daily_profile.ty())
                 } else {
-                    panic!("Expected an inline parameter found: {:?}", &p.parameters[0]);
+                    panic!("Expected an inline parameter found: {:?}", p.parameters[0]);
                 }
             } else {
                 panic!("Expected an IndexedArray parameter.")
