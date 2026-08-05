@@ -562,13 +562,13 @@ mod tests {
             });
 
             // None of the standard models should have custom parameters
-            if let Some(parameters) = &model.network.parameters {
-                if parameters.iter().any(|p| p.is_custom()) {
-                    panic!(
-                        "Deserialised model ({:?}) contains unexpected custom parameters!",
-                        model_fn
-                    )
-                }
+            if let Some(parameters) = &model.network.parameters
+                && parameters.iter().any(|p| p.is_custom())
+            {
+                panic!(
+                    "Deserialised model ({:?}) contains unexpected custom parameters!",
+                    model_fn
+                )
             }
 
             let found_resources = model.resource_paths();
