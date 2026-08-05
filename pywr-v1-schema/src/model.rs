@@ -3,7 +3,7 @@ use crate::edge::Edge;
 use crate::nodes::Node;
 use crate::parameters::{Parameter, ParameterVec};
 use crate::tables::TableVec;
-use chrono::{NaiveDate, NaiveDateTime};
+use jiff::civil::DateTime;
 use serde::{Deserialize, Deserializer};
 use std::collections::{HashMap, HashSet};
 use std::fs::File;
@@ -27,17 +27,10 @@ pub enum Timestep {
     Frequency(String),
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Clone, Copy, Debug)]
-#[serde(untagged)]
-pub enum DateType {
-    Date(NaiveDate),
-    DateTime(NaiveDateTime),
-}
-
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct Timestepper {
-    pub start: DateType,
-    pub end: DateType,
+    pub start: DateTime,
+    pub end: DateTime,
     pub timestep: Timestep,
 }
 
