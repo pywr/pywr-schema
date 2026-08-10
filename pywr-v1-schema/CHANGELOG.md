@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.24.0] - 2026-08-07
+
+### 🐛 Bug Fixes
+
+- Fix some clippy warnings.
+- Fix one more clippy lint.
+
+### Chore
+
+- *(deps)* [**breaking**] Switch from chrono to jiff for datetime support. ([#288](https://github.com/pywr/pywr-v1-schema/pull/288))
+
+
 ## [0.23.0] - 2026-07-07
 
 ### 🚀 Features
