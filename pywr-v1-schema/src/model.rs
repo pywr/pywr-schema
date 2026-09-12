@@ -9,6 +9,7 @@ use std::collections::{HashMap, HashSet};
 use std::fs::File;
 use std::io;
 use std::path::{Path, PathBuf};
+use std::str::FromStr;
 
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 pub struct Metadata {
@@ -78,14 +79,41 @@ pub struct PywrNetwork {
     pub recorders: Option<serde_json::Value>,
 }
 
-impl PywrNetwork {
-    /// Load a PywrNetwork from a file path
-    pub fn from_path<P: AsRef<Path>>(path: P) -> Result<Self, PywrSchemaError> {
-        let file = File::open(path)?;
-        let reader = io::BufReader::new(file);
-        // Read the JSON contents of the file as an instance of `User`.
-        let data = serde_json::from_reader(reader)?;
+impl FromStr for PywrNetwork {
+    type Err = PywrSchemaError;
 
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let data = serde_json::from_str(s)
+            .map_err(|source| PywrSchemaError::DeserializeError { source })?;
+        Ok(data)
+    }
+}
+
+impl PywrNetwork {
+    /// Load a [`PywrNetwork`] from a file path
+    ///
+    /// # Errors
+    ///
+    /// Returns a [`PywrSchemaError::FileOpenError`] if the file cannot be opened.
+    /// Returns a [`PywrSchemaError::DeserializeError`] if the JSON data cannot be deserialized into a `PywrNetwork`.
+    pub fn from_path<P: AsRef<Path>>(path: P) -> Result<Self, PywrSchemaError> {
+        let file = File::open(&path).map_err(|source| PywrSchemaError::FileOpenError {
+            path: path.as_ref().to_path_buf(),
+            source,
+        })?;
+        let reader = io::BufReader::new(file);
+
+        Self::from_reader(reader)
+    }
+
+    /// Load a [`PywrNetwork`] from a reader containing JSON data.
+    ///
+    /// # Errors
+    ///
+    /// Returns a [`PywrSchemaError::DeserializeError`] if the JSON data cannot be deserialized into a `PywrNetwork`.
+    pub fn from_reader<R: io::Read>(reader: R) -> Result<Self, PywrSchemaError> {
+        let data = serde_json::from_reader(reader)
+            .map_err(|source| PywrSchemaError::DeserializeError { source })?;
         Ok(data)
     }
 
@@ -227,13 +255,39 @@ pub struct PywrModel {
     pub network: PywrNetwork,
 }
 
+impl FromStr for PywrModel {
+    type Err = PywrSchemaError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let data = serde_json::from_str(s)
+            .map_err(|source| PywrSchemaError::DeserializeError { source })?;
+        Ok(data)
+    }
+}
+
 impl PywrModel {
-    /// Load a PywrNetwork from a file path
+    /// Load a [`PywrModel`] from a file path
+    /// # Errors
+    ///
+    /// Returns a [`PywrSchemaError::FileOpenError`] if the file cannot be opened.
+    /// Returns a [`PywrSchemaError::DeserializeError`] if the JSON data cannot be deserialized into a `PywrModel`.
     pub fn from_path<P: AsRef<Path>>(path: P) -> Result<Self, PywrSchemaError> {
-        let file = File::open(path)?;
+        let file = File::open(&path).map_err(|source| PywrSchemaError::FileOpenError {
+            path: path.as_ref().to_path_buf(),
+            source,
+        })?;
         let reader = io::BufReader::new(file);
-        // Read the JSON contents of the file as an instance of `User`.
-        let data = serde_json::from_reader(reader)?;
+        Self::from_reader(reader)
+    }
+
+    /// Load a [`PywrModel`] from a reader containing JSON data.
+    ///
+    /// # Errors
+    ///
+    /// Returns a [`PywrSchemaError::DeserializeError`] if the JSON data cannot be deserialized into a `PywrModel`.
+    pub fn from_reader<R: io::Read>(reader: R) -> Result<Self, PywrSchemaError> {
+        let data = serde_json::from_reader(reader)
+            .map_err(|source| PywrSchemaError::DeserializeError { source })?;
 
         Ok(data)
     }
@@ -317,13 +371,39 @@ pub struct PywrMultiModel {
     pub models: Vec<SubModel>,
 }
 
+impl FromStr for PywrMultiModel {
+    type Err = PywrSchemaError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let data = serde_json::from_str(s)
+            .map_err(|source| PywrSchemaError::DeserializeError { source })?;
+        Ok(data)
+    }
+}
+
 impl PywrMultiModel {
-    /// Load a PywrMultiModel from a file path
+    /// Load a [`PywrMultiModel`] from a file path
+    /// # Errors
+    ///
+    /// Returns a [`PywrSchemaError::FileOpenError`] if the file cannot be opened.
+    /// Returns a [`PywrSchemaError::DeserializeError`] if the JSON data cannot be deserialized into a `PywrMultiModel`.
     pub fn from_path<P: AsRef<Path>>(path: P) -> Result<Self, PywrSchemaError> {
-        let file = File::open(path)?;
+        let file = File::open(&path).map_err(|source| PywrSchemaError::FileOpenError {
+            path: path.as_ref().to_path_buf(),
+            source,
+        })?;
         let reader = io::BufReader::new(file);
-        // Read the JSON contents of the file as an instance of `User`.
-        let data = serde_json::from_reader(reader)?;
+        Self::from_reader(reader)
+    }
+
+    /// Load a [`PywrMultiModel`] from a reader containing JSON data.
+    ///
+    /// # Errors
+    ///
+    /// Returns a [`PywrSchemaError::DeserializeError`] if the JSON data cannot be deserialized into a `PywrMultiModel`.
+    pub fn from_reader<R: io::Read>(reader: R) -> Result<Self, PywrSchemaError> {
+        let data = serde_json::from_reader(reader)
+            .map_err(|source| PywrSchemaError::DeserializeError { source })?;
 
         Ok(data)
     }

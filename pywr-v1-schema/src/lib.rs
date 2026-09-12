@@ -11,14 +11,11 @@ use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum PywrSchemaError {
-    #[error("An invalid URL was found.")]
-    InvalidUrlFound,
-    #[error("data store disconnected")]
-    IoError(#[from] io::Error),
-    #[error("Serde error")]
-    SerdeError(#[from] serde_json::Error),
-    #[error("Resource not found on local host: {0}")]
-    LocalResourceNotFound(PathBuf),
-    #[error("Invalid Pywr format")]
-    InvalidPywrDataFormat,
+    #[error("Failed to read file `{path}`: {source}")]
+    FileOpenError { path: PathBuf, source: io::Error },
+    #[error("Failed to deserialize JSON: {source}")]
+    DeserializeError {
+        #[source]
+        source: serde_json::Error,
+    },
 }
