@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.25.0] - 2026-09-12
+
+### 🚀 Features
+
+- Implement FromStr and improve error handling. ([#294](https://github.com/pywr/pywr-v1-schema/pull/294))
+
+
 ## [0.24.0] - 2026-08-07
 
 ### 🐛 Bug Fixes
